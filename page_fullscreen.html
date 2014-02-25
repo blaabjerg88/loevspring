@@ -19,12 +19,12 @@
 
 
 <!--############### Page ################################-->
-        <div data-role="page" id="pageMonthplan">
+        <div data-role="page" id="pageFullscreen">
 
             <!-- header -->
             <div data-role="header">
                 <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
-                <h1>Løvspring - Månedsplan</h1>
+                <h1>Løvspring - Fullscreen</h1>
             </div>
             <!-- /header -->
 
@@ -32,13 +32,15 @@
             <div data-role="content" id="pinchzoom">
                 <p>
                     <img id="image" src="res/images/februar.jpg" style="width: 100%; position: relative">
+                    <a href="menu.html">
+                    <img src="res/images/chat.png" style="position: absolute; right: 0; bottom: 0;">
                 </p>
             </div>
             <!-- /content -->
 
             <!-- Gesture Scripts -->
             <script>
-            
+
             if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
                 Hammer.plugins.showTouches();
             }
@@ -63,10 +65,8 @@
             var posX=0, posY=0,
                 scale=1, last_scale;
 
-                hammertime.on('touch drag transform', function(ev) {
+                hammertime.on('drag transform', function(ev) {
                 switch(ev.type) {
-                    case 'touch':
-                        break;
                     case 'drag':
                         posX = ev.gesture.deltaX;
                         posY = ev.gesture.deltaY;
