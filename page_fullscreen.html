@@ -75,7 +75,7 @@
                         break;
 
                     case 'transform':
-                        scale = Math.max(1, Math.min(last_scale + 1 * ev.gesture.scale, 10));
+                        scale = Math.max(1, Math.min(last_scale * ev.gesture.scale, 10));
                         break;
                 }
 
