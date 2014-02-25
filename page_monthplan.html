@@ -3,7 +3,7 @@
     <title>&nbsp;</title>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1,">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes, maximum-scale=3, minimum-scale=1">
         <link rel="stylesheet" href="res/style/themes/loevspring.css" />
         <link rel="stylesheet" href="res/style/themes/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
@@ -11,6 +11,9 @@
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="res/js/cordova.js"></script>
         <link rel="stylesheet" href="res/style/custom.css" />
+        <script src="res/js/hammer.js"></script>
+        <script src="res/js/hammer.fakemultitouch.js"></script>
+        <script src="res/js/hammer.showtouches.js"></script>
     </head>
     <body>
 
@@ -26,42 +29,71 @@
             <!-- /header -->
 
             <!-- content    -->
-            <div data-role="content">
+            <div data-role="content" id="pinchzoom">
                 <p>
-                    TEST PAGE 1
-                    <a href="#popupListeBorn">TEST POP UP</a>
-                    <img src="res/images/februar.jpg" style="width: 100%;">
+                    <img id="image" src="res/images/februar.jpg" style="width: 100%;">
                 </p>
             </div>
             <!-- /content -->
 
+            <!-- Gesture Scripts -->
+            <script>
+            
+            if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
+                Hammer.plugins.showTouches();
+            }
+            </script>
+
+            <script>
+
+            if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
+                Hammer.plugins.fakeMultitouch();
+            }
+
+            var hammertime = Hammer(document.getElementById('pinchzoom'), {
+                transform_always_block: true,
+                transform_min_scale: 1,
+                drag_block_horizontal: true,
+                drag_block_vertical: true,
+                drag_min_distance: 0
+            });
+
+            var id = document.getElementById('image');
+
+            var posX=0, posY=0,
+                scale=1, last_scale;
+
+                hammertime.on('drag transform', function(ev) {
+                switch(ev.type) {
+                    case 'drag':
+                        posX = ev.gesture.deltaX;
+                        posY = ev.gesture.deltaY;
+                        break;
+
+                    case 'transform':
+                        scale = Math.max(1, Math.min(last_scale * ev.gesture.scale, 10));
+                        break;
+                }
+
+                // transform!
+                var transform =
+                        "translate3d("+posX+"px,"+posY+"px, 0) " +
+                        "scale3d("+scale+","+scale+", 0) ";
+
+                image.style.transform = transform;
+                image.style.oTransform = transform;
+                image.style.msTransform = transform;
+                image.style.mozTransform = transform;
+                image.style.webkitTransform = transform;
+            });
+
+
+            </script>
+
+            <!-- /Gesture Scripts -->
+
         </div><!-- /page -->
 <!--############### Page end ############################-->
-
-
-<!--############### Popups etc ##########################-->
-        <div data-role="page" data-dialog="true" id="popupListeBorn">
-
-            <!-- header -->
-            <div data-role="header">
-                <h1>Vælg børn</h1>
-            </div>
-            <!-- /header -->
-
-            <!-- content -->
-            <div data-role="main" class="ui-content">
-                Listview... 123
-            </div>
-            <!-- /content    -->
-
-            <!-- footer -->
-            <div data-role="footer">
-                <!--<h1>Footer Text In Dialog</h1>-->
-            </div>
-            <!-- /footer -->
-
-        </div>
-<!--############### Popups end ##########################-->
 
 
     </body>
