@@ -10,6 +10,7 @@
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="res/js/cordova.js"></script>
+        <script type="text/javascript" charset="utf-8" scr="res/js/ajax.js"></script>
         <link rel="stylesheet" href="res/style/custom.css" />
     </head>
     <body>
@@ -22,20 +23,49 @@
                 <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
                 <h1>Løvspring - Feedback</h1>
             </div>
+
             <!-- /header -->
 
             <!-- content    -->
-            <div data-role="content">
-
+            <div data-role="content" id="divContentFeedback">
+                <p>
+                    <a href="#popupAddFeedback" class="ui-btn ui-corner-all" id="buttonAddFeedback">Tilføj</a>
+                </p>
             </div>
+
             <!-- /content -->
 
         </div><!-- /page -->
 <!--############### Page end ############################-->
 
+<!--############### Popup add feedback ##################-->
+        <div data-role="page" data-dialog="true" id="popupAddFeedback">
 
-<!--############### Popups etc ##########################-->
+            <!-- header -->
+            <div data-role="header">
+                <h1>Tilføj Feedback</h1>
+            </div>
+            <!-- /header -->
 
+            <!-- content -->
+            <div data-role="main" class="ui-content">
+                <label for="name">Name</label>
+                <input type="text" id="name" /><br/>
+                <label for="email">Email</label>
+                <input type="text" id="email" /><br/>
+                <label for="beskrivese">Beskrivelse</label>
+                <textarea id="beskrivelse"></textarea><br/>
+                <input onclick="testAjax()" type="button" value="Gem" id="btnSaveFeedback">
+            </div>
+            <!-- /content    -->
+
+            <!-- footer -->
+            <div data-role="footer">
+                <h1></h1>
+            </div>
+            <!-- /footer -->
+
+        </div>
 <!--############### Popups end ##########################-->
 
     </body>
