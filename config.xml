@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns   = "http://www.w3.org/ns/widgets"
+    xmlns:gap   = "http://phonegap.com/ns/1.0"
+    id          = "com.phonegap.example"
+    versionCode = "10"
+    version     = "1.0.0" >
+    <!-- versionCode is optional and Android only -->
+
+    <name>Løvspring børnehave</name>
+
+    <description>
+        App til Løvspring Børnehave.
+    </description>
+
+    <author href="https://okdios.dk" email="okdios@gmail.com">
+        Alex Pedersen, Mark Blaabjerg & Oscar Diös
+    </author>
+
+    <!-- Icon and splash. Must be placed in the root folder -->
+    <!--<icon src="icon.png" />
+    <gap:splash src="splash.png" />-->
+
+    <!-- Multi platform preferences-->
+    <preference name="phonegap-version" value="3.1.0" />
+    <preference name="orientation" value="portrait" />
+    <preference name="fullscreen" value="false" />
+
+</widget>
