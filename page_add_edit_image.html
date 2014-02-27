@@ -11,14 +11,15 @@
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="res/js/cordova.js"></script>
         <link rel="stylesheet" href="res/style/custom.css" />
+        <script src="res/js/webservice.js"></script>
     </head>
 <body>
 
 <!--############### Page ################################-->
-<div data-role="page" id="pageFeedback">
+<div data-role="page" id="page_add_edit_image">
 
             <!-- header -->
-            <div data-role="header">
+            <div data-role="header" data-position="fixed">
                 <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
                 <h1>Løvspring - Feedback</h1>
             </div>
@@ -35,8 +36,8 @@
 
             <!-- select date -->
             <div style="max-width: 250px;">
-	            <form id="datePicker">
-					Dato: <input type="date" name="date">
+	            <form>
+					Dato: <input type="datetime-local" id="datePicker" name="date">
 				</form>
 			</div>
 			<!-- /select date -->
@@ -48,25 +49,11 @@
 			<!-- /Make fotoDescription -->
 
 			<!-- select child *Get all childs from webservice-->
-			<div style="max-width: 250px;">
-				<select id="selectChilds">
-				  <option value="child1">child1</option>
-				  <option value="child2">child2</option>
-				  <option value="child3">child3</option>
-				  <option value="child4">child4</option>
-				</select>
-			</div>
+			<a href="#popupChooseChilds" class="ui-btn ui-corner-all" id="buttonChooseChilds">Vælge børn</a>
 			<!-- /select child -->
 
 			<!-- select group *Get all groups from webservice-->
-			<div style="max-width: 250px;">
-				<select id="selectGroups">
-				  <option value="group1">group1</option>
-				  <option value="group2">group2</option>
-				  <option value="group3">group3</option>
-				  <option value="group4">group4</option>
-				</select>
-			</div>
+			<a href="#popupChoosGroups" class="ui-btn ui-corner-all" id="buttonChoosGroups">Vælge Grupper</a>
             <!-- /select group -->
 			
 			<!-- save info -->
@@ -79,8 +66,177 @@
 			</center>
 <!--############### Page End ############################-->
 <!--############### PopUp ###############################-->
+<div data-role="page" data-dialog="true" id="popupChooseChilds">
+
+    <!-- header -->
+    <div data-role="header">
+        <h1>Vælge Børn</h1>
+    </div>
+    <!-- /header -->
+
+    <!-- content -->
+    <div data-role="main" class="ui-content">
+        <input type="button" value="OK" id="btnSaveChilds">
+    </div>
+    <!-- /content    -->
+
+    <!-- footer -->
+    <div data-role="footer">
+        <h1></h1>
+    </div>
+    <!-- /footer -->
+
+</div>
+<div data-role="page" data-dialog="true" id="popupChooseGroups">
+
+    <!-- header -->
+    <div data-role="header">
+        <h1>Vælge Gruppe</h1>
+    </div>
+    <!-- /header -->
+
+    <!-- content -->
+    <div data-role="main" class="ui-content">
+        <input type="button" value="OK" id="btnSaveGroups">
+    </div>
+    <!-- /content    -->
+
+    <!-- footer -->
+    <div data-role="footer">
+        <h1></h1>
+    </div>
+    <!-- /footer -->
+
+</div>
 <!--############### PopUp End ###########################-->
 	
 </body>
 </html>
-<script></script>
+<script>
+var image_id;
+var datetimeTotal;
+var newImage;
+var childs=["Anne","Lotte","Bjarne", "Torben"];
+var groups=["Group1", "Group2", "Group3"];
+document.addEventListener("deviceready", onDeviceReady, false);
+var checkedChilds = new Array();
+var checkedGroups = new Array();
+	//document.addEventListener("onFocus", onBodyLoad );
+
+	// when device is ready
+	function onDeviceReady() {
+	    console.log(">>> Device is ready")
+	    console.log("Image id is : " + window.localStorage.getItem("id"));
+	    image_id = window.localStorage.getItem("id");
+	    newImage = window.localStorage.getItem("newImage");
+	    newImage = true;
+	    if (newImage == true)
+    		newImageInfo();
+	    else
+	    	editImageInfo();
+		
+		$.each(childs, function(i, value){
+			var theBoxe = document.createElement('div');
+			theBoxe.innerHTML = '<input type="checkbox" id="check' + i + '" name="check' + i + '" class="custom"><label for="check' + i + '">'+ value + '</label>';
+			document.getElementById("page_add_edit_image").appendChild(theBoxe);
+		});
+	}
+
+	function editImageInfo () {
+		var dateTotalParts = datetimeTotal.split(" ");
+		var dateParts = dateTotalParts[0].split("-");
+		var year = dateParts[0];
+		var month = dateParts[1];
+		var day = dateParts[2];
+
+		var timeParts = dateTotalParts[1].split(":");
+		var hours = timeParts[0];
+		var min = timeParts[1];
+		var sec = timeParts[2];
+		console.log(year + "_" + month + "_" + day + "_" + hours + "_" + min + "_" + sec);
+
+		document.getElementById('fotoDescription').innerHTML = "Beskrivelse fra Webservice her";
+		//change childs
+	    //change groups
+	}
+
+	function newImageInfo (argument) {
+		// ****** Date time picker input
+	    var now = new Date();	// Grap date and time from OStime
+		
+		var day = ("0" + now.getDate()).slice(-2);
+		var month = ("0" + (now.getMonth() + 1)).slice(-2);
+		var year = now.getFullYear();
+		
+		var hours = ("0" + now.getHours()).slice(-2);
+		var min = ("0" + now.getMinutes()).slice(-2);
+		var sec = ("0" + now.getSeconds()).slice(-2);
+		
+		datetimeTotal = year + '-' + month + '-' + day + 'T' + hours + ':' + min + ':' + sec;	// Make time to correct format
+		$('#datePicker').val(datetimeTotal);
+		//********************************************************
+	}
+	
+	$("#btnSaveInfo").click(function(){
+		//Save info to webservice
+		if (newImage == true){
+			var fotoDescription = document.getElementById('fotoDescription').innerHTML;
+			var thestring = 'method=addImage&datetime=' + datetimeTotal + '&description=' + fotoDescription;
+		}
+		else{
+			var thestring = 'method=updateImage&image_id=' + image_id + '&datetime=' + today + '';
+		}
+		//callWebservice(thestring, 'onCallback');
+
+		checkedChilds.length = 0;
+		$.each(childs, function(i, value){
+			if (document.getElementById('check' + i).checked){
+				checkedChilds.push(value);
+			}
+		})
+		console.log(checkedChilds);
+		console.log(checkedChilds.join(","));
+	});
+
+	$("#buttonChooseChilds").click(function(){
+		$.each(childs, function(i, value){
+			var theBoxe = document.createElement('div');
+			theBoxe.innerHTML = '<input type="checkbox" id="checkChilds' + i + '" name="checkChilds' + i + '" class="custom"><label for="checkChilds' + i + '">'+ value + '</label>';
+			document.getElementById("popupChooseChilds").appendChild(theBoxes);
+		})
+		$.each(checkedChilds, function(i, value){
+			document.getElementById('check' + i).checked = true;
+		})
+	});
+
+	$("#buttonChoosGroups").click(function(){
+		$.each(groups, function(i, value){
+			var theBoxe = document.createElement('div');
+			theBoxe.innerHTML = '<input type="checkbox" id="checkGroup' + i + '" name="checkGroup' + i + '" class="custom"><label for="checkGroup' + i + '">'+ value + '</label>';
+			document.getElementById("popupChooseGroups").appendChild(theBoxes);
+		})
+		$.each(checkedGroups, function(i, value){
+			document.getElementById('checkGroup' + i).checked = true;
+		})
+	});
+
+	$("#btnSaveChilds").click(function(){
+		checkedChilds.length = 0;
+		$.each(childs, function(i, value){
+			if (document.getElementById('checkChilds' + i).checked){
+				checkedChilds.push(value);
+			}
+		})
+		console.log(checkedChilds);
+	});
+
+	$("#btnSaveGroups").click(function(){
+		checkedGroups.length = 0;
+		$.each(groups, function(i, value){
+			if (document.getElementById('checkGroup' + i).checked){
+				checkedGroups.push(value);
+			}
+		})
+		console.log(checkedChilds);
+	});
+</script>
