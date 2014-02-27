@@ -11,6 +11,7 @@
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="res/js/cordova.js"></script>
         <link rel="stylesheet" href="res/style/custom.css" />
+        <script src="res/js/webservice.js"></script>
     </head>
     <body>
 
@@ -20,12 +21,15 @@
             <!-- header -->
             <div data-role="header">
                 <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
-                <h1>Løvspring - Admin</h1>
+                <h1>Løvspring - Admin børn</h1>
             </div>
             <!-- /header -->
 
             <!-- content    -->
             <div data-role="content">
+            <button id="btnTest"></button>
+
+            
 
             </div>
             <!-- /content -->
@@ -42,4 +46,36 @@
 </html>
 <script>
 
+$("#btnTest").click(function(){
+    callWebservice('method=getChildren', 'jsonChildToArray');
+});
+
+document.addEventListener('deviceready', callWebservice('method=getChildren', 'jsonChildToArray'), false);
+
+function jsonChildToArray(data)
+{
+    var array = [], results = data.data;
+
+    for(var i = 0, len = results.length; i < len; i++){
+        var item = results[i];
+        array.push({childId: item.child_id, childName: item.child_name, groupName: item.group_name, groupId: item.group_id});
+    }
+    if(array != null){
+        console.log(array);
+    }
+    else{
+        console.log("Error, no data retreived from webservice");
+    }
+}
+
+function removeChildStatus(id){
+    callWebservice('method=removeChild', 'removeChildStatus');
+    
+}
+
+function buildControlFromArray(array){
+    var node = document.createElement('div');
+    for(var i = 0, len = array.length; i < len; i++){
+    }
+}
 </script>
