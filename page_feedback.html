@@ -32,6 +32,7 @@
                     <a href="#popupAddFeedback" data-rel="popup" class="ui-btn ui-corner-all" id="buttonAddFeedback">Tilføj</a>
                 </p>
             </div>
+            <div id="forFeedbacks"></div>
 <!--############### Page end ############################-->
 
 <!--############### Popup add feedback ##################-->
@@ -50,7 +51,7 @@
                 <label for="email">Email</label>
                 <input type="text" id="email" placeholder="Email"/><br/>
                 <label for="feedback">Feedback</label>
-                <textarea id="beskrivelse" placeholder="tekst"></textarea><br/>
+                <textarea id="theFeedback" placeholder="tekst"></textarea><br/>
                 <input onclick="close()" type="button" value="Gem" id="btnSaveFeedback">
             </div>
             <!-- /content    -->
@@ -67,6 +68,9 @@
     </body>
 </html>
 <script>
+//TODO:     send en ny feedback til webservice og opdater feedback.
+
+
 $( 'div' ).on( 'pageshow',function(event, ui){
     console.log( 'Page loaded!');
     callWebservice('method=getFeedback', 'feedbackCallBack');
@@ -74,13 +78,14 @@ $( 'div' ).on( 'pageshow',function(event, ui){
 
 function feedbackCallBack (data) {
     console.log(data);
+    document.getElementById("forFeedbacks").innerHTML = "";
     $.each(data.data, function(i, value){
         console.log(value.feedback);
-        
+
         var OneFeedback = document.createElement('article');
         OneFeedback.className = "textWithBackground";
         OneFeedback.id = value.id + "article";
-        document.getElementById("pageFeedback").appendChild(OneFeedback); 
+        document.getElementById("forFeedbacks").appendChild(OneFeedback);
 
         var OneFeedbackCenter = document.createElement('header');
         OneFeedbackCenter.id = value.id + "header";
@@ -93,10 +98,10 @@ function feedbackCallBack (data) {
         var OneFeedbackDate = document.createElement('p');
         OneFeedbackDate.innerHTML = value.date;
         document.getElementById(value.id + "header").appendChild(OneFeedbackDate);
-        
+
         var OneFeedbackText = document.createElement('p');
         text = document.createTextNode(value.feedback);
-        OneFeedbackText.appendChild(text);   
+        OneFeedbackText.appendChild(text);
         document.getElementById(value.id + "article").appendChild(OneFeedbackText);
     });
     creatHTMLElements();
@@ -104,33 +109,21 @@ function feedbackCallBack (data) {
 
 function creatHTMLElements (array) {
     console.log("createHTMLElements");
-    // var array = array;
-    // var OneFeedback = document.createElement('div');
-    // OneFeedback.id = "user1";
-    // var OneFeedbackCenter = document.createElement('center');
-    // OneFeedbackCenter.id = "user1Center";
-    // var OneFeedbackName = document.createElement('div');
-    // OneFeedbackName.innerHTML = "hans";
-    // var OneFeedbackDate = document.createElement('div');
-    // OneFeedbackDate.innerHTML = "12321432432";
-    // var OneFeedbackText = document.createElement('p');
-    // OneFeedbackText.className = "textWithBackground";
-    // text = document.createTextNode('it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages');
-    // OneFeedbackText.appendChild(text);
-    // document.getElementById("pageFeedback").appendChild(OneFeedback);    
-    // document.getElementById("user1").appendChild(OneFeedbackCenter);
-    // document.getElementById("user1Center").appendChild(OneFeedbackName);
-    // document.getElementById("user1Center").appendChild(OneFeedbackDate);
-    // document.getElementById("user1Center").appendChild(OneFeedbackText);
+}
+
+function feedbackAddCallBack (data) {
+    callWebservice('method=getFeedback', 'feedbackCallBack');
 }
 
 $("#btnSaveFeedback").click(function(){
-    var id;
-    var name;
-    var date;
-    var email;
-    var feedback;
-    
+    var name = document.getElementById("name").value;
+    document.getElementById("name").value = "";
+    var email = document.getElementById("email").value;
+    document.getElementById("email").value = "";
+    var feedback = document.getElementById("theFeedback").value;
+    document.getElementById("theFeedback").value = "";
+    callWebservice('method=addFeedback&author=' + name + '&email=' + email+ '&feedback=' + feedback, 'feedbackAddCallBack');
+
     $( "#popupAddFeedback" ).popup( "close" );
 });
 
