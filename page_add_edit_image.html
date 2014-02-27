@@ -51,7 +51,7 @@
 			<!-- select group *Get all groups from webservice-->
 			<a href="#popupChooseGroups" data-rel="popup" class="ui-btn ui-corner-all" id="buttonChooseGroups" style="max-width: 80%">Vælge Grupper</a>
             <!-- /select group -->
-			
+
 			<!-- save info -->
 			<div style="max-width: 250px;">
 				<input type="button" value="Gem" id="btnSaveInfo">
@@ -63,7 +63,7 @@
 	<!--############### Page End ############################-->
 	<!--############### PopUp ###############################-->
 	<div data-role="popup" data-dialog="true" id="popupChooseChilds" style="width: 300px;">
-		
+
 	    <!-- header -->
 	    <div data-role="header">
 	        <h1>Vælge Børn</h1>
@@ -108,7 +108,7 @@
 	</div>
 </div>
 <!--############### PopUp End ###########################-->
-	
+
 </body>
 </html>
 
@@ -120,7 +120,6 @@ var description;
 var imagePath;
 var childs=["Anne","Lotte","Bjarne", "Torben"];
 var groups=["Group1", "Group2", "Group3"];
-//document.addEventListener("deviceready", onDeviceReady, false);
 var checkedChilds = new Array();
 var checkedGroups = new Array();
 	//document.addEventListener("onFocus", onBodyLoad );
@@ -137,8 +136,8 @@ var checkedGroups = new Array();
     		newImageInfo();
 	    else
 	    	editImageInfo();
-		
-		
+
+
 			// var input = document.createElement('input');
 			// input.type = "checkbox";
 			// input.id = "check";
@@ -149,12 +148,12 @@ var checkedGroups = new Array();
 			// label.innerHTML = "Anne";
 			// document.getElementById("page_add_edit_image").appendChild(input);
 			// document.getElementById("page_add_edit_image").appendChild(label);
-		
+
 	});
 
-	function editImageInfo () {		
-		image_id = "1"; 
-		callWebservice('method=getImage&image_id=' + image_id, 'onCallback');
+	function editImageInfo () {
+		image_id = "1";
+		callWebservice('method=getImage&image_id=' + image_id, 'imageInfoOnCallback');
 
 		// var dateTotalParts = datetimeTotal.split(" ");
 		// var dateParts = dateTotalParts[0].split("-");
@@ -176,30 +175,31 @@ var checkedGroups = new Array();
 	function newImageInfo (argument) {
 		// ****** Date time picker input
 	    var now = new Date();	// Grap date and time from OStime
-		
+
 		var day = ("0" + now.getDate()).slice(-2);
 		var month = ("0" + (now.getMonth() + 1)).slice(-2);
 		var year = now.getFullYear();
-		
+
 		var hours = ("0" + now.getHours()).slice(-2);
 		var min = ("0" + now.getMinutes()).slice(-2);
 		var sec = ("0" + now.getSeconds()).slice(-2);
-		
+
 		datetimeTotal = year + '-' + month + '-' + day + 'T' + hours + ':' + min + ':' + sec;	// Make time to correct format
 		$('#datePicker').val(datetimeTotal);
 		//********************************************************
 	}
 
-	function onCallback (data) {
+	function imageInfoOnCallback (data) {
 	    console.log("onCallback")
 	    console.log(data.data[0])
+	    //***************** handle null data
 	    var st = data.data[0];
 	    $('#datePicker').val(st.date_created.replace(" ", "T"));
 	    document.getElementById("fotoDescription").innerHTML = st.description;
 	    // document.getElementById("previewImage").innerHTML = "";
 	    // document.getElementById("previewImage").innerHTML = '<img src="res/images/c1.jpg" >';
 	}
-	
+
 	$("#btnSaveInfo").click(function(){
 		//Save info to webservice
 		if (newImage == true){
@@ -209,7 +209,6 @@ var checkedGroups = new Array();
 		else{
 			// var thestring = 'method=updateImage&image_id=' + image_id + '&datetime=' + today + '';
 		}
-		//callWebservice(thestring, 'onCallback');
 
 		checkedChilds.length = 0;
 		$.each(childs, function(i, value){
@@ -218,7 +217,7 @@ var checkedGroups = new Array();
 			}
 		})
 		console.log(checkedChilds);
-		console.log(checkedChilds.join(",")); 
+		console.log(checkedChilds.join(","));
 	});
 
 	$("#buttonChooseChilds").click(function(){
