@@ -40,6 +40,15 @@
             </div>
             <!-- /content -->
 
+            <!-- Popup: login-->
+            <div data-role="popup" id="popupChoosePictureMode">
+                <header data-role="header">Tilføj billede</header>
+                <input type="button" id="btnImageFromGallery" value="Fra galleri">
+                <input type="button" id="btnImageFromCamera" value="Tag nyt billede">
+                <span id="status"></span>
+            </div>
+            <!-- Popup end-->
+
         </div><!-- /page -->
 <!--############### Page end ############################-->
 
@@ -52,6 +61,14 @@
     </body>
 </html>
 <script>
+$("#btnImageFromGallery").click(function(){
+    getPhoto();
+});
+
+$("#btnImageFromCamera").click(function(){
+    capturePhoto();
+});
+
 $( 'div' ).on( 'pageshow',function(event, ui){
     console.log( 'Entering images page');
     var is_logged_in = window.localStorage.getItem("logged_in_status");
@@ -59,7 +76,7 @@ $( 'div' ).on( 'pageshow',function(event, ui){
 
     if (is_logged_in == "logged_in"){
         console.log("Adding camera button");
-        var btnCamera = '<a href="menu.html" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-camera ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Camera </a>';
+        var btnCamera = '<a href="#popupChoosePictureMode" data-rel="popup" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-camera ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Camera </a>';
         $("#imagesHeader").append(btnCamera);
     }
 });
