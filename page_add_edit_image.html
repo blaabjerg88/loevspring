@@ -1,5 +1,4 @@
 <html lang="da">
-<html lang="da">
     <title>&nbsp;</title>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -21,7 +20,7 @@
             <!-- header -->
             <div data-role="header" data-position="fixed">
                 <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
-                <h1>Løvspring - Feedback</h1>
+                <h1>Image Info</h1>
             </div>
 
             <!-- /header -->
@@ -29,8 +28,8 @@
             <!-- content    -->
 
 			<!-- preview image -->
-			<div style="max-width: 80%;">
-				<img src="res/images/c1.jpg">
+			<div style="max-width: 80%;" id="previewImage">
+				<img src="res/images/c1.jpg";>
 			</div>
 			<!-- /preview image -->
 
@@ -41,21 +40,18 @@
 				</form>
 			</div>
 			<!-- /select date -->
-
 			<!-- Make fotoDescription -->
-			<div style="max-width: 80%; height: 50px;">
-				<textarea rows="4" cols="50" id="fotoDescription" placeholder="Beskrivelse"></textarea>
-			</div>
+				<textarea id="fotoDescription" placeholder="Beskrivelse" style="max-width: 80%;" rows="8"></textarea>
 			<!-- /Make fotoDescription -->
 
 			<!-- select child *Get all childs from webservice-->
-			<a href="#popupChooseChilds" class="ui-btn ui-corner-all" id="buttonChooseChilds">Vælge børn</a>
+			<a href="#popupChooseChilds" data-rel="popup" class="ui-btn ui-corner-all" id="buttonChooseChilds" style="max-width: 80%">Vælge børn</a>
 			<!-- /select child -->
 
 			<!-- select group *Get all groups from webservice-->
-			<a href="#popupChoosGroups" class="ui-btn ui-corner-all" id="buttonChoosGroups">Vælge Grupper</a>
+			<a href="#popupChooseGroups" data-rel="popup" class="ui-btn ui-corner-all" id="buttonChooseGroups" style="max-width: 80%">Vælge Grupper</a>
             <!-- /select group -->
-
+			
 			<!-- save info -->
 			<div style="max-width: 250px;">
 				<input type="button" value="Gem" id="btnSaveInfo">
@@ -64,98 +60,115 @@
 
             <!-- /content -->
 			</center>
-<!--############### Page End ############################-->
-<!--############### PopUp ###############################-->
-<div data-role="page" data-dialog="true" id="popupChooseChilds">
+	<!--############### Page End ############################-->
+	<!--############### PopUp ###############################-->
+	<div data-role="popup" data-dialog="true" id="popupChooseChilds" style="width: 300px;">
+		
+	    <!-- header -->
+	    <div data-role="header">
+	        <h1>Vælge Børn</h1>
+	    </div>
+	    <!-- /header -->
 
-    <!-- header -->
-    <div data-role="header">
-        <h1>Vælge Børn</h1>
-    </div>
-    <!-- /header -->
+	    <!-- content -->
+	    <div data-role="main" class="ui-content">
+	        <input type="button" value="OK" id="btnSaveChilds">
+	    </div>
+	    <div id="checkChilds"></div>
+	    <!-- /content    -->
 
-    <!-- content -->
-    <div data-role="main" class="ui-content">
-        <input type="button" value="OK" id="btnSaveChilds">
-    </div>
-    <!-- /content    -->
+	    <!-- footer -->
+	    <div data-role="footer">
+	        <h1></h1>
+	    </div>
+	    <!-- /footer -->
 
-    <!-- footer -->
-    <div data-role="footer">
-        <h1></h1>
-    </div>
-    <!-- /footer -->
+	</div>
+	<div data-role="popup" data-dialog="true" id="popupChooseGroups" style="width: 300px;">
 
-</div>
-<div data-role="page" data-dialog="true" id="popupChooseGroups">
+	    <!-- header -->
+	    <div data-role="header">
+	        <h1>Vælge Gruppe</h1>
+	    </div>
+	    <!-- /header -->
 
-    <!-- header -->
-    <div data-role="header">
-        <h1>Vælge Gruppe</h1>
-    </div>
-    <!-- /header -->
+	    <!-- content -->
+	    <div data-role="main" class="ui-content">
+	        <input type="button" value="OK" id="btnSaveGroups">
+	    </div>
+	    <div id="checkGroups"></div>
+	    <!-- /content    -->
 
-    <!-- content -->
-    <div data-role="main" class="ui-content">
-        <input type="button" value="OK" id="btnSaveGroups">
-    </div>
-    <!-- /content    -->
+	    <!-- footer -->
+	    <div data-role="footer">
+	        <h1></h1>
+	    </div>
+	    <!-- /footer -->
 
-    <!-- footer -->
-    <div data-role="footer">
-        <h1></h1>
-    </div>
-    <!-- /footer -->
-
+	</div>
 </div>
 <!--############### PopUp End ###########################-->
-
+	
 </body>
 </html>
+
 <script>
-var image_id;
-var datetimeTotal;
 var newImage;
+var image_id = 1;
+var datetimeTotal;
+var description;
+var imagePath;
 var childs=["Anne","Lotte","Bjarne", "Torben"];
 var groups=["Group1", "Group2", "Group3"];
-document.addEventListener("deviceready", onDeviceReady, false);
+//document.addEventListener("deviceready", onDeviceReady, false);
 var checkedChilds = new Array();
 var checkedGroups = new Array();
 	//document.addEventListener("onFocus", onBodyLoad );
 
 	// when device is ready
-	function onDeviceReady() {
-	    console.log(">>> Device is ready")
+
+	$( 'div' ).on( 'pageshow',function(event, ui){
+    	console.log( 'Page loaded!');
 	    console.log("Image id is : " + window.localStorage.getItem("id"));
 	    image_id = window.localStorage.getItem("id");
 	    newImage = window.localStorage.getItem("newImage");
-	    newImage = true;
+	    newImage = false;
 	    if (newImage == true)
     		newImageInfo();
 	    else
 	    	editImageInfo();
+		
+		
+			// var input = document.createElement('input');
+			// input.type = "checkbox";
+			// input.id = "check";
+			// input.name = "check";
+			// input.class = "custom";
+			// var label = document.createElement('label');
+			// label.for = "check";
+			// label.innerHTML = "Anne";
+			// document.getElementById("page_add_edit_image").appendChild(input);
+			// document.getElementById("page_add_edit_image").appendChild(label);
+		
+	});
 
-		$.each(childs, function(i, value){
-			var theBoxe = document.createElement('div');
-			theBoxe.innerHTML = '<input type="checkbox" id="check' + i + '" name="check' + i + '" class="custom"><label for="check' + i + '">'+ value + '</label>';
-			document.getElementById("page_add_edit_image").appendChild(theBoxe);
-		});
-	}
+	function editImageInfo () {		
+		image_id = "1"; 
+		callWebservice('method=getImage&image_id=' + image_id, 'onCallback');
 
-	function editImageInfo () {
-		var dateTotalParts = datetimeTotal.split(" ");
-		var dateParts = dateTotalParts[0].split("-");
-		var year = dateParts[0];
-		var month = dateParts[1];
-		var day = dateParts[2];
+		// var dateTotalParts = datetimeTotal.split(" ");
+		// var dateParts = dateTotalParts[0].split("-");
+		// var year = dateParts[0];
+		// var month = dateParts[1];
+		// var day = dateParts[2];
 
-		var timeParts = dateTotalParts[1].split(":");
-		var hours = timeParts[0];
-		var min = timeParts[1];
-		var sec = timeParts[2];
-		console.log(year + "_" + month + "_" + day + "_" + hours + "_" + min + "_" + sec);
+		// var timeParts = dateTotalParts[1].split(":");
+		// var hours = timeParts[0];
+		// var min = timeParts[1];
+		// var sec = timeParts[2];
+		// console.log(year + "_" + month + "_" + day + "_" + hours + "_" + min + "_" + sec);
 
-		document.getElementById('fotoDescription').innerHTML = "Beskrivelse fra Webservice her";
+		// document.getElementById('fotoDescription').innerHTML = "Beskrivelse fra Webservice her";
 		//change childs
 	    //change groups
 	}
@@ -163,20 +176,30 @@ var checkedGroups = new Array();
 	function newImageInfo (argument) {
 		// ****** Date time picker input
 	    var now = new Date();	// Grap date and time from OStime
-
+		
 		var day = ("0" + now.getDate()).slice(-2);
 		var month = ("0" + (now.getMonth() + 1)).slice(-2);
 		var year = now.getFullYear();
-
+		
 		var hours = ("0" + now.getHours()).slice(-2);
 		var min = ("0" + now.getMinutes()).slice(-2);
 		var sec = ("0" + now.getSeconds()).slice(-2);
-
+		
 		datetimeTotal = year + '-' + month + '-' + day + 'T' + hours + ':' + min + ':' + sec;	// Make time to correct format
 		$('#datePicker').val(datetimeTotal);
 		//********************************************************
 	}
 
+	function onCallback (data) {
+	    console.log("onCallback")
+	    console.log(data.data[0])
+	    var st = data.data[0];
+	    $('#datePicker').val(st.date_created.replace(" ", "T"));
+	    document.getElementById("fotoDescription").innerHTML = st.description;
+	    // document.getElementById("previewImage").innerHTML = "";
+	    // document.getElementById("previewImage").innerHTML = '<img src="res/images/c1.jpg" >';
+	}
+	
 	$("#btnSaveInfo").click(function(){
 		//Save info to webservice
 		if (newImage == true){
@@ -184,7 +207,7 @@ var checkedGroups = new Array();
 			var thestring = 'method=addImage&datetime=' + datetimeTotal + '&description=' + fotoDescription;
 		}
 		else{
-			var thestring = 'method=updateImage&image_id=' + image_id + '&datetime=' + today + '';
+			// var thestring = 'method=updateImage&image_id=' + image_id + '&datetime=' + today + '';
 		}
 		//callWebservice(thestring, 'onCallback');
 
@@ -195,25 +218,28 @@ var checkedGroups = new Array();
 			}
 		})
 		console.log(checkedChilds);
-		console.log(checkedChilds.join(","));
+		console.log(checkedChilds.join(",")); 
 	});
 
 	$("#buttonChooseChilds").click(function(){
+		document.getElementById("checkChilds").innerHTML = "";
 		$.each(childs, function(i, value){
-			var theBoxe = document.createElement('div');
-			theBoxe.innerHTML = '<input type="checkbox" id="checkChilds' + i + '" name="checkChilds' + i + '" class="custom"><label for="checkChilds' + i + '">'+ value + '</label>';
-			document.getElementById("popupChooseChilds").appendChild(theBoxes);
+
+			var theBoxes = document.createElement('div');
+			theBoxes.innerHTML = '<input type="checkbox" id="checkChilds' + i + '" name="checkChilds' + i + '" class="custom"><label for="checkChilds' + i + '">'+ value + '</label>';
+			document.getElementById("checkChilds").appendChild(theBoxes);
 		})
 		$.each(checkedChilds, function(i, value){
 			document.getElementById('check' + i).checked = true;
 		})
 	});
 
-	$("#buttonChoosGroups").click(function(){
+	$("#buttonChooseGroups").click(function(){
+		document.getElementById("checkGroups").innerHTML = "";
 		$.each(groups, function(i, value){
-			var theBoxe = document.createElement('div');
-			theBoxe.innerHTML = '<input type="checkbox" id="checkGroup' + i + '" name="checkGroup' + i + '" class="custom"><label for="checkGroup' + i + '">'+ value + '</label>';
-			document.getElementById("popupChooseGroups").appendChild(theBoxes);
+			var theBoxes = document.createElement('div');
+			theBoxes.innerHTML = '<input type="checkbox" id="checkGroup' + i + '" name="checkGroup' + i + '" class="custom"><label for="checkGroup' + i + '">'+ value + '</label>';
+			document.getElementById("checkGroups").appendChild(theBoxes);
 		})
 		$.each(checkedGroups, function(i, value){
 			document.getElementById('checkGroup' + i).checked = true;
@@ -228,6 +254,7 @@ var checkedGroups = new Array();
 			}
 		})
 		console.log(checkedChilds);
+		$('#popupChooseChilds').popup('close');
 	});
 
 	$("#btnSaveGroups").click(function(){
@@ -238,5 +265,6 @@ var checkedGroups = new Array();
 			}
 		})
 		console.log(checkedChilds);
+		$( "#popupChooseGroups" ).popup( "close" );
 	});
 </script>
