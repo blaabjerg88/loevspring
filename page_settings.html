@@ -4,12 +4,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
+        <script src="res/js/jquery.md5.js"></script>
+        <script src="res/js/custom.js"></script>
         <link rel="stylesheet" href="res/style/themes/loevspring.css" />
         <link rel="stylesheet" href="res/style/themes/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
-        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
-        <script type="text/javascript" charset="utf-8" src="res/js/cordova.js"></script>
+        <!--<script type="text/javascript" charset="utf-8" src="res/js/cordova.js"></script>-->
         <link rel="stylesheet" href="res/style/custom.css" />
     </head>
     <body>
@@ -20,7 +22,7 @@
             <!-- header -->
             <div data-role="header">
                 <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
-                <h1>Løvspring - Indstillinger</h1>
+                <h1>Indstillinger</h1>
             </div>
             <!-- /header -->
 
@@ -29,8 +31,20 @@
                 <p>
                     <a href="#popupListChildren" class="ui-btn ui-corner-all">Dine børn</a>
                 </p>
+                <a href="#popupLogin" data-rel="popup" class="ui-btn ui-corner-all">Log ind</a>
+                <a href="#" id="btnLogout" data-rel="popup" class="ui-btn ui-corner-all">Log ud</a>
             </div>
             <!-- /content -->
+
+            <!-- Popup: login-->
+            <div data-role="popup" id="popupLogin">
+                <header data-role="header">Log ind</header>
+                <input type="text" placeholder="Navn" id="inputUsername" value="test123">
+                <input type="text" placeholder="Kodeord" id="inputPassword" value="test123">
+                <input type="button" id="btnLogin" value="Navn">
+                <span id="status"></span>
+            </div>
+            <!-- Popup end-->
 
         </div><!-- /page -->
 <!--############### Page end ############################-->
@@ -63,5 +77,50 @@
     </body>
 </html>
 <script>
+$( 'div' ).on('pageshow',function(event, ui){
+  console.log('Entering settings page');
+});
+$( 'div' ).on('pagehide',function(event, ui){
+  console.log('Leaving settings page');
+});
 
+$("#btnLogout").click(function(){
+    console.log("Logging out...");
+    window.localStorage.setItem("logged_in_status", "logged_out");
+})
+
+$("#btnLogin").click(function(){
+    console.log("button clicked...");
+    var username = $("#inputUsername").val();
+    var password = $("#inputPassword").val();
+    var passmd5 =  $.md5(password);
+    var params = 'method=checkLogin&username=' + username + '&password=' + passmd5;
+    console.log(params);
+    callWebservice('method=checkLogin&username=' + username + '&password=' + passmd5, 'loginCallback');
+})
+function loginCallback(data)
+{
+    if (data.status != "200")
+        console.log("Status was: " + data.status);
+    if (data.data == true)
+    {
+        console.log("Login: Success")
+        window.localStorage.setItem("logged_in_status", "logged_in");
+        $("#status").removeClass("error");
+        $("#status").addClass("success");
+        $("#status").html("Du er nu logget ind");
+
+        setTimeout(function() {
+            $('#popupLogin').popup("close");
+        }, 2000);
+
+    }
+    else
+    {
+        console.log("Login: Failed!")
+        $("#status").removeClass("success");
+        $("#status").addClass("error");
+        $("#status").html("Kunne ikke logge dig ind!");
+    }
+}
 </script>

@@ -4,13 +4,14 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <link rel="stylesheet" href="res/style/themes/loevspring.css" />
         <link rel="stylesheet" href="res/style/themes/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
-        <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="res/js/cordova.js"></script>
         <link rel="stylesheet" href="res/style/custom.css" />
+        <script src="res/js/custom.js"></script>
     </head>
     <body>
 
@@ -19,9 +20,10 @@
         <div data-role="page" id="pageImages">
 
             <!-- header -->
-            <div data-role="header">
+            <div data-role="header" data-position="fixed" id="imagesHeader">
                 <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
-                <h1>Løvspring - billeder</h1>
+
+                <h1>Billeder</h1>
             </div>
             <!-- /header -->
 
@@ -50,26 +52,82 @@
     </body>
 </html>
 <script>
-document.addEventListener("deviceready", onDeviceReady, false);
+$( 'div' ).on( 'pageshow',function(event, ui){
+    console.log( 'Entering images page');
+    var is_logged_in = window.localStorage.getItem("logged_in_status");
+    console.log("Is logged in: " + is_logged_in);
 
-// when device is ready
-function onDeviceReady() {
-    document.addEventListener("pause", onPause, false);
-    document.addEventListener("resume", onResume, false);
-    //alert("Device is Ready");
-    console.log(">>> Device is ready")
+    if (is_logged_in == "logged_in"){
+        console.log("Adding camera button");
+        var btnCamera = '<a href="menu.html" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-camera ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Camera </a>';
+        $("#imagesHeader").append(btnCamera);
+    }
+});
+
+$( 'div' ).on( 'pagehide',function(event, ui){
+    console.log( 'Leaving images page');
+});
+
+
+//=============================================
+// A button will call this function
+// To capture photo
+function capturePhoto() {
+    // Take picture using device camera and retrieve image as base64-encoded string
+    navigator.camera.getPicture(uploadPhoto, onFail, {
+        quality: 50, destinationType: Camera.DestinationType.FILE_URI
+    });
 }
 
-
-//What to do when paused
-function onPause(){
-    //alert("paused!");
-    console.log(">>> App is paused")
+// A button will call this function
+// To select image from gallery
+function getPhoto(source) {
+    // Retrieve image file location from specified source
+    navigator.camera.getPicture(uploadPhoto, onFail, { quality: 50,
+        destinationType: navigator.camera.DestinationType.FILE_URI,
+        sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+    });
 }
 
-//What to do when resumed
-function onResume(){
-    //alert("resume");
-    console.log(">>> App is resumed")
+function uploadPhoto(imageURI) {
+    //If you wish to display image on your page in app
+    // Get image handle
+    var largeImage = document.getElementById('largeImage');
+
+    // Unhide image elements
+    largeImage.style.display = 'block';
+
+    // Show the captured photo
+    // The inline CSS rules are used to resize the image
+    largeImage.src = imageURI;
+
+    var options = new FileUploadOptions();
+    options.fileKey = "file";
+    var userid = '123456';
+    var imagefilename = userid + Number(new Date()) + ".jpg";
+    options.fileName = imagefilename;
+    options.mimeType = "image/jpg";
+
+    var params = new Object();
+    params.imageURI = imageURI;
+    params.userid = sessionStorage.loginuserid;
+    options.params = params;
+    options.chunkedMode = false;
+    var ft = new FileTransfer();
+    var url = "Your_Web_Service_URL";
+    ft.upload(imageURI, url, win, fail, options, true);
+}
+//Success callback
+function win(r) {
+    alert("Image uploaded successfully!!");
+}
+//Failure callback
+function fail(error) {
+    alert("There was an error uploading image");
+}
+// Called if something bad happens.
+//
+function onFail(message) {
+    alert('Failed because: ' + message);
 }
 </script>
