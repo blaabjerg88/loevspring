@@ -11,7 +11,7 @@
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="res/js/cordova.js"></script>
         <link rel="stylesheet" href="res/style/custom.css" />
-        <script src="res/js/webservice.js"></script>
+        <script src="res/js/custom.js"></script>
     </head>
 <body>
 
@@ -41,7 +41,7 @@
 				</form>
 			</div>
 			<!-- /select date -->
-			
+
 			<!-- Make fotoDescription -->
 			<div style="max-width: 80%; height: 50px;">
 				<textarea rows="4" cols="50" id="fotoDescription" placeholder="Beskrivelse"></textarea>
@@ -55,7 +55,7 @@
 			<!-- select group *Get all groups from webservice-->
 			<a href="#popupChoosGroups" class="ui-btn ui-corner-all" id="buttonChoosGroups">Vælge Grupper</a>
             <!-- /select group -->
-			
+
 			<!-- save info -->
 			<div style="max-width: 250px;">
 				<input type="button" value="Gem" id="btnSaveInfo">
@@ -109,7 +109,7 @@
 
 </div>
 <!--############### PopUp End ###########################-->
-	
+
 </body>
 </html>
 <script>
@@ -134,7 +134,7 @@ var checkedGroups = new Array();
     		newImageInfo();
 	    else
 	    	editImageInfo();
-		
+
 		$.each(childs, function(i, value){
 			var theBoxe = document.createElement('div');
 			theBoxe.innerHTML = '<input type="checkbox" id="check' + i + '" name="check' + i + '" class="custom"><label for="check' + i + '">'+ value + '</label>';
@@ -163,20 +163,20 @@ var checkedGroups = new Array();
 	function newImageInfo (argument) {
 		// ****** Date time picker input
 	    var now = new Date();	// Grap date and time from OStime
-		
+
 		var day = ("0" + now.getDate()).slice(-2);
 		var month = ("0" + (now.getMonth() + 1)).slice(-2);
 		var year = now.getFullYear();
-		
+
 		var hours = ("0" + now.getHours()).slice(-2);
 		var min = ("0" + now.getMinutes()).slice(-2);
 		var sec = ("0" + now.getSeconds()).slice(-2);
-		
+
 		datetimeTotal = year + '-' + month + '-' + day + 'T' + hours + ':' + min + ':' + sec;	// Make time to correct format
 		$('#datePicker').val(datetimeTotal);
 		//********************************************************
 	}
-	
+
 	$("#btnSaveInfo").click(function(){
 		//Save info to webservice
 		if (newImage == true){

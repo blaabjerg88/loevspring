@@ -7,7 +7,7 @@
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <script src="res/js/jquery.md5.js"></script>
-        <script src="res/js/webservice.js"></script>
+        <script src="res/js/custom.js"></script>
         <link rel="stylesheet" href="res/style/themes/loevspring.css" />
         <link rel="stylesheet" href="res/style/themes/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
@@ -42,6 +42,7 @@
                 <input type="text" placeholder="Navn" id="inputUsername" value="test123">
                 <input type="text" placeholder="Kodeord" id="inputPassword" value="test123">
                 <input type="button" id="btnLogin" value="Navn">
+                <span id="status"></span>
             </div>
             <!-- Popup end-->
 
@@ -105,8 +106,21 @@ function loginCallback(data)
     {
         console.log("Login: Success")
         window.localStorage.setItem("logged_in_status", "logged_in");
+        $("#status").removeClass("error");
+        $("#status").addClass("success");
+        $("#status").html("Du er nu logget ind");
+
+        setTimeout(function() {
+            $('#popupLogin').popup("close");
+        }, 2000);
+
     }
     else
+    {
         console.log("Login: Failed!")
+        $("#status").removeClass("success");
+        $("#status").addClass("error");
+        $("#status").html("Kunne ikke logge dig ind!");
+    }
 }
 </script>
