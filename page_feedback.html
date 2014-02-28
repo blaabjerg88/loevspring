@@ -10,7 +10,7 @@
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="res/js/cordova.js"></script>
-        <script type="text/javascript" charset="utf-8" scr="res/js/ajax.js"></script>
+        <script src="res/js/custom.js"></script>
         <link rel="stylesheet" href="res/style/custom.css" />
     </head>
     <body>
@@ -19,7 +19,7 @@
         <div data-role="page" id="pageFeedback">
 
             <!-- header -->
-            <div data-role="header">
+            <div data-role="header" data-position="fixed">
                 <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
                 <h1>Løvspring - Feedback</h1>
             </div>
@@ -29,17 +29,14 @@
             <!-- content    -->
             <div data-role="content" id="divContentFeedback">
                 <p>
-                    <a href="#popupAddFeedback" class="ui-btn ui-corner-all" id="buttonAddFeedback">Tilføj</a>
+                    <a href="#popupAddFeedback" data-rel="popup" class="ui-btn ui-corner-all" id="buttonAddFeedback">Tilføj</a>
                 </p>
             </div>
-
-            <!-- /content -->
-
-        </div><!-- /page -->
+            <div id="forFeedbacks"></div>
 <!--############### Page end ############################-->
 
 <!--############### Popup add feedback ##################-->
-        <div data-role="page" data-dialog="true" id="popupAddFeedback">
+        <div data-role="popup" id="popupAddFeedback">
 
             <!-- header -->
             <div data-role="header">
@@ -49,13 +46,13 @@
 
             <!-- content -->
             <div data-role="main" class="ui-content">
-                <label for="name">Name</label>
-                <input type="text" id="name" /><br/>
+                <label for="name" >Name</label>
+                <input type="text" id="name" placeholder="Navn"/><br/>
                 <label for="email">Email</label>
-                <input type="text" id="email" /><br/>
-                <label for="beskrivese">Beskrivelse</label>
-                <textarea id="beskrivelse"></textarea><br/>
-                <input onclick="testAjax()" type="button" value="Gem" id="btnSaveFeedback">
+                <input type="text" id="email" placeholder="Email"/><br/>
+                <label for="feedback">Feedback</label>
+                <textarea id="theFeedback" placeholder="tekst"></textarea><br/>
+                <input onclick="close()" type="button" value="Gem" id="btnSaveFeedback">
             </div>
             <!-- /content    -->
 
@@ -67,9 +64,67 @@
 
         </div>
 <!--############### Popups end ##########################-->
-
+        </div><!-- /page -->
     </body>
 </html>
 <script>
+//TODO:     send en ny feedback til webservice og opdater feedback.
+
+
+$( 'div' ).on( 'pageshow',function(event, ui){
+    console.log( 'Page loaded!');
+    callWebservice('method=getFeedback', 'feedbackCallBack');
+});
+
+function feedbackCallBack (data) {
+    console.log(data);
+    document.getElementById("forFeedbacks").innerHTML = "";
+    $.each(data.data, function(i, value){
+        console.log(value.feedback);
+
+        var OneFeedback = document.createElement('article');
+        OneFeedback.className = "textWithBackground";
+        OneFeedback.id = value.id + "article";
+        document.getElementById("forFeedbacks").appendChild(OneFeedback);
+
+        var OneFeedbackCenter = document.createElement('header');
+        OneFeedbackCenter.id = value.id + "header";
+        document.getElementById(value.id + "article").appendChild(OneFeedbackCenter);
+
+        var OneFeedbackName = document.createElement('h1');
+        OneFeedbackName.innerHTML = value.author;
+        document.getElementById(value.id + "header").appendChild(OneFeedbackName);
+
+        var OneFeedbackDate = document.createElement('p');
+        OneFeedbackDate.innerHTML = value.date;
+        document.getElementById(value.id + "header").appendChild(OneFeedbackDate);
+
+        var OneFeedbackText = document.createElement('p');
+        text = document.createTextNode(value.feedback);
+        OneFeedbackText.appendChild(text);
+        document.getElementById(value.id + "article").appendChild(OneFeedbackText);
+    });
+    creatHTMLElements();
+}
+
+function creatHTMLElements (array) {
+    console.log("createHTMLElements");
+}
+
+function feedbackAddCallBack (data) {
+    callWebservice('method=getFeedback', 'feedbackCallBack');
+}
+
+$("#btnSaveFeedback").click(function(){
+    var name = document.getElementById("name").value;
+    document.getElementById("name").value = "";
+    var email = document.getElementById("email").value;
+    document.getElementById("email").value = "";
+    var feedback = document.getElementById("theFeedback").value;
+    document.getElementById("theFeedback").value = "";
+    callWebservice('method=addFeedback&author=' + name + '&email=' + email+ '&feedback=' + feedback, 'feedbackAddCallBack');
+
+    $( "#popupAddFeedback" ).popup( "close" );
+});
 
 </script>

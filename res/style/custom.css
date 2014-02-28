@@ -2,3 +2,22 @@
 	-webkit-transform: translate3d(0,0,0);
 	overflow: hidden;
 }
+
+.success
+{
+    color: green;
+}
+.error
+{
+    color: red;
+}
+.textWithBackground{
+	color: black;
+	border:2px solid #a1a1a1;
+	padding:10px 40px; 
+	background:#dddddd;
+	width:300px;
+	border-radius:25px;
+	margin-left: auto; 
+	margin-right: auto;
+}

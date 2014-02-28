@@ -19,7 +19,7 @@
         <div data-role="page" id="pageAdmin">
 
             <!-- header -->
-            <div data-role="header">
+            <div data-role="header" data-position="fixed">
                 <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
                 <h1>Løvspring - Admin børn</h1>
             </div>
@@ -27,12 +27,36 @@
 
             <!-- content    -->
             <div data-role="content">
-            <button id="btnTest"></button>
-
-            
-
+                <table id="childTable">
+                </table>
             </div>
             <!-- /content -->
+
+
+
+            <div data-role="popup" data-dialog="true" id="popupConfirmDeleteChild">
+
+                <!-- header -->
+                <div data-role="header">
+                    <h1>Bekræft sletning</h1>
+                </div>
+                <!-- /header -->
+
+                <!-- content -->
+                <div data-role="main" class="ui-content">
+                    <label id="lblDeleteChild"></label>
+                    <input type="button" value="Bekræft" id="btnConfirmDelete">
+                    <input type="button" value="Fortryd" id="btnDeclineDelete">
+                </div>
+                <!-- /content    -->
+
+                <!-- footer -->
+                <div data-role="footer">
+                    <h1></h1>
+                </div>
+                <!-- /footer -->
+
+            </div>
 
         </div><!-- /page -->
 <!--############### Page end ############################-->
@@ -40,42 +64,80 @@
 
 <!--############### Popups etc ##########################-->
 
+
+
 <!--############### Popups end ##########################-->
 
     </body>
 </html>
 <script>
+var childrenArray = [];
 
-$("#btnTest").click(function(){
+$("#btnConfirmDelete").click(function(){
+    callWebservice('method=removeChild&child_id=' + localStorage.getItem('deleteChildId'), 'showDeleteStatus');
+    console.log("Confirm Delete Child");
+    $('#popupConfirmDeleteChild').popup('close');
+});
+
+$("#btnDeclineDelete").click(function(){
+    console.log("Decline Delete Child");
+    $('#popupConfirmDeleteChild').popup('close');
+});
+
+ $( 'div' ).on( 'pageshow',function(event, ui){
+    console.log( 'Page loaded!');
     callWebservice('method=getChildren', 'jsonChildToArray');
 });
 
-document.addEventListener('deviceready', callWebservice('method=getChildren', 'jsonChildToArray'), false);
+$( 'div' ).on( 'pagehide',function(event, ui){
+    console.log( 'Page hidden!');
+    document.getElementById('childTable').InnerHTML = "";
+    childrenArray.length = 0;
+    childrenArray = [];
+});
 
 function jsonChildToArray(data)
 {
     var array = [], results = data.data;
+    console.log("Building array");
 
     for(var i = 0, len = results.length; i < len; i++){
         var item = results[i];
         array.push({childId: item.child_id, childName: item.child_name, groupName: item.group_name, groupId: item.group_id});
     }
-    if(array != null){
-        console.log(array);
-    }
-    else{
-        console.log("Error, no data retreived from webservice");
+    console.log("Finished building array");
+
+    childrenArray = array;
+    buildControlFromArray();
+}
+
+function deleteChild(childId){
+    for(var i = 0, len = childrenArray.length; i < len; i++){
+        if(childId == childrenArray[i].childId){
+            localStorage.setItem('deleteChildId', childrenArray[i].childId);
+            localStorage.setItem('deleteChildName', childrenArray[i].childName);
+            localStorage.setItem('deleteChildGroupId', childrenArray[i].groupId);
+            localStorage.setItem('deleteChildGroupName', childrenArray[i].groupName);
+            $('#popupConfirmDeleteChild').popup('open');
+        }
     }
 }
 
-function removeChildStatus(id){
-    callWebservice('method=removeChild', 'removeChildStatus');
-    
+function showDeleteStatus(status){
+    console.log(status);    
 }
 
-function buildControlFromArray(array){
-    var node = document.createElement('div');
-    for(var i = 0, len = array.length; i < len; i++){
+function buildControlFromArray(){
+    for(var i = 0, len = childrenArray.length; i < len; i++){
+        var currentChild = childrenArray[i];
+        var html = '<tr>';
+        html += '<td style="width: 89%;"><button id="btnChild'+currentChild.childId+'"; >'+currentChild.childName+'</button></td>';
+        html += '<td style="width: 1%;"></td>';
+        html += '<td style="width: 10%;"><img src="res/images/denied.png" onclick="deleteChild('+currentChild.childId+')"; id="imgDeleteChild'+currentChild.childId+'"></td>';
+        html += '</tr>';
+        document.getElementById('childTable').InnerHTML += html;
+        //$(html).appendTo("#childTable");
     }
 }
+
 </script>
