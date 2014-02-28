@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget id="dk.okdios.loevspring" version="0.0.1">
+
+    <name>Løvspring børnehave</name>
+
+    <description>
+        App til Løvspring Børnehave.
+    </description>
+
+    <author email="okdios@gmail.com" href="https://github.com/okdios/loevspring">
+        Alex Pedersen, Mark Blaabjerg & Oscar Diös
+    </author>
+
+    <content src="index.html" />
+
+    <access origin="*" />
+
+    <preference name="Fullscreen" value="false" />
+    <preference name="WebViewBounce" value="true" />
+    <preference name="orientation" value="portrait" />
+
+</widget>
