@@ -29,14 +29,14 @@
 
             <!-- content    -->
             <div data-role="content">
-                    <img src="res/images/c1.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c2.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c3.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c4.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c5.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c6.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c7.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c8.jpg" style="width:49%;" alt="">
+                    <img src="res/images/c1.jpg" style="width:49%;" alt="" id="image_id1" >
+                    <img src="res/images/c2.jpg" style="width:49%;" alt="" id="image_id2" >
+                    <img src="res/images/c3.jpg" style="width:49%;" alt="" id="image_id3" >
+                    <img src="res/images/c4.jpg" style="width:49%;" alt="" id="image_id4" >
+                    <img src="res/images/c5.jpg" style="width:49%;" alt="" id="image_id5" >
+                    <img src="res/images/c6.jpg" style="width:49%;" alt="" id="image_id6" >
+                    <img src="res/images/c7.jpg" style="width:49%;" alt="" id="image_id7" >
+                    <img src="res/images/c8.jpg" style="width:49%;" alt="" id="image_id8" >
             </div>
             <!-- /content -->
 
@@ -49,18 +49,23 @@
             </div>
             <!-- Popup end-->
 
-        </div><!-- /page -->
+
 <!--############### Page end ############################-->
 
 
 <!--############### Popups etc ##########################-->
-
+    <div data-role="popup" id="popupChoosePictureEdit">
+        <header data-role="header">Billede</header>
+        <input type="button" id="btnEditImage" value="Edit billede">
+        <input type="button" id="btnDeleteImage" value="Slet billede">
+    </div>
 <!--############### Popups end ##########################-->
 
-
+        </div><!-- /page -->
     </body>
 </html>
 <script>
+
 $("#btnImageFromGallery").click(function(){
     getPhoto();
 });
@@ -85,6 +90,34 @@ $( 'div' ).on( 'pagehide',function(event, ui){
     console.log( 'Leaving images page');
 });
 
+// ********************** Longpress on Image ******************
+var image_id;
+var longpress;
+$("#pageImages").on('mousedown' ,function(e){
+     longpress=true;
+     console.log(e.target.id);
+     image_id = e.target.id;
+         if (window.localStorage.getItem("logged_in_status") == "logged_in"){
+             setTimeout(function() {
+                if(longpress)
+                 $( "#popupChoosePictureEdit" ).popup( "open" );
+         }, 1000);
+    }
+});
+$("#pageImages").on('mouseup' ,function(){
+    longpress=false;
+});
+
+$("#btnEditImage").click(function(){
+    window.localStorage.setItem("editImage_id", image_id);
+    window.localStorage.setItem("newImage", false);
+    navigate('page_add_edit_image.html');
+});
+
+$("#btnDeleteImage").click(function(){
+    callWebservice('method=removeImage&image_id=' + image_id, 'removeImageCallBack');
+});
+// ***********************************************************
 
 //=============================================
 // A button will call this function
@@ -146,5 +179,10 @@ function fail(error) {
 //
 function onFail(message) {
     alert('Failed because: ' + message);
+}
+
+function removeImageCallBack (data) {
+    console.log("removeImage");
+    console.log(data);
 }
 </script>
