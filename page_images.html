@@ -71,7 +71,9 @@ $( 'div' ).on( 'pageshow',function(event, ui){
     console.log("Is logged in: " + is_logged_in);
     drawImages();
 
-    if (is_logged_in == "logged_in"){
+    // TODO: change when going live!
+    //if (is_logged_in == "logged_in"){
+    if (is_logged_in != "DEBUG!!!"){
         console.log("Adding camera button");
         var btnCamera = '<a href="#popupChoosePictureMode" data-rel="popup" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-camera ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Camera </a>';
         $("#imagesHeader").append(btnCamera);
@@ -105,7 +107,7 @@ $("#btnEditImage").click(function(){
     window.localStorage.setItem("editImage_id", image_id);
     console.log(image_id);
     window.localStorage.setItem("newImage", false);
-    navigate('page_add_edit_image.html');
+    window.location.href = 'page_add_edit_image.html';
 });
 
 $("#btnDeleteImage").click(function(){
@@ -116,24 +118,65 @@ $("#btnDeleteImage").click(function(){
 //=============================================
 // A button will call this function
 // To capture photo
+/*******************
 function capturePhoto() {
+    alert("in capturePhoto...");
     // Take picture using device camera and retrieve image as base64-encoded string
     navigator.camera.getPicture(uploadPhoto, onFail, {
         quality: 50, destinationType: Camera.DestinationType.FILE_URI
     });
+    alert("after getPicture...");
 }
 
 // A button will call this function
 // To select image from gallery
 function getPhoto(source) {
+    alert("in getPhoto...");
     // Retrieve image file location from specified source
     navigator.camera.getPicture(uploadPhoto, onFail, { quality: 50,
         destinationType: navigator.camera.DestinationType.FILE_URI,
         sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
     });
+    alert("after getPicture...");
+}
+********************/
+
+function capturePhoto() {
+    alert("in capturePhoto...");
+    // Take picture using device camera and retrieve image as base64-encoded string
+    try
+    {
+        navigator.camera.getPicture(uploadPhoto, onFail, {
+            quality: 50, destinationType: Camera.DestinationType.FILE_URI
+        });
+    } catch(err)
+    {
+        alert("ERROR: " + err.message);
+    }
+    alert("after getPicture...");
 }
 
+// A button will call this function
+// To select image from gallery
+function getPhoto(source) {
+    alert("in getPhoto...");
+    // Retrieve image file location from specified source
+    try
+    {
+        navigator.camera.getPicture(uploadPhoto, onFail, { quality: 50,
+            destinationType: navigator.camera.DestinationType.FILE_URI,
+            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+        });
+    } catch(err)
+    {
+        alert("ERROR: " + err.message);
+    }
+    alert("after getPicture...");
+}
+
+
 function uploadPhoto(imageURI) {
+    alert("in uploadPicture...");
     //If you wish to display image on your page in app
     // Get image handle
     var largeImage = document.getElementById('largeImage');
