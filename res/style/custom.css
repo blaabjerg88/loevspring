@@ -35,10 +35,17 @@
 .textWithBackground{
 	color: white;
 	border:2px solid #a1a1a1;
-	padding:10px 40px; 
+	padding:10px 40px;
 	background:#dddddd;
 	width:300px;
 	border-radius:25px;
-	margin-left: auto; 
+	margin-left: auto;
 	margin-right: auto;
+}
+.images{
+	width: 47%;
+	margin-left: 5px;
+}
+.fotoDescription{
+	height: 500px;
 }

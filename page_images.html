@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="res/style/themes/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
         <script type="text/javascript" charset="utf-8" src="res/js/cordova.js"></script>
+        <script type="text/javascript" charset="utf-8" src="res/js/plugins/Camera.js"></script>
+        <script type="text/javascript" charset="utf-8" src="res/js/plugins/CameraConstants.js"></script>
         <link rel="stylesheet" href="res/style/custom.css" />
         <script src="res/js/custom.js"></script>
     </head>
@@ -28,16 +30,7 @@
             <!-- /header -->
 
             <!-- content    -->
-            <div data-role="content">
-                    <img src="res/images/c1.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c2.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c3.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c4.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c5.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c6.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c7.jpg" style="width:49%;" alt="">
-                    <img src="res/images/c8.jpg" style="width:49%;" alt="">
-            </div>
+            <div data-role="content" id="imageContainer"></div>
             <!-- /content -->
 
             <!-- Popup: login-->
@@ -49,18 +42,23 @@
             </div>
             <!-- Popup end-->
 
-        </div><!-- /page -->
+
 <!--############### Page end ############################-->
 
 
 <!--############### Popups etc ##########################-->
-
+    <div data-role="popup" id="popupChoosePictureEdit">
+        <header data-role="header">Billede</header>
+        <input type="button" id="btnEditImage" value="Redigér billede">
+        <input type="button" id="btnDeleteImage" value="Slet billede">
+    </div>
 <!--############### Popups end ##########################-->
 
-
+        </div><!-- /page -->
     </body>
 </html>
 <script>
+images = [];
 $("#btnImageFromGallery").click(function(){
     getPhoto();
 });
@@ -73,8 +71,11 @@ $( 'div' ).on( 'pageshow',function(event, ui){
     console.log( 'Entering images page');
     var is_logged_in = window.localStorage.getItem("logged_in_status");
     console.log("Is logged in: " + is_logged_in);
+    drawImages();
 
-    if (is_logged_in == "logged_in"){
+    // TODO: change when going live!
+    //if (is_logged_in == "logged_in"){
+    if (is_logged_in != "DEBUG!!!"){
         console.log("Adding camera button");
         var btnCamera = '<a href="#popupChoosePictureMode" data-rel="popup" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-camera ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Camera </a>';
         $("#imagesHeader").append(btnCamera);
@@ -85,28 +86,99 @@ $( 'div' ).on( 'pagehide',function(event, ui){
     console.log( 'Leaving images page');
 });
 
+// ********************** Longpress on Image ******************
+var image_id;
+var longpress;
+$("#pageImages").on('mousedown' ,function(e){
+    if (e.target.id != "btnEditImage"){
+        longpress=true;
+        image_id = e.target.id;
+        if (window.localStorage.getItem("logged_in_status") == "logged_in"){
+            setTimeout(function() {
+                if(longpress)
+                 $( "#popupChoosePictureEdit" ).popup( "open" );
+            }, 1000);
+        }
+    }
+});
+$("#pageImages").on('mouseup' ,function(){
+    longpress=false;
+});
+
+$("#btnEditImage").click(function(){
+    window.localStorage.setItem("editImage_id", image_id);
+    console.log(image_id);
+    window.localStorage.setItem("newImage", false);
+    window.location.href = 'page_add_edit_image.html';
+});
+
+$("#btnDeleteImage").click(function(){
+    callWebservice('method=removeImage&image_id=' + image_id, 'removeImageCallBack');
+});
+// ***********************************************************
 
 //=============================================
 // A button will call this function
 // To capture photo
+/*******************
 function capturePhoto() {
+    alert("in capturePhoto...");
     // Take picture using device camera and retrieve image as base64-encoded string
     navigator.camera.getPicture(uploadPhoto, onFail, {
         quality: 50, destinationType: Camera.DestinationType.FILE_URI
     });
+    alert("after getPicture...");
 }
 
 // A button will call this function
 // To select image from gallery
 function getPhoto(source) {
+    alert("in getPhoto...");
     // Retrieve image file location from specified source
     navigator.camera.getPicture(uploadPhoto, onFail, { quality: 50,
         destinationType: navigator.camera.DestinationType.FILE_URI,
         sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
     });
+    alert("after getPicture...");
+}
+********************/
+
+function capturePhoto() {
+    alert("in capturePhoto...");
+    // Take picture using device camera and retrieve image as base64-encoded string
+    try
+    {
+        navigator.camera.getPicture(uploadPhoto, onFail, {
+            quality: 50, destinationType: Camera.DestinationType.FILE_URI
+        });
+    } catch(err)
+    {
+        alert("ERROR: " + err.message);
+    }
+    alert("after getPicture...");
 }
 
+// A button will call this function
+// To select image from gallery
+function getPhoto(source) {
+    alert("in getPhoto...");
+    // Retrieve image file location from specified source
+    try
+    {
+        navigator.camera.getPicture(uploadPhoto, onFail, { quality: 50,
+            destinationType: navigator.camera.DestinationType.FILE_URI,
+            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+        });
+    } catch(err)
+    {
+        alert("ERROR: " + err.message);
+    }
+    alert("after getPicture...");
+}
+
+
 function uploadPhoto(imageURI) {
+    alert("in uploadPicture...");
     //If you wish to display image on your page in app
     // Get image handle
     var largeImage = document.getElementById('largeImage');
@@ -146,5 +218,31 @@ function fail(error) {
 //
 function onFail(message) {
     alert('Failed because: ' + message);
+}
+
+function removeImageCallBack (data) {
+    console.log("removeImage");
+    console.log(data);
+}
+
+function drawImages () {
+    getImages();
+}
+
+function getImages () {
+    callWebservice('method=getImageThumbs', 'getImagesCallback');
+}
+
+function getImagesCallback (data) {
+    console.log("getImagesCallback");
+    console.log(data);
+    $.each(data.data, function(i, value){
+        var oneImage = document.createElement('img');
+        oneImage.src = "res/images/c" + value.id + ".jpg";      //*****FVD******** Delete me
+        oneImage.name = value.path_thumb;                       //*****FVD******** Change me to oneImage.src = value.path_thump;
+        oneImage.className = "images";
+        oneImage.id = value.id;
+        document.getElementById("imageContainer").appendChild(oneImage);
+    })
 }
 </script>

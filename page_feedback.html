@@ -68,9 +68,6 @@
     </body>
 </html>
 <script>
-//TODO:     send en ny feedback til webservice og opdater feedback.
-
-
 $( 'div' ).on( 'pageshow',function(event, ui){
     console.log( 'Page loaded!');
     callWebservice('method=getFeedback', 'feedbackCallBack');
