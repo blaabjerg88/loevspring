@@ -40,7 +40,7 @@
 
             <!-- header -->
             <div data-role="header">
-                <h1 id="SiteName">Feedback</h1>
+                <h1>Tilføj</h1>
             </div>
             <!-- /header -->
 
@@ -82,7 +82,7 @@ $( 'div' ).on( 'pageshow',function(event, ui){
 function getDataAndUpdate () {
     if (pageAsCommentSite == false){
         console.log("feedback site loaded");
-        document.getElementById("siteName").innerHTML = "Feedback";
+        $("#siteName").innerHTML("Kommentar");
         callWebservice('method=getFeedback', 'comment_feedbackCallBack');
     }
     else{
