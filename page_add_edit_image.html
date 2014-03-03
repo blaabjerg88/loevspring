@@ -28,20 +28,16 @@
             <!-- content    -->
 
 			<!-- preview image -->
-			<div style="max-width: 80%;" id="previewImage">
-				<img src="res/images/c1.jpg";>
-			</div>
+			<img src="res/images/c2.jpg"; style="width: 80%;">
 			<!-- /preview image -->
 
             <!-- select date -->
             <div style="max-width: 250px;">
-	            <form>
-					Dato: <input type="datetime-local" id="datePicker" name="date">
-				</form>
+					<input type="datetime-local" id="datePicker" name="date">
 			</div>
 			<!-- /select date -->
 			<!-- Make fotoDescription -->
-				<textarea id="fotoDescription" placeholder="Beskrivelse" style="max-width: 80%;" rows="8"></textarea>
+				<textarea id="fotoDescription" placeholder="Beskrivelse" style="max-width: 80%;" class="fotoDescription" rows="8"></textarea>
 			<!-- /Make fotoDescription -->
 
 			<!-- select child *Get all childs from webservice-->
@@ -113,63 +109,42 @@
 </html>
 
 <script>
+// TODO: 	Lav checked børn og gruppe til webservice format
+//			Gem billede og billede sti
+//			lav webservice call for billede/dato/tekst og tagBørn og tagGrupper
+
+
+
 var newImage;
 var image_id = 1;
 var datetimeTotal;
 var description;
 var imagePath;
-var childs=["Anne","Lotte","Bjarne", "Torben"];
-var groups=["Group1", "Group2", "Group3"];
+var children;
+var groups;
 var checkedChilds = new Array();
 var checkedGroups = new Array();
-	//document.addEventListener("onFocus", onBodyLoad );
 
 	// when device is ready
-
 	$( 'div' ).on( 'pageshow',function(event, ui){
     	console.log( 'Page loaded!');
-	    console.log("Image id is : " + window.localStorage.getItem("id"));
-	    image_id = window.localStorage.getItem("id");
+	    console.log("Image id is : " + window.localStorage.getItem("editImage_id"));
+	    image_id = window.localStorage.getItem("editImage_id");
+	    console.log("New image: " + window.localStorage.getItem("newImage"));
 	    newImage = window.localStorage.getItem("newImage");
 	    newImage = false;
 	    if (newImage == true)
     		newImageInfo();
 	    else
 	    	editImageInfo();
-
-
-			// var input = document.createElement('input');
-			// input.type = "checkbox";
-			// input.id = "check";
-			// input.name = "check";
-			// input.class = "custom";
-			// var label = document.createElement('label');
-			// label.for = "check";
-			// label.innerHTML = "Anne";
-			// document.getElementById("page_add_edit_image").appendChild(input);
-			// document.getElementById("page_add_edit_image").appendChild(label);
-
+	    callWebservice('method=getChildren', 'imageInfoGetChildrenCallBack');
+	    callWebservice('method=getGroups', 'imageInfoGetGroupsCallBack');
 	});
 
 	function editImageInfo () {
-		image_id = "1";
 		callWebservice('method=getImage&image_id=' + image_id, 'imageInfoOnCallback');
-
-		// var dateTotalParts = datetimeTotal.split(" ");
-		// var dateParts = dateTotalParts[0].split("-");
-		// var year = dateParts[0];
-		// var month = dateParts[1];
-		// var day = dateParts[2];
-
-		// var timeParts = dateTotalParts[1].split(":");
-		// var hours = timeParts[0];
-		// var min = timeParts[1];
-		// var sec = timeParts[2];
-		// console.log(year + "_" + month + "_" + day + "_" + hours + "_" + min + "_" + sec);
-
-		// document.getElementById('fotoDescription').innerHTML = "Beskrivelse fra Webservice her";
-		//change childs
-	    //change groups
+		callWebservice('method=getTags&image_id=' + image_id, 'imageInfoGetChildrenTagCallBack');
+		callWebservice('method=getTags&image_id=' + image_id + '&is_group=true', 'imageInfoGetGroupsTagCallBack');
 	}
 
 	function newImageInfo (argument) {
@@ -200,6 +175,60 @@ var checkedGroups = new Array();
 	    // document.getElementById("previewImage").innerHTML = '<img src="res/images/c1.jpg" >';
 	}
 
+	function imageInfoGetChildrenCallBack (data) {
+		console.log("Get Children");
+		console.log(data);
+		children = data.data;
+	}
+
+	function imageInfoGetGroupsCallBack (data) {
+		console.log("Get groups");
+		console.log(data);
+		groups = data.data;
+	}
+
+	function imageInfoGetChildrenTagCallBack (data) {
+		console.log("Get Chrildern tag");
+		console.log(data);
+
+		$.each(data.data, function(i, value){
+			checkedChilds.push(value.childs_id);
+		})
+	}
+
+	function imageInfoGetGroupsTagCallBack (data) {
+		console.log("Get groups tag2");
+		console.log(data);
+		$.each(data.data, function(i, value){
+			checkedGroups.push(value.group_id);
+		})
+	}
+
+	function imageInfoSendCallBack (data) {
+		console.log("Send Image");
+		console.log(data);
+	}
+
+	function imageInfoSendChildsTagCallBack (data) {
+		console.log("Send groups tag");
+		console.log(data);
+	}
+
+	function imageInfoSendGroupsTagCallBack (data) {
+		console.log("Send Childs tag");
+		console.log(data);
+	}
+
+	function imageInfoRemoveChildsTagCallBack (data) {
+		console.log("Remove Childs tag");
+		console.log(data);
+	}
+
+	function imageInfoRemoveGroupsTagCallBack (data) {
+		console.log("Remove Groups tag");
+		console.log(data);
+	}
+
 	$("#btnSaveInfo").click(function(){
 		//Save info to webservice
 		if (newImage == true){
@@ -207,63 +236,75 @@ var checkedGroups = new Array();
 			var thestring = 'method=addImage&datetime=' + datetimeTotal + '&description=' + fotoDescription;
 		}
 		else{
-			// var thestring = 'method=updateImage&image_id=' + image_id + '&datetime=' + today + '';
+			//var thestring = 'method=updateImage&image_id=' + image_id + '&datetime=' + today;
 		}
-
-		checkedChilds.length = 0;
-		$.each(childs, function(i, value){
-			if (document.getElementById('check' + i).checked){
-				checkedChilds.push(value);
-			}
-		})
-		console.log(checkedChilds);
-		console.log(checkedChilds.join(","));
+		// send theImage/date/description
+		//callWebservice(theString, 'imageInfoSendCallBack');
+		// send childTag
+		callWebservice('method=removeTag&image_id=' + image_id + '&ids=all', 'imageInfoRemoveChildsTagCallBack');
+		callWebservice('method=addTag&image_id=' + image_id + '&ids=' + checkedChilds.join(","), 'imageInfoSendChildsTagCallBack');
+		// send groupTags
+		callWebservice('method=removeTag&image_id=' + image_id + '&ids=all&is_group=true', 'imageInfoRemoveGroupsTagCallBack');
+		callWebservice('method=addTag&image_id=' + image_id + '&ids=' + checkedGroups.join(",") + '&is_group=true', 'imageInfoSendGroupsTagCallBack');
 	});
 
 	$("#buttonChooseChilds").click(function(){
 		document.getElementById("checkChilds").innerHTML = "";
-		$.each(childs, function(i, value){
+		$.each(children, function(i, value){
 
-			var theBoxes = document.createElement('div');
-			theBoxes.innerHTML = '<input type="checkbox" id="checkChilds' + i + '" name="checkChilds' + i + '" class="custom"><label for="checkChilds' + i + '">'+ value + '</label>';
-			document.getElementById("checkChilds").appendChild(theBoxes);
+			var oneChild = document.createElement('input');
+			oneChild.type = "checkbox";
+			oneChild.id = "checkChilds" + value.child_id;
+			oneChild.className = "custom";
+			document.getElementById("checkChilds").appendChild(oneChild);
+
+			var oneChildLabel = document.createElement('label');
+			oneChildLabel.innerHTML = value.child_name;
+			oneChildLabel.htmlFor = "checkChilds" + value.child_id;
+			document.getElementById("checkChilds").appendChild(oneChildLabel);
 		})
 		$.each(checkedChilds, function(i, value){
-			document.getElementById('check' + i).checked = true;
+			document.getElementById("checkChilds" + value).checked = true;
 		})
 	});
 
 	$("#buttonChooseGroups").click(function(){
 		document.getElementById("checkGroups").innerHTML = "";
 		$.each(groups, function(i, value){
-			var theBoxes = document.createElement('div');
-			theBoxes.innerHTML = '<input type="checkbox" id="checkGroup' + i + '" name="checkGroup' + i + '" class="custom"><label for="checkGroup' + i + '">'+ value + '</label>';
-			document.getElementById("checkGroups").appendChild(theBoxes);
+
+			var oneGroup = document.createElement('input');
+			oneGroup.type = "checkbox";
+			oneGroup.id = "checkGroup" + value.id;
+			oneGroup.className = "custom";
+			document.getElementById("checkGroups").appendChild(oneGroup);
+
+			var oneGroupLabel = document.createElement('label');
+			oneGroupLabel.innerHTML = value.name;
+			oneGroupLabel.htmlFor = "checkGroups";
+			document.getElementById("checkGroups").appendChild(oneGroupLabel);
 		})
 		$.each(checkedGroups, function(i, value){
-			document.getElementById('checkGroup' + i).checked = true;
+			document.getElementById("checkGroup" + value).checked = true;
 		})
 	});
 
 	$("#btnSaveChilds").click(function(){
 		checkedChilds.length = 0;
-		$.each(childs, function(i, value){
-			if (document.getElementById('checkChilds' + i).checked){
-				checkedChilds.push(value);
+		$.each(children, function(i, value){
+			if (document.getElementById("checkChilds" + value.child_id).checked){
+				checkedChilds.push(value.child_id);
 			}
 		})
-		console.log(checkedChilds);
 		$('#popupChooseChilds').popup('close');
 	});
 
 	$("#btnSaveGroups").click(function(){
 		checkedGroups.length = 0;
 		$.each(groups, function(i, value){
-			if (document.getElementById('checkGroup' + i).checked){
-				checkedGroups.push(value);
+			if (document.getElementById('checkGroup' + value.id).checked){
+				checkedGroups.push(value.id);
 			}
 		})
-		console.log(checkedChilds);
 		$( "#popupChooseGroups" ).popup( "close" );
 	});
 </script>
