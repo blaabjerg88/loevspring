@@ -109,11 +109,7 @@
 </html>
 
 <script>
-// TODO: 	Lav checked børn og gruppe til webservice format
-//			Gem billede og billede sti
-//			lav webservice call for billede/dato/tekst og tagBørn og tagGrupper
-
-
+// TODO: 	Gem billede og billede sti
 
 var newImage;
 var image_id = 1;
@@ -167,12 +163,11 @@ var checkedGroups = new Array();
 	function imageInfoOnCallback (data) {
 	    console.log("onCallback")
 	    console.log(data.data[0])
-	    //***************** handle null data
 	    var st = data.data[0];
 	    $('#datePicker').val(st.date_created.replace(" ", "T"));
 	    document.getElementById("fotoDescription").innerHTML = st.description;
-	    // document.getElementById("previewImage").innerHTML = "";
-	    // document.getElementById("previewImage").innerHTML = '<img src="res/images/c1.jpg" >';
+	    // document.getElementById("previewImage").innerHTML = "";								//******FVD****** Uncomment me
+	    // document.getElementById("previewImage").innerHTML = '<img src="st.path_full" >';		//******FVD****** Uncomment me
 	}
 
 	function imageInfoGetChildrenCallBack (data) {
@@ -232,14 +227,18 @@ var checkedGroups = new Array();
 	$("#btnSaveInfo").click(function(){
 		//Save info to webservice
 		if (newImage == true){
+			// UserId is not handelt and is hardcodet to user_id = 0
 			var fotoDescription = document.getElementById('fotoDescription').innerHTML;
-			var thestring = 'method=addImage&datetime=' + datetimeTotal + '&description=' + fotoDescription;
+			var thestring = 'method=addImage&datetime=' + datetimeTotal + '&description=' + fotoDescription + '&user_id=0';
+			// ************* missing the path_thumb and path_full
 		}
 		else{
-			//var thestring = 'method=updateImage&image_id=' + image_id + '&datetime=' + today;
+			// UserId is not handelt and is hardcodet to user_id = 0
+			var fotoDescription = document.getElementById('fotoDescription').innerHTML;
+			var thestring = 'method=updateImage&image_id=' + image_id + '&datetime=' + datetimeTotal + '&description=' + fotoDescription + '&user_id=0';		// ******FVD**** missing the path_thumb and path_full
 		}
 		// send theImage/date/description
-		//callWebservice(theString, 'imageInfoSendCallBack');
+		//callWebservice(theString, 'imageInfoSendCallBack');		//*****FVD****** uncomment me to enable upload of photo
 		// send childTag
 		callWebservice('method=removeTag&image_id=' + image_id + '&ids=all', 'imageInfoRemoveChildsTagCallBack');
 		callWebservice('method=addTag&image_id=' + image_id + '&ids=' + checkedChilds.join(","), 'imageInfoSendChildsTagCallBack');

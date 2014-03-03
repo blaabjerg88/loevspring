@@ -30,16 +30,7 @@
             <!-- /header -->
 
             <!-- content    -->
-            <div data-role="content">
-                    <img src="res/images/c1.jpg" style="width:49%;" alt="" id="1" >
-                    <img src="res/images/c2.jpg" style="width:49%;" alt="" id="2" >
-                    <img src="res/images/c3.jpg" style="width:49%;" alt="" id="3" >
-                    <img src="res/images/c4.jpg" style="width:49%;" alt="" id="4" >
-                    <img src="res/images/c5.jpg" style="width:49%;" alt="" id="5" >
-                    <img src="res/images/c6.jpg" style="width:49%;" alt="" id="6" >
-                    <img src="res/images/c7.jpg" style="width:49%;" alt="" id="7" >
-                    <img src="res/images/c8.jpg" style="width:49%;" alt="" id="8" >
-            </div>
+            <div data-role="content" id="imageContainer"></div>
             <!-- /content -->
 
             <!-- Popup: login-->
@@ -67,7 +58,7 @@
     </body>
 </html>
 <script>
-
+images = [];
 $("#btnImageFromGallery").click(function(){
     getPhoto();
 });
@@ -80,6 +71,7 @@ $( 'div' ).on( 'pageshow',function(event, ui){
     console.log( 'Entering images page');
     var is_logged_in = window.localStorage.getItem("logged_in_status");
     console.log("Is logged in: " + is_logged_in);
+    drawImages();
 
     // TODO: change when going live!
     //if (is_logged_in == "logged_in"){
@@ -231,5 +223,26 @@ function onFail(message) {
 function removeImageCallBack (data) {
     console.log("removeImage");
     console.log(data);
+}
+
+function drawImages () {
+    getImages();
+}
+
+function getImages () {
+    callWebservice('method=getImageThumbs', 'getImagesCallback');
+}
+
+function getImagesCallback (data) {
+    console.log("getImagesCallback");
+    console.log(data);
+    $.each(data.data, function(i, value){
+        var oneImage = document.createElement('img');
+        oneImage.src = "res/images/c" + value.id + ".jpg";      //*****FVD******** Delete me
+        oneImage.name = value.path_thumb;                       //*****FVD******** Change me to oneImage.src = value.path_thump;
+        oneImage.className = "images";
+        oneImage.id = value.id;
+        document.getElementById("imageContainer").appendChild(oneImage);
+    })
 }
 </script>
