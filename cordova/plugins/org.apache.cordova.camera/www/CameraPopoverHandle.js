@@ -1,4 +1,4 @@
-/*
+cordova.define("org.apache.cordova.camera.CameraPopoverHandle", function(require, exports, module) { /*
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,19 +19,17 @@
  *
 */
 
-var Camera = require('./Camera');
+var exec = require('cordova/exec');
 
 /**
- * Encapsulates options for iOS Popover image picker
+ * A handle to an image picker popover.
  */
-var CameraPopoverOptions = function(x,y,width,height,arrowDir){
-    // information of rectangle that popover should be anchored to
-    this.x = x || 0;
-    this.y = y || 32;
-    this.width = width || 320;
-    this.height = height || 480;
-    // The direction of the popover arrow
-    this.arrowDir = arrowDir || Camera.PopoverArrowDirection.ARROW_ANY;
+var CameraPopoverHandle = function() {
+    this.setPosition = function(popoverOptions) {
+        console.log('CameraPopoverHandle.setPosition is only supported on iOS.');
+    };
 };
 
-module.exports = CameraPopoverOptions;
+module.exports = CameraPopoverHandle;
+
+});
