@@ -55,8 +55,8 @@
 
 <!--############### Popups etc ##########################-->
     <div data-role="popup" id="popupChoosePictureEdit">
-        <header data-role="header">Billede</header>
-        <input type="button" id="btnEditImage" value="Edit billede">
+        <header data-role="header">Valgmuligheder</header>
+        <input type="button" id="btnEditImage" value="Redigér billede">
         <input type="button" id="btnDeleteImage" value="Slet billede">
     </div>
 <!--############### Popups end ##########################-->
@@ -111,7 +111,7 @@ $("#pageImages").on('mouseup' ,function(){
 $("#btnEditImage").click(function(){
     window.localStorage.setItem("editImage_id", image_id);
     window.localStorage.setItem("newImage", false);
-    navigate('page_add_edit_image.html');
+    window.location.href = 'page_add_edit_image.html';
 });
 
 $("#btnDeleteImage").click(function(){
@@ -123,23 +123,28 @@ $("#btnDeleteImage").click(function(){
 // A button will call this function
 // To capture photo
 function capturePhoto() {
+    alert("in capturePhoto...");
     // Take picture using device camera and retrieve image as base64-encoded string
     navigator.camera.getPicture(uploadPhoto, onFail, {
         quality: 50, destinationType: Camera.DestinationType.FILE_URI
     });
+    alert("after getPicture...");
 }
 
 // A button will call this function
 // To select image from gallery
 function getPhoto(source) {
+    alert("in getPhoto...");
     // Retrieve image file location from specified source
     navigator.camera.getPicture(uploadPhoto, onFail, { quality: 50,
         destinationType: navigator.camera.DestinationType.FILE_URI,
         sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
     });
+    alert("after getPicture...");
 }
 
 function uploadPhoto(imageURI) {
+    alert("in uploadPicture...");
     //If you wish to display image on your page in app
     // Get image handle
     var largeImage = document.getElementById('largeImage');
