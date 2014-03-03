@@ -19,4 +19,6 @@
     <preference name="WebViewBounce" value="true" />
     <preference name="orientation" value="portrait" />
 
+    <feature name="Camera" value="Camera" />
+
 </widget>
