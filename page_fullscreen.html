@@ -14,6 +14,7 @@
         <script src="res/js/hammer.js"></script>
         <script src="res/js/hammer.fakemultitouch.js"></script>
         <script src="res/js/hammer.showtouches.js"></script>
+        <script src="res/js/webservice.js"></script>
     </head>
     <body>
 
@@ -29,26 +30,48 @@
             <!-- /header -->
 
             <!-- content    -->
-            <div data-role="content" id="pinchzoom">
-                <p>
-                    <img id="image" src="res/images/tomatfroe/februar.jpg" style="width: 100%; position: relative">
-                    <a href="menu.html">
-                    <img src="res/images/chat.png" style="position: absolute; right: 0; bottom: 0;">
-                </p>
+            <div data-role="content" id="imageFullscreen">
+                <div class="image" id="pinchzoom">
+                    <img id="image" src="" alt="" style="width: 100%; position: relative">
+                    <div id="fullscreenText"></div>
+                </div>
             </div>
             <!-- /content -->
-
-            <footer data-role="footer" data-position="fixed">
-                <img src="res/images/zoomout.png" onclick="ZoomOut()">
-                <img src="res/images/zoomin.png" onclick="ZoomIn()">
-            </footer>
             
-            <!-- SetImage -->
-            <script>
-                var imageId = window.localstorage("");
-                //Read the ID from local storage
-                //Send ID to web service
-                //Get image source in return
+            <footer data-role="footer" data-position="fixed">
+                <div>
+                    <img src="res/images/zoomout.png" onclick="ZoomOut()">
+                    <img src="res/images/zoomin.png" onclick="ZoomIn()">
+
+                <a href="menu.html">
+                    <img src="res/images/chat.png" style="position: absolute; right: 0; bottom: 0; float: right;">
+                </a>
+                </div>
+            </footer>
+
+        </div><!-- /page -->
+<!--############### Page end ############################-->
+
+    </body>
+</html>
+
+<!-- SetImage -->
+            <script>            
+            
+            function getFullscreenImage(image){
+                console.log("Set Image");
+                var data = image.data;
+                var imgPath = "/var/www/loevspring_uploads/billeder/" + data[0].path_full;
+                console.log(imgPath);
+
+                imgPath = "res/images/latterfroe/februar.jpg";
+
+                var description = data[0].description;
+                console.log(description);
+                
+                document.getElementById('image').src = imgPath;
+                document.getElementById('fullscreenText').innerHTML = "<span>" + description + "</span>";
+            }
 
             </script>
 
@@ -57,6 +80,29 @@
 
             <!-- Gesture Scripts -->
             <script>
+
+            $( 'div' ).on( 'pageshow',function(event, ui){
+                console.log( 'Page loaded!');
+                //StartHammerjs;
+                localStorage.setItem('imageId', '1');
+                console.log(localStorage.getItem('imageId'));
+                callWebservice('method=getImage&image_id=1', 'getFullscreenImage');
+                console.log("TEST");
+            });
+
+            $( 'div' ).on( 'pagehide',function(event, ui){
+                //hammertime.off();
+                console.log( 'Page hidden!');
+            });
+
+            var hammertime = Hammer(document.getElementById('groupPlan'), {
+                    transform_always_block: true,
+                    transform_min_scale: 1,
+                    drag_block_horizontal: true,
+                    drag_block_vertical: true,
+                    drag_min_distance: 0
+                });
+
             function StartHammerjs(){
                 if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
                 Hammer.plugins.showTouches();
@@ -65,13 +111,7 @@
                 if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
                     Hammer.plugins.fakeMultitouch();
                 }
-                var hammertime = Hammer(document.getElementById('groupPlan'), {
-                    transform_always_block: true,
-                    transform_min_scale: 1,
-                    drag_block_horizontal: true,
-                    drag_block_vertical: true,
-                    drag_min_distance: 0
-                });
+                
 
                 var image = document.getElementById('image');
 
@@ -130,13 +170,3 @@
             </script>
 
             <!-- /Gesture Scripts -->
-
-        </div><!-- /page -->
-<!--############### Page end ############################-->
-
-
-    </body>
-</html>
-<script>
-
-</script>
