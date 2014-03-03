@@ -79,7 +79,9 @@ $( 'div' ).on( 'pageshow',function(event, ui){
     var is_logged_in = window.localStorage.getItem("logged_in_status");
     console.log("Is logged in: " + is_logged_in);
 
-    if (is_logged_in == "logged_in"){
+    // TODO: change when going live!
+    //if (is_logged_in == "logged_in"){
+    if (is_logged_in != "DEBUG!!!"){
         console.log("Adding camera button");
         var btnCamera = '<a href="#popupChoosePictureMode" data-rel="popup" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-camera ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Camera </a>';
         $("#imagesHeader").append(btnCamera);
@@ -124,6 +126,7 @@ $("#btnDeleteImage").click(function(){
 //=============================================
 // A button will call this function
 // To capture photo
+/*******************
 function capturePhoto() {
     alert("in capturePhoto...");
     // Take picture using device camera and retrieve image as base64-encoded string
@@ -144,6 +147,41 @@ function getPhoto(source) {
     });
     alert("after getPicture...");
 }
+********************/
+
+function capturePhoto() {
+    alert("in capturePhoto...");
+    // Take picture using device camera and retrieve image as base64-encoded string
+    try
+    {
+        navigator.camera.getPicture(uploadPhoto, onFail, {
+            quality: 50, destinationType: Camera.DestinationType.FILE_URI
+        });
+    } catch(err)
+    {
+        alert("ERROR: " + err.message);
+    }
+    alert("after getPicture...");
+}
+
+// A button will call this function
+// To select image from gallery
+function getPhoto(source) {
+    alert("in getPhoto...");
+    // Retrieve image file location from specified source
+    try
+    {
+        navigator.camera.getPicture(uploadPhoto, onFail, { quality: 50,
+            destinationType: navigator.camera.DestinationType.FILE_URI,
+            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+        });
+    } catch(err)
+    {
+        alert("ERROR: " + err.message);
+    }
+    alert("after getPicture...");
+}
+
 
 function uploadPhoto(imageURI) {
     alert("in uploadPicture...");
