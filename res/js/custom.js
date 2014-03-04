@@ -5,10 +5,9 @@ function getAppSettings()
 
     var settings = {
         "server_url": "http://markblaabjerg.dyndns.org/",
-        "webservice_url": "http://markblaabjerg.dyndns.org/webservice/index.php",
-        "uploads_url": "http://markblaabjerg.dyndns.org/loevspring_uploads/",
-        "image_folder": "billeder",
-        "group_folder": "grupper"
+        "webservice_path": "webservice/index.php",
+        "images_path": "loevspring_uploads/billeder/",
+        "groups_path": "loevspring_uploads/grupper/"
     }
     return settings;
 }
@@ -29,7 +28,7 @@ function callWebservice (params, callbackFunc) {
     var script = document.createElement('script');
     script.type = "text/javascript";
     var settings = getAppSettings()
-    script.src = settings["webservice_url"] + "?callback="+ callbackFunc + "&" + params;
+    script.src = settings["server_url"] + settings["webservice_path"] + "?callback="+ callbackFunc + "&" + params;
     var head = document.head;
     head.appendChild(script);
     head.removeChild(script);

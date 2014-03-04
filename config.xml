@@ -23,6 +23,9 @@
     <preference name="WebViewBounce" value="true" />
     <preference name="orientation" value="portrait" />
 
-    <feature name="Camera" value="Camera" />
+    <!--<feature name="Camera" value="Camera" />-->
+    <feature name="Camera">
+        <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
+    </feature>
 
 </widget>
