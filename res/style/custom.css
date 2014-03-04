@@ -86,12 +86,22 @@
 	height: 100%;
 	text-align: center;
 }
+
+#imgFullScreenComment{
+	float: right;
+	width: 40px;
+}
+
+#monthplanZoomOut{
+	width: 40px;
+}
+#monthplanZoomIn{
+	width: 40px;
+}
+
 @media screen and (max-width: 500px){
 
 }
 @media screen and (max-width: 700px){
 }
 
-#imgFullScreenComment{
-	float: right;
-}
