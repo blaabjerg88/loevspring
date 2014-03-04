@@ -32,7 +32,7 @@
             <!-- content    -->
             <div data-role="content" id="imageFullscreenContainer">
                 <div class="image" id="fullscreenImage">
-                    <img id="image" src="" alt="">
+                    <img class="imageFullscreen" id="image" src="" alt="">
                     <div id="fullscreenText"></div>
                 </div>
             </div>
@@ -63,7 +63,11 @@
             function getFullscreenImage(image){
                 console.log("Set Image");
                 var data = image.data;
-                var imgPath = "http://markblaabjerg.dyndns.org/loevspring_uploads/billeder/full/c1.jpg";// + data[0].path_full;
+                var settings = getAppSettings;
+
+                var imgPath = settings.uploads_url + settings.image_folder + '/' + data[0].path_full;
+                console.log(imgPath);
+                imgPath = "http://markblaabjerg.dyndns.org/loevspring_uploads/billeder/" + data[0].path_full;
                 console.log(imgPath);
 
                 var description = data[0].description;
@@ -92,6 +96,7 @@
             $( 'div' ).on( 'pageshow',function(event, ui){
                 console.log( 'Page loaded!');
                 //StartHammerjs;
+                localStorage.setItem('image_Id', 1);
                 var pictureId = localStorage.getItem('image_Id');
                 callWebservice('method=getImage&image_id=' + pictureId, 'getFullscreenImage');
             });

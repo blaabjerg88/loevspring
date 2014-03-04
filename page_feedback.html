@@ -21,7 +21,7 @@
             <!-- header -->
             <div data-role="header" data-position="fixed">
                 <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
-                <h1>Løvspring - Feedback</h1>
+                <h1 id="siteName">Feedback</h1>
             </div>
 
             <!-- /header -->
@@ -40,7 +40,7 @@
 
             <!-- header -->
             <div data-role="header">
-                <h1>Tilføj Feedback</h1>
+                <h1>Tilføj</h1>
             </div>
             <!-- /header -->
 
@@ -68,16 +68,34 @@
     </body>
 </html>
 <script>
+window.localStorage.setItem("image_Id", 1);         // ********FVD**** delete me
+window.localStorage.setItem("isComment", true);        // ********FVD**** delete me
+var pageAsCommentSite = window.localStorage.getItem("isComment");
+window.localStorage.setItem("isComment", false);
+var image_id = window.localStorage.getItem("image_Id");
+
 $( 'div' ).on( 'pageshow',function(event, ui){
     console.log( 'Page loaded!');
-    callWebservice('method=getFeedback', 'feedbackCallBack');
+    getDataAndUpdate();
 });
 
-function feedbackCallBack (data) {
+function getDataAndUpdate () {
+    if (pageAsCommentSite == false){
+        console.log("feedback site loaded");
+        $("#siteName").innerHTML("Kommentar");
+        callWebservice('method=getFeedback', 'comment_feedbackCallBack');
+    }
+    else{
+        console.log("Comment site loaded");
+        document.getElementById("siteName").innerHTML = "Kommentar";
+        callWebservice('method=getComments&image_id=' + image_id, 'comment_feedbackCallBack');
+    }
+}
+
+function comment_feedbackCallBack (data) {
     console.log(data);
     document.getElementById("forFeedbacks").innerHTML = "";
     $.each(data.data, function(i, value){
-        console.log(value.feedback);
 
         var OneFeedback = document.createElement('article');
         OneFeedback.className = "textWithBackground";
@@ -97,7 +115,7 @@ function feedbackCallBack (data) {
         document.getElementById(value.id + "header").appendChild(OneFeedbackDate);
 
         var OneFeedbackText = document.createElement('p');
-        text = document.createTextNode(value.feedback);
+        text = document.createTextNode(value.comment_feedback);
         OneFeedbackText.appendChild(text);
         document.getElementById(value.id + "article").appendChild(OneFeedbackText);
     });
@@ -108,8 +126,9 @@ function creatHTMLElements (array) {
     console.log("createHTMLElements");
 }
 
-function feedbackAddCallBack (data) {
-    callWebservice('method=getFeedback', 'feedbackCallBack');
+function comment_feedbackAddCallBack (data) {
+    console.log(data);
+    getDataAndUpdate();
 }
 
 $("#btnSaveFeedback").click(function(){
@@ -117,9 +136,12 @@ $("#btnSaveFeedback").click(function(){
     document.getElementById("name").value = "";
     var email = document.getElementById("email").value;
     document.getElementById("email").value = "";
-    var feedback = document.getElementById("theFeedback").value;
+    var comment_feedback = document.getElementById("theFeedback").value;
     document.getElementById("theFeedback").value = "";
-    callWebservice('method=addFeedback&author=' + name + '&email=' + email+ '&feedback=' + feedback, 'feedbackAddCallBack');
+    if (pageAsCommentSite == false)
+        callWebservice('method=addFeedback&author=' + name + '&email=' + email+ '&feedback=' + comment_feedback, 'comment_feedbackAddCallBack');
+    else
+        callWebservice('method=addComment&author=' + name + '&email=' + email+ '&comment=' + comment_feedback + '&image_id=' + image_id, 'comment_feedbackAddCallBack');
 
     $( "#popupAddFeedback" ).popup( "close" );
 });
