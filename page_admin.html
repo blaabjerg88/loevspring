@@ -143,14 +143,12 @@ $( 'div' ).on( 'pagehide',function(event, ui){
 
 function jsonChildToArray(data)
 {
-    var array = [], results = data.data;
-    console.log("Building array");
-
+    childrenArray = [];
     document.getElementById('childTable').innerHTML = '';
 
-    for(var i = 0, len = results.length; i < len; i++){
-        var item = results[i];
-        array.push({childId: item.child_id, childName: item.child_name, groupName: item.group_name, groupId: item.group_id});
+    for(var i = 0, len = data.data.length; i < len; i++){
+        var item = data.data[i];
+        childrenArray.push({childId: item.child_id, childName: item.child_name, groupName: item.group_name, groupId: item.group_id});
 
         var html = '<tr id="tr'+item.child_id+'">';
         html += '<td style="width: 89%;"><button id="btnChild'+item.child_id+'"; onclick="editChild('+item.child_id+')"; >'+item.child_name+'</button></td>';
@@ -160,9 +158,6 @@ function jsonChildToArray(data)
         $(html).appendTo("#childTable");
     }
     console.log("Finished building array");
-
-    childrenArray = array;
-    //buildControlFromArray();
 }
 
 function addNewChild(){
@@ -200,21 +195,12 @@ function fillGroupInAddEditChild(group){
 
     document.getElementById('selectGroups').innerHTML = "";
 
-    var groupArray = [], groups = group.data;
-    for(var i = 0, len = groups.length; i < len; i++){
-        var tmpgrp = groups[i];
-        groupArray.push({groupId: tmpgrp.id, groupName: tmpgrp.name});
+    for(var i = 0, len = group.data.length; i < len; i++){
+        var tmpgrp = group.data[i];
 
         var option = '<option value="'+tmpgrp.id+'">'+tmpgrp.name+'</option>';
         $(option).appendTo("#selectGroups");
     }
-
-    /*for(var i = 0, len = groupArray.length; i < len; i++){
-        var tmpgrp = groupArray[i];
-        var option = '<option value="'+tmpgrp.groupId+'">'+tmpgrp.groupName+'</option>';
-        $(option).appendTo("#selectGroups");
-    }
-    */
 
     if(localStorage.getItem('newOrOldChild') != "old"){
         document.getElementById('txtChildName').value = "Barnets navn?";
@@ -249,18 +235,5 @@ function showDeleteStatus(status){
     var row = document.getElementById('tr' + localStorage.getItem('deleteChildId'));
     row.remove();
 }
-/*
-function buildControlFromArray(){
-    for(var i = 0, len = childrenArray.length; i < len; i++){
-        var currentChild = childrenArray[i];
-        var html = '<tr id="tr'+currentChild.childId+'">';
-        html += '<td style="width: 89%;"><button id="btnChild'+currentChild.childId+'"; onclick="editChild('+currentChild.childId+')"; >'+currentChild.childName+'</button></td>';
-        html += '<td style="width: 1%;"></td>';
-        html += '<td style="width: 10%;"><img src="res/images/denied.png" onclick="deleteChild('+currentChild.childId+')"; id="imgDeleteChild'+currentChild.childId+'"></td>';
-        html += '</tr>';
-        $(html).appendTo("#childTable");
-    }
-}
-*/
 
 </script>
