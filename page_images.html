@@ -101,23 +101,28 @@ $( 'div' ).on( 'pagehide',function(event, ui){
 var image_id;
 var longpress;
 $("#pageImages").on('mousedown' ,function(e){
-    console.log(image_id);
-    window.localStorage.setItem("image_Id", image_id);
-
-    if (e.target.id != "btnEditImage"){
-        longpress=true;
+    if (e.target.id.indexOf("image_") >= 0){
         image_id = e.target.id;
-        if (window.localStorage.getItem("logged_in_status") == "logged_in"){
-            setTimeout(function() {
-                if(longpress)
-                 $( "#popupChoosePictureEdit" ).popup( "open" );
-            }, 1000);
+        window.localStorage.setItem("image_Id", image_id);
+
+        if (e.target.id != "btnEditImage"){
+            longpress=true;
+            if (window.localStorage.getItem("logged_in_status") == "logged_in"){
+                setTimeout(function() {
+                    if(longpress)
+                     $( "#popupChoosePictureEdit" ).popup( "open" );
+                }, 1000);
+            }
         }
     }
+    else
+        console.log("dette er ikke et billede");
 });
-$("#pageImages").on('mouseup' ,function(){
+$("#pageImages").on('mouseup' ,function(e){
     longpress=false;
-    window.location.href = 'page_fullscreen.html';
+    if (e.target.id.indexOf("image_") >= 0){
+        window.location.href = 'page_fullscreen.html';
+    }
 });
 
 $("#btnEditImage").click(function(){
