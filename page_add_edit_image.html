@@ -40,6 +40,7 @@
 				<textarea id="fotoDescription" placeholder="Beskrivelse" style="max-width: 80%;" class="fotoDescription" rows="8"></textarea>
 			<!-- /Make fotoDescription -->
 
+
 			<!-- select child *Get all childs from webservice-->
 			<a href="#popupChooseChilds" data-rel="popup" class="ui-btn ui-corner-all" id="buttonChooseChilds" style="max-width: 80%">Vælge børn</a>
 			<!-- /select child -->
@@ -58,8 +59,7 @@
 			</center>
 	<!--############### Page End ############################-->
 	<!--############### PopUp ###############################-->
-	<div data-role="popup" data-dialog="true" id="popupChooseChilds" style="width: 300px;">
-
+	<div data-role="popup" data-dialog="true" id="popupChooseChilds">
 	    <!-- header -->
 	    <div data-role="header">
 	        <h1>Vælge Børn</h1>
@@ -80,7 +80,7 @@
 	    <!-- /footer -->
 
 	</div>
-	<div data-role="popup" data-dialog="true" id="popupChooseGroups" style="width: 300px;">
+	<div data-role="popup" data-dialog="true" id="popupChooseGroups">
 
 	    <!-- header -->
 	    <div data-role="header">
@@ -254,12 +254,11 @@ var checkedGroups = new Array();
 			var oneChild = document.createElement('input');
 			oneChild.type = "checkbox";
 			oneChild.id = "checkChilds" + value.child_id;
-			oneChild.className = "custom";
 			document.getElementById("checkChilds").appendChild(oneChild);
 
 			var oneChildLabel = document.createElement('label');
-			oneChildLabel.innerHTML = value.child_name;
 			oneChildLabel.htmlFor = "checkChilds" + value.child_id;
+			oneChildLabel.innerHTML = value.child_name;
 			document.getElementById("checkChilds").appendChild(oneChildLabel);
 		})
 		$.each(checkedChilds, function(i, value){
