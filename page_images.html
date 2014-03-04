@@ -82,7 +82,7 @@ $( 'div' ).on( 'pageshow',function(event, ui){
     console.log( 'Entering images page');
     var is_logged_in = window.localStorage.getItem("logged_in_status");
     console.log("Is logged in: " + is_logged_in);
-    drawImages();
+    getImages();
 
     // TODO: change when going live!
     //if (is_logged_in == "logged_in"){
@@ -186,6 +186,7 @@ function getPhoto(source) {
         });
     } catch(err)
     {
+        alert(err);
         alert("ERROR: " + err.message);
     }
 }
@@ -238,10 +239,6 @@ function removeImageCallBack (data) {
     console.log(data);
 }
 
-function drawImages () {
-    getImages();
-}
-
 function getImages () {
     callWebservice('method=getImageThumbs', 'getImagesCallback');
 }
@@ -249,15 +246,17 @@ function getImages () {
 function getImagesCallback (data) {
     console.log("getImagesCallback");
     console.log(data);
+    var imageURL = getAppSettings().server_url + getAppSettings().images_path;
+    console.log(imageURL);
     $.each(data.data, function(i, value){
         var oneImageDiv = document.createElement('div');
         oneImageDiv.className = "divComment";
         document.getElementById("imageContainer").appendChild(oneImageDiv);
 
         var oneImage = document.createElement('img');
-        oneImage.src = "res/images/c" + value.id + "_thumb.jpg";      //*****FVD******** Delete me
-        oneImage.name = value.path_thumb;                       //*****FVD******** Change me to oneImage.src = value.path_thump;
+        oneImage.name = value.path_thumb;                  //*****FVD******** Change me to oneImage.src = value.path_thump;
         oneImage.className = "theImage";
+        oneImage.src = imageURL + value.path_thumb;
         oneImage.id = "image_" + value.id;
         oneImageDiv.appendChild(oneImage);
         if (value.comment_count != "0"){
