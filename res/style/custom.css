@@ -3,7 +3,7 @@
 	overflow: hidden;
 }
 
-#fullscreenImage{
+.fullscreenImage{
 	position: relative;
 	width: 100%;
 }
@@ -49,15 +49,9 @@
 .fotoDescription{
 	height: 500px;
 }
-<<<<<<< HEAD
 
 .popup{
-	width: 400px;
-}
-
-.imageFullscreen{
-	position: absolute;
-	float: right;
+	width: 300px;
 }
 
 #imageMonthplan{
@@ -96,3 +90,8 @@
 
 }
 @media screen and (max-width: 700px){
+}
+
+#imgFullScreenComment{
+	float: right;
+}

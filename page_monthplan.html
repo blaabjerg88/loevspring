@@ -68,17 +68,20 @@
                         var tmpgrp = groups[i];
                         groupArray.push({groupId: tmpgrp.id, groupName: tmpgrp.name});
 
-                        var option = '<option value="'+tmpgrp.name+'">'+tmpgrp.name+'</option>';
+                        var option = '<option value="'+tmpgrp.id+'">'+tmpgrp.name+'</option>';
                         $(option).appendTo("#selectGroups");
                     }
                 }
 
                 function getGroupFolder(value){
-                    var imgPath = "http://markblaabjerg.dyndns.org/loevspring_uploads/grupper/" + value + "/månedsplan.jpg";
+                    var imgURL = getAppSettings().server_url + getAppSettings().groups_path;
+                    console.log(imgURL);
+                    console.log(value);
+                    var imgPath= value + "/monthplan.jpg";
 
-                    console.log(imgPath);
+                    console.log(imgURL + imgPath);
                     var picture = document.getElementById('imageMonthplan');
-                    picture.src=imgPath;
+                    picture.src = imgURL + imgPath;
                 }
             </script>
             <!-- /Group list scripts -->

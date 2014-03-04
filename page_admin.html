@@ -38,11 +38,11 @@
 
 
             <!-- DeletePopup -->
-            <div data-role="popup" data-dialog="true" id="popupConfirmDeleteChild">
+            <div data-role="popup" class="popup" data-dialog="true" id="popupConfirmDeleteChild">
 
                 <!-- header -->
                 <div data-role="header">
-                    <h1>Bekræft sletning</h1>
+                    <h1>Bekræft</h1>
                 </div>
                 <!-- /header -->
 
@@ -57,7 +57,7 @@
             <!-- /DeletePopup -->
             
             <!-- AddPopup -->
-            <div data-role="popup" data-dialog="true" id="popupAddEditChild">
+            <div data-role="popup" class="popup" data-dialog="true" id="popupAddEditChild">
 
                 <!-- header -->
                 <div data-role="header">
@@ -218,13 +218,13 @@ function fillGroupInAddEditChild(group){
 
     if(localStorage.getItem('newOrOldChild') != "old"){
         document.getElementById('txtChildName').value = "Barnets navn?";
-        document.getElementById('addEditChildrenHeaderText').innerHTML = 'Tilføj barn';
+        document.getElementById('addEditChildrenHeaderText').innerHTML = 'Tilføj';
     }
     else{
         document.getElementById('txtChildName').value = localStorage.getItem('newChildName');
         console.log(localStorage.getItem('newChildGroupId'));
         document.getElementById('selectGroups').value = localStorage.getItem('newChildGroupId');
-        document.getElementById('addEditChildrenHeaderText').innerHTML = 'Ændre barn';
+        document.getElementById('addEditChildrenHeaderText').innerHTML = 'Ændre';
     }
 }
 
