@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<widget id="dk.okdios.loevspring" version="0.0.1">
+<widget
+    id="dk.okdios.loevspring"
+    version="0.0.1"
+    xmlns="http://www.w3.org/ns/widgets"
+    xmlns:cdv="http://cordova.apache.org/ns/1.0">
 
     <name>Løvspring børnehave</name>
 
@@ -17,7 +21,7 @@
 
     <preference name="Fullscreen" value="false" />
     <preference name="WebViewBounce" value="true" />
-    <preference name="orientation" value="portrait" />
+    <preference name="orientation" value="landscape" />
 
     <feature name="Camera" value="Camera" />
 
