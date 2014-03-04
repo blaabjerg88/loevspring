@@ -30,7 +30,19 @@
             <!-- /header -->
 
             <!-- content    -->
-            <div data-role="content" id="imageContainer"></div>
+            <div data-role="content" id="imageContainer">
+            <!-- <div data-role="content" class="divComment">
+                <img src="res/images/c1.jpg" alt="" id="1" class="theImage">
+                <img src="res/images/chat.png" class="theComment">
+            </div>
+                <img src="res/images/c2.jpg" style="width:49%;" alt="" id="2">
+                <img src="res/images/c3.jpg" style="width:49%;" alt="" id="3">
+                <img src="res/images/c4.jpg" style="width:49%;" alt="" id="4">
+                <img src="res/images/c5.jpg" style="width:49%;" alt="" id="5">
+                <img src="res/images/c6.jpg" style="width:49%;" alt="" id="6">
+                <img src="res/images/c7.jpg" style="width:49%;" alt="" id="7">
+                <img src="res/images/c8.jpg" style="width:49%;" alt="" id="8"> -->
+            </div>
             <!-- /content -->
 
             <!-- Popup: login-->
@@ -58,7 +70,6 @@
     </body>
 </html>
 <script>
-images = [];
 $("#btnImageFromGallery").click(function(){
     getPhoto();
 });
@@ -90,6 +101,9 @@ $( 'div' ).on( 'pagehide',function(event, ui){
 var image_id;
 var longpress;
 $("#pageImages").on('mousedown' ,function(e){
+    console.log(image_id);
+    window.localStorage.setItem("image_Id", image_id);
+
     if (e.target.id != "btnEditImage"){
         longpress=true;
         image_id = e.target.id;
@@ -103,11 +117,10 @@ $("#pageImages").on('mousedown' ,function(e){
 });
 $("#pageImages").on('mouseup' ,function(){
     longpress=false;
+    window.location.href = 'page_fullscreen.html';
 });
 
 $("#btnEditImage").click(function(){
-    window.localStorage.setItem("editImage_id", image_id);
-    console.log(image_id);
     window.localStorage.setItem("newImage", false);
     window.location.href = 'page_add_edit_image.html';
 });
@@ -232,12 +245,25 @@ function getImagesCallback (data) {
     console.log("getImagesCallback");
     console.log(data);
     $.each(data.data, function(i, value){
+        var oneImageDiv = document.createElement('div');
+        oneImageDiv.className = "divComment";
+        document.getElementById("imageContainer").appendChild(oneImageDiv);
+
         var oneImage = document.createElement('img');
-        oneImage.src = "res/images/c" + value.id + ".jpg";      //*****FVD******** Delete me
+        oneImage.src = "res/images/c" + value.id + "_thumb.jpg";      //*****FVD******** Delete me
         oneImage.name = value.path_thumb;                       //*****FVD******** Change me to oneImage.src = value.path_thump;
-        oneImage.className = "images";
-        oneImage.id = value.id;
-        document.getElementById("imageContainer").appendChild(oneImage);
+        oneImage.className = "theImage";
+        oneImage.id = "image_" + value.id;
+        oneImageDiv.appendChild(oneImage);
+        if (value.comment_count != "0"){
+            console.log("has comment");
+            var imageComment = document.createElement('img');
+            imageComment.src = "res/images/chat.png";
+            imageComment.className = "theComment";
+            oneImageDiv.appendChild(imageComment);
+        }
+        else
+            console.log("doesn't have comment");
     })
 }
 </script>
