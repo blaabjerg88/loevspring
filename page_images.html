@@ -4,12 +4,13 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="cordova.js"></script>
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <link rel="stylesheet" href="res/style/themes/loevspring.css" />
         <link rel="stylesheet" href="res/style/themes/jquery.mobile.icons.min.css" />
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
-        <script type="text/javascript" charset="utf-8" src="cordova/cordova.js"></script>
+        <!--<script type="text/javascript" charset="utf-8" src="cordova/cordova.js"></script>-->
         <!--<script type="text/javascript" charset="utf-8" src="res/js/plugins/Camera.js"></script>
         <script type="text/javascript" charset="utf-8" src="res/js/plugins/CameraConstants.js"></script>-->
         <link rel="stylesheet" href="res/style/custom.css" />
@@ -30,22 +31,10 @@
             <!-- /header -->
 
             <!-- content    -->
-            <div data-role="content" id="imageContainer">
-            <!-- <div data-role="content" class="divComment">
-                <img src="res/images/c1.jpg" alt="" id="1" class="theImage">
-                <img src="res/images/chat.png" class="theComment">
-            </div>
-                <img src="res/images/c2.jpg" style="width:49%;" alt="" id="2">
-                <img src="res/images/c3.jpg" style="width:49%;" alt="" id="3">
-                <img src="res/images/c4.jpg" style="width:49%;" alt="" id="4">
-                <img src="res/images/c5.jpg" style="width:49%;" alt="" id="5">
-                <img src="res/images/c6.jpg" style="width:49%;" alt="" id="6">
-                <img src="res/images/c7.jpg" style="width:49%;" alt="" id="7">
-                <img src="res/images/c8.jpg" style="width:49%;" alt="" id="8"> -->
-            </div>
+            <div data-role="content" id="imageContainer"></div>
             <!-- /content -->
 
-            <!-- Popup: login-->
+            <!-- Popup: Choose image-->
             <div data-role="popup" id="popupChoosePictureMode">
                 <header data-role="header">Tilføj billede</header>
                 <input type="button" id="btnImageFromGallery" value="Fra galleri">
@@ -103,7 +92,7 @@ var longpress;
 $("#pageImages").on('mousedown' ,function(e){
     if (e.target.id.indexOf("image_") >= 0){
         image_id = e.target.id;
-        window.localStorage.setItem("image_Id", image_id);
+        window.localStorage.setItem("image_Id", image_id.split("_")[1]);
 
         if (e.target.id != "btnEditImage"){
             longpress=true;
@@ -115,8 +104,6 @@ $("#pageImages").on('mousedown' ,function(e){
             }
         }
     }
-    else
-        console.log("dette er ikke et billede");
 });
 $("#pageImages").on('mouseup' ,function(e){
     longpress=false;
@@ -127,7 +114,7 @@ $("#pageImages").on('mouseup' ,function(e){
 
 $("#btnEditImage").click(function(){
     window.localStorage.setItem("newImage", false);
-    window.location.href = 'page_add_edit_image.html';
+    window.location.href = 'page_add_edit_image.html';                  // open the edit site
 });
 
 $("#btnDeleteImage").click(function(){
@@ -165,9 +152,11 @@ function capturePhoto() {
     // Take picture using device camera and retrieve image as base64-encoded string
     try
     {
-        navigator.camera.getPicture(uploadPhoto, onFail, {
+        navigator.camera.getPicture(uploadPhoto, onFail
+            , {
             quality: 50, destinationType: Camera.DestinationType.FILE_URI
-        });
+        }
+        );
     } catch(err)
     {
         alert("ERROR: " + err.message);
@@ -180,10 +169,12 @@ function getPhoto(source) {
     // Retrieve image file location from specified source
     try
     {
-        navigator.camera.getPicture(uploadPhoto, onFail, { quality: 50,
+        navigator.camera.getPicture(uploadPhoto, onFail
+            , { quality: 50,
             destinationType: navigator.camera.DestinationType.FILE_URI,
             sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-        });
+        }
+        );
     } catch(err)
     {
         alert(err);
@@ -240,34 +231,30 @@ function removeImageCallBack (data) {
 }
 
 function getImages () {
-    callWebservice('method=getImageThumbs', 'getImagesCallback');
+    callWebservice('method=getImageThumbs', 'getImagesCallback');               // call the webservice to get all image thumbs
 }
 
 function getImagesCallback (data) {
     console.log("getImagesCallback");
     console.log(data);
-    var imageURL = getAppSettings().server_url + getAppSettings().images_path;
-    console.log(imageURL);
-    $.each(data.data, function(i, value){
-        var oneImageDiv = document.createElement('div');
-        oneImageDiv.className = "divComment";
-        document.getElementById("imageContainer").appendChild(oneImageDiv);
+    var imageURL = getAppSettings().server_url + getAppSettings().images_path;  // Setting the serverURL and images path together
+    $.each(data.data, function(i, value){                                       // Running trugh all the images one by one (value is the data)
+        var oneImageDiv = document.createElement('div');                        // creating a div for the image and comment icon
+        oneImageDiv.className = "divComment";                                   // giving the div a class
+        document.getElementById("imageContainer").appendChild(oneImageDiv);     // adding it to the site
 
-        var oneImage = document.createElement('img');
-        oneImage.name = value.path_thumb;                  //*****FVD******** Change me to oneImage.src = value.path_thump;
+        var oneImage = document.createElement('img');                           // creating an img object
+        oneImage.src = imageURL + value.path_thumb;                             // giving the img a source
+        oneImage.id = "image_" + value.id;                                      // giving it an id
         oneImage.className = "theImage";
-        oneImage.src = imageURL + value.path_thumb;
-        oneImage.id = "image_" + value.id;
-        oneImageDiv.appendChild(oneImage);
-        if (value.comment_count != "0"){
-            console.log("has comment");
+        oneImageDiv.appendChild(oneImage);                                      // add the image to the div
+        if (value.comment_count != "0"){                                        // if there is a comment on the image show the icon
+>>>>>>> upstream/master
             var imageComment = document.createElement('img');
             imageComment.src = "res/images/chat.png";
             imageComment.className = "theComment";
             oneImageDiv.appendChild(imageComment);
         }
-        else
-            console.log("doesn't have comment");
     })
 }
 </script>

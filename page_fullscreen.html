@@ -92,7 +92,6 @@
                 console.log( 'Page loaded!');
                 //StartHammerjs;
                 var pictureId = localStorage.getItem('image_Id');
-                console.log(pictureId);
                 callWebservice('method=getImage&image_id=' + pictureId, 'getFullscreenImage');
             });
 

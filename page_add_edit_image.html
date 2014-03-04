@@ -20,7 +20,7 @@
             <!-- header -->
             <div data-role="header" data-position="fixed">
                 <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
-                <h1>Image Info</h1>
+                <h1>Billede Info</h1>
             </div>
 
             <!-- /header -->
@@ -28,7 +28,7 @@
             <!-- content    -->
 
 			<!-- preview image -->
-			<img src="res/images/c2.jpg"; style="width: 80%;">
+				<img src="" id="previewImage" style="width: 80%;">
 			<!-- /preview image -->
 
             <!-- select date -->
@@ -39,6 +39,7 @@
 			<!-- Make fotoDescription -->
 				<textarea id="fotoDescription" placeholder="Beskrivelse" style="max-width: 80%;" class="fotoDescription" rows="8"></textarea>
 			<!-- /Make fotoDescription -->
+
 
 			<!-- select child *Get all childs from webservice-->
 			<a href="#popupChooseChilds" data-rel="popup" class="ui-btn ui-corner-all" id="buttonChooseChilds" style="max-width: 80%">Vælge børn</a>
@@ -58,8 +59,7 @@
 			</center>
 	<!--############### Page End ############################-->
 	<!--############### PopUp ###############################-->
-	<div data-role="popup" data-dialog="true" id="popupChooseChilds" style="width: 300px;">
-
+	<div data-role="popup" data-dialog="true" id="popupChooseChilds">
 	    <!-- header -->
 	    <div data-role="header">
 	        <h1>Vælge Børn</h1>
@@ -80,7 +80,7 @@
 	    <!-- /footer -->
 
 	</div>
-	<div data-role="popup" data-dialog="true" id="popupChooseGroups" style="width: 300px;">
+	<div data-role="popup" data-dialog="true" id="popupChooseGroups">
 
 	    <!-- header -->
 	    <div data-role="header">
@@ -112,7 +112,7 @@
 // TODO: 	Gem billede og billede sti
 
 var newImage;
-var image_id = 1;
+var image_id;
 var datetimeTotal;
 var description;
 var imagePath;
@@ -125,10 +125,11 @@ var checkedGroups = new Array();
 	$( 'div' ).on( 'pageshow',function(event, ui){
     	console.log( 'Page loaded!');
 	    console.log("Image id is : " + window.localStorage.getItem("image_Id"));
+	    if (window.localStorage.getItem("image_Id") == null && window.localStorage.getItem("newImage") == null)
+	    	window.location.href = 'page_images.html';
 	    image_id = window.localStorage.getItem("image_Id");
 	    console.log("New image: " + window.localStorage.getItem("newImage"));
 	    newImage = window.localStorage.getItem("newImage");
-	    newImage = false;
 	    if (newImage == true)
     		newImageInfo();
 	    else
@@ -166,8 +167,8 @@ var checkedGroups = new Array();
 	    var st = data.data[0];
 	    $('#datePicker').val(st.date_created.replace(" ", "T"));
 	    document.getElementById("fotoDescription").innerHTML = st.description;
-	    // document.getElementById("previewImage").innerHTML = "";								//******FVD****** Uncomment me
-	    // document.getElementById("previewImage").innerHTML = '<img src="st.path_full" >';		//******FVD****** Uncomment me
+	    var imageURL = getAppSettings().server_url + getAppSettings().images_path;
+	    $('#previewImage').attr("src", imageURL + st.path_full);
 	}
 
 	function imageInfoGetChildrenCallBack (data) {
@@ -245,6 +246,7 @@ var checkedGroups = new Array();
 		// send groupTags
 		callWebservice('method=removeTag&image_id=' + image_id + '&ids=all&is_group=true', 'imageInfoRemoveGroupsTagCallBack');
 		callWebservice('method=addTag&image_id=' + image_id + '&ids=' + checkedGroups.join(",") + '&is_group=true', 'imageInfoSendGroupsTagCallBack');
+		window.location.href = 'page_images.html';
 	});
 
 	$("#buttonChooseChilds").click(function(){
@@ -254,12 +256,11 @@ var checkedGroups = new Array();
 			var oneChild = document.createElement('input');
 			oneChild.type = "checkbox";
 			oneChild.id = "checkChilds" + value.child_id;
-			oneChild.className = "custom";
 			document.getElementById("checkChilds").appendChild(oneChild);
 
 			var oneChildLabel = document.createElement('label');
-			oneChildLabel.innerHTML = value.child_name;
 			oneChildLabel.htmlFor = "checkChilds" + value.child_id;
+			oneChildLabel.innerHTML = value.child_name;
 			document.getElementById("checkChilds").appendChild(oneChildLabel);
 		})
 		$.each(checkedChilds, function(i, value){
