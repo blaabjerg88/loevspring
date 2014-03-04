@@ -103,8 +103,6 @@ $("#pageImages").on('mousedown' ,function(e){
             }
         }
     }
-    else
-        console.log("dette er ikke et billede");
 });
 $("#pageImages").on('mouseup' ,function(e){
     longpress=false;
@@ -115,7 +113,7 @@ $("#pageImages").on('mouseup' ,function(e){
 
 $("#btnEditImage").click(function(){
     window.localStorage.setItem("newImage", false);
-    window.location.href = 'page_add_edit_image.html';
+    window.location.href = 'page_add_edit_image.html';                  // open the edit site
 });
 
 $("#btnDeleteImage").click(function(){
@@ -228,32 +226,30 @@ function removeImageCallBack (data) {
 }
 
 function getImages () {
-    callWebservice('method=getImageThumbs', 'getImagesCallback');
+    callWebservice('method=getImageThumbs', 'getImagesCallback');               // call the webservice to get all image thumbs
 }
 
 function getImagesCallback (data) {
     console.log("getImagesCallback");
     console.log(data);
-    var imageURL = getAppSettings().server_url + getAppSettings().images_path;
-    console.log(imageURL);
-    $.each(data.data, function(i, value){
-        var oneImageDiv = document.createElement('div');
-        oneImageDiv.className = "divComment";
-        document.getElementById("imageContainer").appendChild(oneImageDiv);
 
-        var oneImage = document.createElement('img');
-        oneImage.src = imageURL + value.path_thumb;
-        oneImage.id = "image_" + value.id;
-        oneImageDiv.appendChild(oneImage);
-        if (value.comment_count != "0"){
-            console.log("has comment");
+
+    var imageURL = getAppSettings().server_url + getAppSettings().images_path;  // Setting the serverURL and images path together
+    $.each(data.data, function(i, value){                                       // Running trugh all the images one by one (value is the data)
+        var oneImageDiv = document.createElement('div');                        // creating a div for the image and comment icon
+        oneImageDiv.className = "divComment";                                   // giving the div a class
+        document.getElementById("imageContainer").appendChild(oneImageDiv);     // adding it to the site
+
+        var oneImage = document.createElement('img');                           // creating an img object
+        oneImage.src = imageURL + value.path_thumb;                             // giving the img a source
+        oneImage.id = "image_" + value.id;                                      // giving it an id
+        oneImageDiv.appendChild(oneImage);                                      // add the image to the div
+        if (value.comment_count != "0"){                                        // if there is a comment on the image show the icon
             var imageComment = document.createElement('img');
             imageComment.src = "res/images/chat.png";
             imageComment.className = "theComment";
             oneImageDiv.appendChild(imageComment);
         }
-        else
-            console.log("doesn't have comment");
     })
 }
 </script>
