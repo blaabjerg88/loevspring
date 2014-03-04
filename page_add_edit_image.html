@@ -112,7 +112,7 @@
 // TODO: 	Gem billede og billede sti
 
 var newImage;
-var image_id = 1;
+var image_id;
 var datetimeTotal;
 var description;
 var imagePath;
@@ -125,7 +125,10 @@ var checkedGroups = new Array();
 	$( 'div' ).on( 'pageshow',function(event, ui){
     	console.log( 'Page loaded!');
 	    console.log("Image id is : " + window.localStorage.getItem("image_Id"));
-	    image_id = window.localStorage.getItem("image_Id");
+	    if (window.localStorage.getItem("image_Id") == null)
+	    	window.location.href = 'page_images.html';
+	    else
+	    	image_id = window.localStorage.getItem("image_Id");
 	    console.log("New image: " + window.localStorage.getItem("newImage"));
 	    newImage = window.localStorage.getItem("newImage");
 	    newImage = false;
@@ -245,6 +248,7 @@ var checkedGroups = new Array();
 		// send groupTags
 		callWebservice('method=removeTag&image_id=' + image_id + '&ids=all&is_group=true', 'imageInfoRemoveGroupsTagCallBack');
 		callWebservice('method=addTag&image_id=' + image_id + '&ids=' + checkedGroups.join(",") + '&is_group=true', 'imageInfoSendGroupsTagCallBack');
+		window.location.href = 'page_images.html';
 	});
 
 	$("#buttonChooseChilds").click(function(){
