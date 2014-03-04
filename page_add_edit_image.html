@@ -125,13 +125,11 @@ var checkedGroups = new Array();
 	$( 'div' ).on( 'pageshow',function(event, ui){
     	console.log( 'Page loaded!');
 	    console.log("Image id is : " + window.localStorage.getItem("image_Id"));
-	    if (window.localStorage.getItem("image_Id") == null)
+	    if (window.localStorage.getItem("image_Id") == null && window.localStorage.getItem("newImage") == null)
 	    	window.location.href = 'page_images.html';
-	    else
-	    	image_id = window.localStorage.getItem("image_Id");
+	    image_id = window.localStorage.getItem("image_Id");
 	    console.log("New image: " + window.localStorage.getItem("newImage"));
 	    newImage = window.localStorage.getItem("newImage");
-	    newImage = false;
 	    if (newImage == true)
     		newImageInfo();
 	    else
