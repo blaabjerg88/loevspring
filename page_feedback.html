@@ -21,16 +21,14 @@
             <!-- header -->
             <div data-role="header" data-position="fixed">
                 <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
+                <a href="menu.html" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-back ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" onclick="parent.history.back();" id="backBtn" data-role="button" role="button"> Navigation </a>
                 <h1 id="siteName">Feedback</h1>
             </div>
 
             <!-- /header -->
-
             <!-- content    -->
             <div data-role="content" id="divContentFeedback">
-                <p>
-                    <a href="#popupAddFeedback" data-rel="popup" class="ui-btn ui-corner-all" id="buttonAddFeedback">Tilføj</a>
-                </p>
+                <a href="#popupAddFeedback" data-rel="popup" class="ui-btn ui-corner-all" id="buttonAddFeedback">Tilføj</a>
             </div>
             <div id="forFeedbacks"></div>
 <!--############### Page end ############################-->
@@ -68,7 +66,7 @@
     </body>
 </html>
 <script>
-if (window.localStorage.getItem("image_Id") != null & window.localStorage.getItem("isComment") == true){
+if (window.localStorage.getItem("image_Id") != null && window.localStorage.getItem("isComment") == "true"){
     var image_id = window.localStorage.getItem("image_Id");
     var pageAsCommentSite = window.localStorage.getItem("isComment");
 }
@@ -83,6 +81,7 @@ $( 'div' ).on( 'pageshow',function(event, ui){
 
 function getDataAndUpdate () {
     if (pageAsCommentSite == false){
+        $("#backBtn").remove();         // Remove the backbutton on feedback page
         console.log("feedback site loaded");
         document.getElementById("siteName").innerHTML = "Feedback";
         callWebservice('method=getFeedback', 'comment_feedbackCallBack');
