@@ -1,6 +1,27 @@
-#pinchzoom {
+#imageFullscreenContainer {
 	-webkit-transform: translate3d(0,0,0);
 	overflow: hidden;
+}
+
+.fullscreenImage{
+	position: relative;
+	width: 100%;
+}
+
+#fullscreenText{
+	position: absolute;
+	bottom: 10px;
+	left: 0;
+	width: 100%;
+}
+
+#fullscreenText span{
+	color: white;	
+	font: 20px/29px Helvetica, Sans-Serif;
+	letter-spacing: -1px;
+	background: rgb(0, 0, 0);
+	background: rgba(0, 0, 0, 0.7);
+	padding: 3px;
 }
 
 .success
@@ -12,7 +33,7 @@
     color: red;
 }
 .textWithBackground{
-	color: black;
+	color: white;
 	border:2px solid #a1a1a1;
 	background:#dddddd;
 	width:85%;
@@ -28,6 +49,16 @@
 .fotoDescription{
 	height: 500px;
 }
+
+.popup{
+	width: 300px;
+}
+
+#imageMonthplan{
+	width: 100%; 
+	position: relative
+}
+
 .divComment{
     width: 45%;
     max-width: 200px;
@@ -57,5 +88,8 @@
 
 }
 @media screen and (max-width: 700px){
+}
 
+#imgFullScreenComment{
+	float: right;
 }

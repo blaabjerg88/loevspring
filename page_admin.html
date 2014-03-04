@@ -11,6 +11,7 @@
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
         <script type="text/javascript" charset="utf-8" src="res/js/cordova.js"></script>
         <link rel="stylesheet" href="res/style/custom.css" />
+        <script src="res/js/custom.js"></script>
     </head>
     <body>
 
@@ -18,17 +19,66 @@
         <div data-role="page" id="pageAdmin">
 
             <!-- header -->
-            <div data-role="header">
+            <div data-role="header" data-position="fixed">
                 <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
-                <h1>Løvspring - Admin</h1>
+                <h1>Administrér børn</h1>
             </div>
             <!-- /header -->
 
             <!-- content    -->
             <div data-role="content">
-
+                <table id="childTable">
+                </table>
             </div>
             <!-- /content -->
+
+            <div data-role="footer" data-position="fixed">
+                <input type="button" value="Tilføj barn" id "btnAddChild" onclick="addNewChild()">
+            </div>
+
+
+            <!-- DeletePopup -->
+            <div data-role="popup" class="popup" data-dialog="true" id="popupConfirmDeleteChild">
+
+                <!-- header -->
+                <div data-role="header">
+                    <h1>Bekræft</h1>
+                </div>
+                <!-- /header -->
+
+                <!-- content -->
+                <div data-role="main" class="ui-content">
+                    <input type="button" value="Bekræft" id="btnConfirmDelete">
+                    <input type="button" value="Fortryd" id="btnDeclineDelete">
+                </div>
+                <!-- /content    -->
+
+            </div>
+            <!-- /DeletePopup -->
+            
+            <!-- AddPopup -->
+            <div data-role="popup" class="popup" data-dialog="true" id="popupAddEditChild">
+
+                <!-- header -->
+                <div data-role="header">
+                    <h1 id="addEditChildrenHeaderText"></h1>
+                </div>
+                <!-- /header -->
+
+                <!-- content -->
+                <div data-role="main" class="ui-content">
+                    <label>Navn på barn:</label>
+                    <input type="text" value="Barnets navn" id="txtChildName">
+                    <select id="selectGroups">
+                    </select>
+                    <input type="button" value="Bekræft" id="btnConfirmNewChild">
+                    <input type="button" value="Fortryd" id="btnDeclineNewChild">
+                </div>
+                <!-- /content    -->
+
+            </div>
+            <!-- /AddPopup -->
+
 
         </div><!-- /page -->
 <!--############### Page end ############################-->
@@ -36,10 +86,154 @@
 
 <!--############### Popups etc ##########################-->
 
+
+
 <!--############### Popups end ##########################-->
 
     </body>
 </html>
 <script>
+console.log("Script begun");
+var childrenArray = [];
+
+$("#btnConfirmNewChild").click(function(){
+    var name = document.getElementById('txtChildName').value;
+    var grpid = document.getElementById('selectGroups').value;
+    console.log(name + "   " + id);
+
+    if(localStorage.getItem('newOrOldChild') != "old"){
+        callWebservice('method=addChild&name=' + name + '+&group_id=' + grpid, 'showAddEditStatus');
+    }
+    else{
+        var id = localStorage.getItem('newChildId');
+        callWebservice('method=updateChild&child_id=' + id + '&name=' + name + '&group_id=' + grpid, 'showAddEditStatus');
+    }
+
+    console.log("Confirm Add/Edit Child");
+    callWebservice('method=getChildren', 'jsonChildToArray');
+    console.log("Reload list");
+    $('#popupAddEditChild').popup('close');
+
+});
+
+$("#btnDeclineNewChild").click(function(){
+    console.log("Decline Add/Edit Child");
+    $('#popupAddEditChild').popup('close');
+});
+
+$("#btnConfirmDelete").click(function(){
+    callWebservice('method=removeChild&child_id=' + localStorage.getItem('deleteChildId'), 'showDeleteStatus');
+    console.log("Confirm Delete Child");
+    $('#popupConfirmDeleteChild').popup('close');
+});
+
+$("#btnDeclineDelete").click(function(){
+    console.log("Decline Delete Child");
+    $('#popupConfirmDeleteChild').popup('close');
+});
+
+ $( 'div' ).on( 'pageshow',function(event, ui){
+    console.log( 'Page loaded!');
+    callWebservice('method=getChildren', 'jsonChildToArray');
+});
+
+$( 'div' ).on( 'pagehide',function(event, ui){
+    console.log( 'Page hidden!');
+});
+
+function jsonChildToArray(data)
+{
+    childrenArray = [];
+    document.getElementById('childTable').innerHTML = '';
+
+    for(var i = 0, len = data.data.length; i < len; i++){
+        var item = data.data[i];
+
+        var html = '<tr id="tr'+item.child_id+'">';
+        html += '<td style="width: 89%;"><button id="btnChild'+item.child_id+'"; onclick="editChild('+item.child_id+')"; >'+item.child_name+'</button></td>';
+        html += '<td style="width: 1%;"></td>';
+        html += '<td style="width: 10%;"><img src="res/images/denied.png" onclick="deleteChild('+item.child_id+')"; id="imgDeleteChild'+item.child_id+'"></td>';
+        html += '</tr>';
+        $(html).appendTo("#childTable");
+    }
+
+    childrenArray = data.data;
+}
+
+function addNewChild(){
+    console.log("Test klik");
+    localStorage.setItem('newChildId', null);
+    localStorage.setItem('newChildName', null);
+    localStorage.setItem('newChildGroupId', null);
+    localStorage.setItem('newChildGroupName', null);
+    localStorage.setItem('newOrOldChild', "new");
+    
+    callWebservice('method=getGroups', 'fillGroupInAddEditChild');
+
+    $('#popupAddEditChild').popup('open');
+}
+
+function editChild(childId){
+
+    for(var i = 0, len = childrenArray.length; i < len; i++){
+        if(childId == childrenArray[i].child_id){
+            localStorage.setItem('newChildId', childrenArray[i].child_id);
+            localStorage.setItem('newChildName', childrenArray[i].child_name);
+            localStorage.setItem('newChildGroupId', childrenArray[i].group_id);
+            localStorage.setItem('newChildGroupName', childrenArray[i].group_name);
+            localStorage.setItem('newOrOldChild', "old");
+
+            callWebservice('method=getGroups', 'fillGroupInAddEditChild');
+
+            $('#popupAddEditChild').popup('open');
+        }
+    }
+}
+
+function fillGroupInAddEditChild(group){
+    console.log(group);
+
+    document.getElementById('selectGroups').innerHTML = "";
+
+    for(var i = 0, len = group.data.length; i < len; i++){
+        var tmpgrp = group.data[i];
+
+        var option = '<option value="'+tmpgrp.id+'">'+tmpgrp.name+'</option>';
+        $(option).appendTo("#selectGroups");
+    }
+
+    if(localStorage.getItem('newOrOldChild') != "old"){
+        document.getElementById('txtChildName').value = "Barnets navn?";
+        document.getElementById('addEditChildrenHeaderText').innerHTML = 'Tilføj';
+    }
+    else{
+        document.getElementById('txtChildName').value = localStorage.getItem('newChildName');
+        console.log(localStorage.getItem('newChildGroupId'));
+        document.getElementById('selectGroups').value = localStorage.getItem('newChildGroupId');
+        document.getElementById('addEditChildrenHeaderText').innerHTML = 'Ændre';
+    }
+}
+
+function showAddEditStatus(status){
+    console.log(status);
+}
+
+function deleteChild(childId){
+    for(var i = 0, len = childrenArray.length; i < len; i++){
+        if(childId == childrenArray[i].child_id){
+            localStorage.setItem('deleteChildId', childrenArray[i].child_id);
+            localStorage.setItem('deleteChildName', childrenArray[i].child_name);
+            localStorage.setItem('deleteChildGroupId', childrenArray[i].group_id);
+            localStorage.setItem('deleteChildGroupName', childrenArray[i].group_name);
+            $('#popupConfirmDeleteChild').popup('open');
+        }
+    }
+}
+
+function showDeleteStatus(status){
+    console.log(status);
+    var row = document.getElementById('tr' + localStorage.getItem('deleteChildId'));
+    row.remove();
+}
 
 </script>

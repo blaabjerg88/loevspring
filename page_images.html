@@ -237,8 +237,6 @@ function getImages () {
 function getImagesCallback (data) {
     console.log("getImagesCallback");
     console.log(data);
-
-
     var imageURL = getAppSettings().server_url + getAppSettings().images_path;  // Setting the serverURL and images path together
     $.each(data.data, function(i, value){                                       // Running trugh all the images one by one (value is the data)
         var oneImageDiv = document.createElement('div');                        // creating a div for the image and comment icon

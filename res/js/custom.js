@@ -28,7 +28,9 @@ function callWebservice (params, callbackFunc) {
     var script = document.createElement('script');
     script.type = "text/javascript";
     var settings = getAppSettings()
+
     script.src = settings["server_url"] + settings["webservice_path"] + "?callback="+ callbackFunc + "&" + params;
+    
     var head = document.head;
     head.appendChild(script);
     head.removeChild(script);

@@ -14,6 +14,7 @@
         <script src="res/js/hammer.js"></script>
         <script src="res/js/hammer.fakemultitouch.js"></script>
         <script src="res/js/hammer.showtouches.js"></script>
+        <script src="res/js/custom.js"></script>
     </head>
     <body>
 
@@ -29,76 +30,148 @@
             <!-- /header -->
 
             <!-- content    -->
-            <div data-role="content" id="pinchzoom">
-                <p>
-                    <img id="image" src="res/images/februar.jpg" style="width: 100%; position: relative">
-                    <a href="menu.html">
-                    <img src="res/images/chat.png" style="position: absolute; right: 0; bottom: 0;">
-                </p>
+            <div data-role="content" id="imageFullscreenContainer">
+                <div id="fullscreenImage">
+                    <img id="image" class="fullscreenImage" src="" alt="">
+                    <div id="fullscreenText"></div>
+                </div>
             </div>
             <!-- /content -->
+            
+            <footer data-role="footer" data-position="fixed">
+                <div>
+                    <img src="res/images/zoomout.png" onclick="ZoomOut()">
+                    <img src="res/images/zoomin.png" onclick="ZoomIn()">
+                    
+                    <img id="imgFullScreenComment" src="res/images/chat.png">
+                <!--<a href="menu.html">
+                    <img id="imgFullScreenComment" src="res/images/chat.png">
+                </a> -->
 
-            <!-- Gesture Scripts -->
+                </div>
+            </footer>
+
+        </div><!-- /page -->
+<!--############### Page end ############################-->
+
+    </body>
+</html>
+
+<!-- SetImage -->
+            <script>            
+            
+            function getFullscreenImage(image){
+                console.log(image);
+                var data = image.data;
+                var settings = getAppSettings;
+
+                var imgPath = getAppSettings().server_url + getAppSettings().images_path + data[0].path_full;
+                console.log(imgPath);
+
+                var description = data[0].description;
+                console.log(description);
+                
+                document.getElementById('image').src = imgPath;
+                document.getElementById('fullscreenText').innerHTML = "<span>" + description + "</span>";
+            }
+
+            </script>
+
+            <!-- /SetImage -->
+
             <script>
 
-            if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
-                Hammer.plugins.showTouches();
-            }
+                $("#imgFullScreenComment").click(function(){
+                localStorage.setItem('isComment', true);
+                window.location.href = 'page_feedback.html';
+                });
             </script>
 
             <script>
 
-            if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
-                Hammer.plugins.fakeMultitouch();
-            }
-
-            var hammertime = Hammer(document.getElementById('pinchzoom'), {
-                transform_always_block: true,
-                transform_min_scale: 1,
-                drag_block_horizontal: true,
-                drag_block_vertical: true,
-                drag_min_distance: 1
+            $( 'div' ).on( 'pageshow',function(event, ui){
+                console.log( 'Page loaded!');
+                //StartHammerjs;
+                var pictureId = localStorage.getItem('image_Id');
+                callWebservice('method=getImage&image_id=' + pictureId, 'getFullscreenImage');
             });
 
-            var id = document.getElementById('image');
+            $( 'div' ).on( 'pagehide',function(event, ui){
+                //hammertime.off();
+                console.log( 'Page hidden!');
+            });
 
-            var posX=0, posY=0,
-                scale=1, last_scale;
+            /*
+            var hammertime = Hammer(document.getElementById('groupPlan'), {
+                    transform_always_block: true,
+                    transform_min_scale: 1,
+                    drag_block_horizontal: true,
+                    drag_block_vertical: true,
+                    drag_min_distance: 0
+                });
 
-                hammertime.on('drag transform', function(ev) {
-                switch(ev.type) {
-                    case 'drag':
-                        posX = ev.gesture.deltaX;
-                        posY = ev.gesture.deltaY;
-                        break;
-
-                    case 'transform':
-                        scale = Math.max(1, Math.min(last_scale * ev.gesture.scale, 10));
-                        break;
+            function StartHammerjs(){
+                if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
+                Hammer.plugins.showTouches();
                 }
 
-                // transform!
+                if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
+                    Hammer.plugins.fakeMultitouch();
+                }
+                
+
+                var image = document.getElementById('image');
+
+                var posX=0, posY=0,
+                last_posX=0, last_posY=0,
+                scale=1;
+
+                hammertime.on('drag dragend', function(ev) {
+                switch(ev.type) {
+
+                    case 'drag':
+                        posX = last_posX + ev.gesture.deltaX;
+                        posY = last_posY + ev.gesture.deltaY;
+                        Transform();
+                        break;
+
+                    case 'dragend':
+                        last_posX = posX;
+                        last_posY = posY;
+                        Transform();
+                        break;
+                }
+            });
+            }
+            
+            function Transform()
+            {
                 var transform =
-                        "translate3d("+posX+"px,"+posY+"px, 0) " +
-                        "scale3d("+scale+","+scale+", 0) ";
+                    "translate3d("+posX+"px,"+posY+"px, 0) " +
+                    "scale3d("+scale+","+scale+", 1) ";
 
                 image.style.transform = transform;
                 image.style.oTransform = transform;
                 image.style.msTransform = transform;
                 image.style.mozTransform = transform;
                 image.style.webkitTransform = transform;
-            });
+            }
 
+            function ZoomIn(){
+                scale = scale + 1;
+                if(scale > 5)
+                {
+                    scale = 5;
+                }
+                Transform(); 
+            }
+            function ZoomOut(){
+                scale = scale - 1;
+                if(scale < 1)
+                {
+                    scale = 1;
+                }
+                Transform();
+            }
+            */ 
             </script>
-
-            <!-- /Gesture Scripts -->
-
-        </div><!-- /page -->
-<!--############### Page end ############################-->
-
-
-    </body>
-</html>
-<script>
-
-</script>
