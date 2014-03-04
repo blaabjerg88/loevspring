@@ -68,9 +68,13 @@
     </body>
 </html>
 <script>
-var pageAsCommentSite = window.localStorage.getItem("isComment");
+if (window.localStorage.getItem("image_Id") != null & window.localStorage.getItem("isComment") == true){
+    var image_id = window.localStorage.getItem("image_Id");
+    var pageAsCommentSite = window.localStorage.getItem("isComment");
+}
+else
+    pageAsCommentSite = false;
 window.localStorage.setItem("isComment", false);
-var image_id = window.localStorage.getItem("image_Id");
 
 $( 'div' ).on( 'pageshow',function(event, ui){
     console.log( 'Page loaded!');
@@ -80,7 +84,7 @@ $( 'div' ).on( 'pageshow',function(event, ui){
 function getDataAndUpdate () {
     if (pageAsCommentSite == false){
         console.log("feedback site loaded");
-        $("#siteName").innerHTML("Kommentar");
+        document.getElementById("siteName").innerHTML = "Feedback";
         callWebservice('method=getFeedback', 'comment_feedbackCallBack');
     }
     else{
