@@ -20,7 +20,7 @@
 
             <!-- header -->
             <div data-role="header" data-position="fixed">
-                <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
+                <a onclick="window.location.href = 'menu.html';" href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
                 <a href="menu.html" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-back ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" onclick="parent.history.back();" id="backBtn" data-role="button" role="button"> Navigation </a>
                 <h1 id="siteName">Feedback</h1>
             </div>
@@ -30,7 +30,7 @@
             <div data-role="content" id="divContentFeedback">
                 <a href="#popupAddFeedback" data-rel="popup" class="ui-btn ui-corner-all" id="buttonAddFeedback">Tilføj</a>
             </div>
-            <div id="forFeedbacks"></div>
+            <div id="feedbackDiv"></div>
 <!--############### Page end ############################-->
 
 <!--############### Popup add feedback ##################-->
@@ -93,15 +93,15 @@ function getDataAndUpdate () {
     }
 }
 
-function comment_feedbackCallBack (data) {
+function comment_feedbackCallBack_OLD (data) {
     console.log(data);
-    document.getElementById("forFeedbacks").innerHTML = "";
+    document.getElementById("feedbackDiv").innerHTML = "";
     $.each(data.data, function(i, value){
 
         var OneFeedback = document.createElement('article');
         OneFeedback.className = "textWithBackground";
         OneFeedback.id = value.id + "article";
-        document.getElementById("forFeedbacks").appendChild(OneFeedback);
+        document.getElementById("feedbackDiv").appendChild(OneFeedback);
 
         var OneFeedbackCenter = document.createElement('header');
         OneFeedbackCenter.id = value.id + "header";
@@ -121,6 +121,24 @@ function comment_feedbackCallBack (data) {
         document.getElementById(value.id + "article").appendChild(OneFeedbackText);
     });
     creatHTMLElements();
+}
+
+function comment_feedbackCallBack (data) {
+    console.log(data);
+    $("#feedbackDiv").html("");
+    $.each(data.data, function(i, f){
+        $("#feedbackDiv")
+        .append($("<article></article>")
+            .addClass("textWithBackground")
+            .append($("<header></header>")
+                .append($("<p></p>")
+                    .html("Skrevet af: <a href='mailto:" + f.email + "'>" + f.author + "</a>")))
+            .append($("<p></p>")
+                .html(f.comment_feedback))
+            .append($("<footer></footer>")
+                .append($("<p></p>")
+                    .html(f.date))));
+    });
 }
 
 function creatHTMLElements (array) {

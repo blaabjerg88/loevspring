@@ -1,104 +1,130 @@
 #imageFullscreenContainer {
-	-webkit-transform: translate3d(0,0,0);
-	overflow: hidden;
+    -webkit-transform   : translate3d(0,0,0);
+    overflow            : hidden;
 }
 
-.fullscreenImage{
-	position: relative;
-	width: 100%;
+.fullscreenImage {
+    position            : relative;
+    width               : 100%;
 }
 
-#fullscreenText{
-	position: absolute;
-	bottom: 10px;
-	left: 0;
-	width: 100%;
+#fullscreenText {
+    position            : absolute;
+    bottom              : 10px;
+    left                : 0;
+    width               : 100%;
 }
 
-#fullscreenText span{
-	color: white;	
-	font: 20px/29px Helvetica, Sans-Serif;
-	letter-spacing: -1px;
-	background: rgb(0, 0, 0);
-	background: rgba(0, 0, 0, 0.7);
-	padding: 3px;
+#fullscreenText span {
+    color               : white;
+    font                : 20px/29px Helvetica, Sans-Serif;
+    letter-spacing      : -1px;
+    background          : rgb(0, 0, 0);
+    background          : rgba(0, 0, 0, 0.7);
+    padding             : 3px;
 }
 
 .success
 {
-    color: green;
+    color               : #33CC33;
+    text-shadow         : none;
 }
 .error
 {
-    color: red;
+    color               : red;
 }
+
+/*
+* Feedback / comments
+*/
 .textWithBackground{
-	color: white;
-	border:2px solid #a1a1a1;
-	background:#dddddd;
-	width:85%;
-	border-radius:25px;
-	margin-left: auto;
-	margin-right: auto;
+    color               : #000000;
+    border              : 2px solid #a1a1a1;
+    background          : #dddddd;
+    width               : 85%;
+    border-radius       : 8px;
+    margin-left         : auto;
+    margin-right        : auto;
+    margin-bottom       : 10px;
+    padding-left        : 25px;
+    padding-right       : 25px;
+    padding-bottom      : 0px;
+    padding-top         : 0px;
 }
+.textWithBackground a:link,
+.textWithBackground a:hover,
+.textWithBackground a:active,
+.textWithBackground a:visited,
+.textWithBackground header{
+    color               : #555555;
+}
+
+.textWithBackground footer p {
+    color               : #AAAAAA;
+    font-size           : 80%;
+}
+/*
+* Feedback / comments end
+*/
 .imagesDiv{
-	background-color: white;
-	width: 40%;
-	margin-left: 5px;
+    background-color    : white;
+    width               : 40%;
+    margin-left         : 5px;
 }
 .fotoDescription{
-	height: 500px;
+    height              : 500px;
 }
 
 .popup{
-	width: 300px;
+    width               : 300px;
 }
 
 #imageMonthplan{
-	width: 100%; 
-	position: relative
+    width               : 100%;
+    position            : relative;
 }
 
 .divComment{
-    width: 45%;
-    max-width: 200px;
-    min-height: 100%;
-    position:relative;
-    float: left;
-    margin-left: 5px;
-    margin-bottom: 5px;
+    width               : 45%;
+    max-width           : 200px;
+    min-height          : 100%;
+    position            : relative;
+    float               : left;
+    margin-left         : 5px;
+    margin-bottom       : 5px;
 }
 .theImage{
-    width: 100%;
-    margin: auto auto auto auto;
+    width               : 100%;
+    margin              : auto auto auto auto;
 }
 .theComment{
-	z-index:100;
-    position:absolute;
-    bottom: 0px;
-    right: 0px;
-    width: 40px;
-    height: 40px;
+    z-index             : 100;
+    position            : absolute;
+    bottom              : 0px;
+    right               : 0px;
+    width               : 40px;
+    height              : 40px;
 }
 #imageContainer{
-	height: 100%;
-	text-align: center;
+    height              : 100%;
+    text-align          : center;
 }
 
 #imgFullScreenComment{
-	float: right;
-	width: 40px;
+    float               : right;
+    width               : 40px;
 }
 
 #monthplanZoomOut{
-	width: 40px;
+    width               : 40px;
 }
 #monthplanZoomIn{
-	width: 40px;
+    width               : 40px;
 }
 
+/*
 @media screen and (max-width: 500px){
-
 }
 @media screen and (max-width: 700px){
 }
+*/

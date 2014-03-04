@@ -24,18 +24,17 @@
             <!-- /header -->
 
             <!-- content -->
-            <div data-role="main" class="ui-content">
+            <div data-role="main" class="ui-content" id="menuLinks">
 
                 <button onclick="window.location.href = 'page_images.html';">Billeder</button>
                 <button onclick="window.location.href = 'page_monthplan.html';">Månedsplan</button>
                 <button onclick="window.location.href = 'page_feedback.html';">Feedback</button>
                 <button onclick="window.location.href = 'page_info.html';">Info</button>
                 <button onclick="window.location.href = 'page_settings.html';">Indstillinger</button>
-                <button onclick="window.location.href = 'page_admin.html';">Admin</button>
 
             </div>
             <center>
-            <img src="res/images/logo_whiteBackground.png">
+            <img src="res/images/Logo_whiteBackground.png">
             </center>
             <!-- /content    -->
 
@@ -49,3 +48,17 @@
 
     </body>
 </html>
+<script>
+$( 'div' ).on( 'pageshow',function(event, ui){
+    console.log( 'Entering menu page');
+    var is_logged_in = window.localStorage.getItem("logged_in_status");
+    console.log("Is logged in: " + is_logged_in);
+
+    if (is_logged_in == "logged_in"){
+        console.log("Adding camera button");
+        var btnAdmin = '<button onclick="window.location.href = \'page_admin.html\';" class=" ui-btn ui-shadow ui-corner-all">Admin</button>';
+        $("#menuLinks").append(btnAdmin);
+
+    }
+});
+</script>

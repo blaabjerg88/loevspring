@@ -20,7 +20,7 @@
 
             <!-- header -->
             <div data-role="header" data-position="fixed">
-                <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
+                <a onclick="window.location.href = 'menu.html';" href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
                 <h1>Administrér børn</h1>
             </div>
             <!-- /header -->
@@ -55,7 +55,7 @@
 
             </div>
             <!-- /DeletePopup -->
-            
+
             <!-- AddPopup -->
             <div data-role="popup" class="popup" data-dialog="true" id="popupAddEditChild">
 
@@ -167,7 +167,7 @@ function addNewChild(){
     localStorage.setItem('newChildGroupId', null);
     localStorage.setItem('newChildGroupName', null);
     localStorage.setItem('newOrOldChild', "new");
-    
+
     callWebservice('method=getGroups', 'fillGroupInAddEditChild');
 
     $('#popupAddEditChild').popup('open');
