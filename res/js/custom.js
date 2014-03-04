@@ -4,9 +4,9 @@ function getAppSettings()
     // ...
 
     var settings = {
-        "server_url": "http://markblaabjerg.dyndns.org",
+        "server_url": "http://markblaabjerg.dyndns.org/",
         "webservice_url": "http://markblaabjerg.dyndns.org/webservice/index.php",
-        "uploads_url": "http://markblaabjerg.dyndns.org/loevspring_uploads",
+        "uploads_url": "http://markblaabjerg.dyndns.org/loevspring_uploads/",
         "image_folder": "billeder",
         "group_folder": "grupper"
     }
