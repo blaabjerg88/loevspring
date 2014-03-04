@@ -152,9 +152,11 @@ function capturePhoto() {
     // Take picture using device camera and retrieve image as base64-encoded string
     try
     {
-        navigator.camera.getPicture(uploadPhoto, onFail, {
-            quality: 50, destinationType: Camera.DestinationType.FILE_URI
-        });
+        navigator.camera.getPicture(uploadPhoto, onFail
+            //, {
+            //quality: 50, destinationType: Camera.DestinationType.FILE_URI
+        //}
+        );
     } catch(err)
     {
         alert("ERROR: " + err.message);
@@ -167,10 +169,12 @@ function getPhoto(source) {
     // Retrieve image file location from specified source
     try
     {
-        navigator.camera.getPicture(uploadPhoto, onFail, { quality: 50,
-            destinationType: navigator.camera.DestinationType.FILE_URI,
-            sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
-        });
+        navigator.camera.getPicture(uploadPhoto, onFail
+            //, { quality: 50,
+            //destinationType: navigator.camera.DestinationType.FILE_URI,
+            //sourceType: navigator.camera.PictureSourceType.PHOTOLIBRARY
+        //}
+        );
     } catch(err)
     {
         alert(err);
