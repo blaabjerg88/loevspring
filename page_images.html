@@ -92,7 +92,7 @@ var longpress;
 $("#pageImages").on('mousedown' ,function(e){
     if (e.target.id.indexOf("image_") >= 0){
         image_id = e.target.id;
-        window.localStorage.setItem("image_Id", image_id);
+        window.localStorage.setItem("image_Id", image_id.split("_")[1]);
 
         if (e.target.id != "btnEditImage"){
             longpress=true;
