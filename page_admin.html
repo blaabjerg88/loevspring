@@ -148,7 +148,6 @@ function jsonChildToArray(data)
 
     for(var i = 0, len = data.data.length; i < len; i++){
         var item = data.data[i];
-        childrenArray.push({childId: item.child_id, childName: item.child_name, groupName: item.group_name, groupId: item.group_id});
 
         var html = '<tr id="tr'+item.child_id+'">';
         html += '<td style="width: 89%;"><button id="btnChild'+item.child_id+'"; onclick="editChild('+item.child_id+')"; >'+item.child_name+'</button></td>';
@@ -157,7 +156,8 @@ function jsonChildToArray(data)
         html += '</tr>';
         $(html).appendTo("#childTable");
     }
-    console.log("Finished building array");
+
+    childrenArray = data.data;
 }
 
 function addNewChild(){
@@ -176,11 +176,11 @@ function addNewChild(){
 function editChild(childId){
 
     for(var i = 0, len = childrenArray.length; i < len; i++){
-        if(childId == childrenArray[i].childId){
-            localStorage.setItem('newChildId', childrenArray[i].childId);
-            localStorage.setItem('newChildName', childrenArray[i].childName);
-            localStorage.setItem('newChildGroupId', childrenArray[i].groupId);
-            localStorage.setItem('newChildGroupName', childrenArray[i].groupName);
+        if(childId == childrenArray[i].child_id){
+            localStorage.setItem('newChildId', childrenArray[i].child_id);
+            localStorage.setItem('newChildName', childrenArray[i].child_name);
+            localStorage.setItem('newChildGroupId', childrenArray[i].group_id);
+            localStorage.setItem('newChildGroupName', childrenArray[i].group_name);
             localStorage.setItem('newOrOldChild', "old");
 
             callWebservice('method=getGroups', 'fillGroupInAddEditChild');
@@ -220,11 +220,11 @@ function showAddEditStatus(status){
 
 function deleteChild(childId){
     for(var i = 0, len = childrenArray.length; i < len; i++){
-        if(childId == childrenArray[i].childId){
-            localStorage.setItem('deleteChildId', childrenArray[i].childId);
-            localStorage.setItem('deleteChildName', childrenArray[i].childName);
-            localStorage.setItem('deleteChildGroupId', childrenArray[i].groupId);
-            localStorage.setItem('deleteChildGroupName', childrenArray[i].groupName);
+        if(childId == childrenArray[i].child_id){
+            localStorage.setItem('deleteChildId', childrenArray[i].child_id);
+            localStorage.setItem('deleteChildName', childrenArray[i].child_name);
+            localStorage.setItem('deleteChildGroupId', childrenArray[i].group_id);
+            localStorage.setItem('deleteChildGroupName', childrenArray[i].group_name);
             $('#popupConfirmDeleteChild').popup('open');
         }
     }
