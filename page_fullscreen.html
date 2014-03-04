@@ -14,7 +14,7 @@
         <script src="res/js/hammer.js"></script>
         <script src="res/js/hammer.fakemultitouch.js"></script>
         <script src="res/js/hammer.showtouches.js"></script>
-        <script src="res/js/webservice.js"></script>
+        <script src="res/js/custom.js"></script>
     </head>
     <body>
 
@@ -30,9 +30,9 @@
             <!-- /header -->
 
             <!-- content    -->
-            <div data-role="content" id="imageFullscreen">
-                <div class="image" id="pinchzoom">
-                    <img id="image" src="" alt="" style="width: 100%; position: relative">
+            <div data-role="content" id="imageFullscreenContainer">
+                <div class="image" id="fullscreenImage">
+                    <img id="image" src="" alt="">
                     <div id="fullscreenText"></div>
                 </div>
             </div>
@@ -42,10 +42,12 @@
                 <div>
                     <img src="res/images/zoomout.png" onclick="ZoomOut()">
                     <img src="res/images/zoomin.png" onclick="ZoomIn()">
+                    
+                    <img id="imgFullScreenComment" src="res/images/chat.png">
+                <!--<a href="menu.html">
+                    <img id="imgFullScreenComment" src="res/images/chat.png">
+                </a> -->
 
-                <a href="menu.html">
-                    <img src="res/images/chat.png" style="position: absolute; right: 0; bottom: 0; float: right;">
-                </a>
                 </div>
             </footer>
 
@@ -61,10 +63,8 @@
             function getFullscreenImage(image){
                 console.log("Set Image");
                 var data = image.data;
-                var imgPath = "/var/www/loevspring_uploads/billeder/" + data[0].path_full;
+                var imgPath = "http://markblaabjerg.dyndns.org/loevspring_uploads/billeder/full/c1.jpg";// + data[0].path_full;
                 console.log(imgPath);
-
-                imgPath = "res/images/latterfroe/februar.jpg";
 
                 var description = data[0].description;
                 console.log(description);
@@ -77,6 +77,14 @@
 
             <!-- /SetImage -->
 
+            <script>
+
+                $("#imgFullScreenComment").click(function(){
+                localStorage.setItem('isComment', true);
+                window.location.href = 'page_feedback.html';
+                });
+            </script>
+
 
             <!-- Gesture Scripts -->
             <script>
@@ -84,10 +92,8 @@
             $( 'div' ).on( 'pageshow',function(event, ui){
                 console.log( 'Page loaded!');
                 //StartHammerjs;
-                localStorage.setItem('imageId', '1');
-                console.log(localStorage.getItem('imageId'));
-                callWebservice('method=getImage&image_id=1', 'getFullscreenImage');
-                console.log("TEST");
+                var pictureId = localStorage.getItem('image_Id');
+                callWebservice('method=getImage&image_id=' + pictureId, 'getFullscreenImage');
             });
 
             $( 'div' ).on( 'pagehide',function(event, ui){

@@ -1,9 +1,9 @@
-#imageFullscreen {
+#imageFullscreenContainer {
 	-webkit-transform: translate3d(0,0,0);
 	overflow: hidden;
 }
 
-.image{
+#fullscreenImage{
 	position: relative;
 	width: 100%;
 }
@@ -48,4 +48,18 @@
 }
 .fotoDescription{
 	height: 500px;
+}
+
+.popup{
+	width: 400px;
+}
+
+#imgFullScreenComment{
+	position: absolute;
+	float: right;
+}
+
+#imageMonthplan{
+	width: 100%; 
+	position: relative
 }

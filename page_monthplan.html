@@ -14,6 +14,7 @@
         <script src="res/js/hammer.js"></script>
         <script src="res/js/hammer.fakemultitouch.js"></script>
         <script src="res/js/hammer.showtouches.js"></script>
+        <script src="res/js/custom.js"></script>
     </head>
     <body>
 
@@ -29,17 +30,11 @@
 
             <!-- content    -->
             <div data-role="content">
-                <select onchange="getGroupFolder(this.value)">
-                    <option value="Vuggestue">Vuggestue</option>
-                    <option value="Latterfroe">Latterfrø</option>
-                    <option value="Sivfroe">Sivfrø</option>
-                    <option value="Springfroe">Springfrø</option>
-                    <option value="Tomatfroe">Tomatfrø</option>
-                </select>
+                <select id="selectGroups" onchange="getGroupFolder(this.value)"></select>
             </div>
             <div data-role="content" id="groupPlan">
                 <p>
-                    <img id="image" src="pixel.gif" style="width: 100%; position: relative";
+                    <img id="imageMonthplan" src="pixel.gif";
                 </p>
             </div>
             <!-- /content -->
@@ -59,12 +54,30 @@
 <!-- Group list scripts -->
             <script>
                 $( 'div' ).on( 'pageshow',function(event, ui){
-                console.log( 'Page loaded!');
+                    console.log( 'Page loaded!');
+                    callWebservice('method=getGroups', 'setGroups');
                 });
 
+                function setGroups(group){
+                    console.log(group);
+
+                    document.getElementById('selectGroups').innerHTML = "";
+
+                    var groupArray = [], groups = group.data;
+                    for(var i = 0, len = groups.length; i < len; i++){
+                        var tmpgrp = groups[i];
+                        groupArray.push({groupId: tmpgrp.id, groupName: tmpgrp.name});
+
+                        var option = '<option value="'+tmpgrp.name+'">'+tmpgrp.name+'</option>';
+                        $(option).appendTo("#selectGroups");
+                    }
+                }
+
                 function getGroupFolder(value){
-                    var imgPath = "res/images/" + value + "/februar.jpg";
-                    var picture = document.getElementById('image');
+                    var imgPath = "http://markblaabjerg.dyndns.org/loevspring_uploads/grupper/" + value + "/månedsplan.jpg";
+
+                    console.log(imgPath);
+                    var picture = document.getElementById('imageMonthplan');
                     picture.src=imgPath;
                 }
             </script>
@@ -88,7 +101,7 @@
                 drag_min_distance: 0
             });
 
-            var image = document.getElementById('image');
+            var imageMonthplan = document.getElementById('imageMonthplan');
 
             var posX=0, posY=0,
             last_posX=0, last_posY=0,
@@ -117,11 +130,11 @@
                     "translate3d("+posX+"px,"+posY+"px, 0) " +
                     "scale3d("+scale+","+scale+", 1) ";
 
-                image.style.transform = transform;
-                image.style.oTransform = transform;
-                image.style.msTransform = transform;
-                image.style.mozTransform = transform;
-                image.style.webkitTransform = transform;
+                imageMonthplan.style.transform = transform;
+                imageMonthplan.style.oTransform = transform;
+                imageMonthplan.style.msTransform = transform;
+                imageMonthplan.style.mozTransform = transform;
+                imageMonthplan.style.webkitTransform = transform;
             }
 
             function ZoomIn(){
