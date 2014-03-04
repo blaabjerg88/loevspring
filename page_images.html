@@ -248,6 +248,7 @@ function getImagesCallback (data) {
         var oneImage = document.createElement('img');                           // creating an img object
         oneImage.src = imageURL + value.path_thumb;                             // giving the img a source
         oneImage.id = "image_" + value.id;                                      // giving it an id
+        oneImage.className = "theImage";
         oneImageDiv.appendChild(oneImage);                                      // add the image to the div
         if (value.comment_count != "0"){                                        // if there is a comment on the image show the icon
             var imageComment = document.createElement('img');
