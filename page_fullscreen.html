@@ -40,13 +40,11 @@
 
             <footer data-role="footer" data-position="fixed">
                 <div>
+                <!--
+                    <img id="imgZoomOut" src="res/images/zoomout.png" onclick="ZoomOut()">
+                    <img id="imgZoomIn" src="res/images/zoomin.png" onclick="ZoomIn()">7
+                -->
                     <img id="imgFullScreenComment" src="res/images/chat.png">
-
-                    <!--
-                    <img src="res/images/zoomout.png" onclick="ZoomOut()">
-                    <img src="res/images/zoomin.png" onclick="ZoomIn()">
-                    -->
-
                 </div>
             </footer>
 
@@ -80,36 +78,25 @@
 
             <script>
 
-                $("#imgFullScreenComment").click(function(){
-                localStorage.setItem('isComment', true);
-                window.location.href = 'page_feedback.html';
-                });
-            </script>
-
-            <script>
-
             $( 'div' ).on( 'pageshow',function(event, ui){
                 console.log( 'Page loaded!');
-                //StartHammerjs;
                 var pictureId = localStorage.getItem('image_Id');
                 callWebservice('method=getImage&image_id=' + pictureId, 'getFullscreenImage');
             });
 
             $( 'div' ).on( 'pagehide',function(event, ui){
-                //hammertime.off();
                 console.log( 'Page hidden!');
             });
 
-            /*
-            var hammertime = Hammer(document.getElementById('groupPlan'), {
-                    transform_always_block: true,
-                    transform_min_scale: 1,
-                    drag_block_horizontal: true,
-                    drag_block_vertical: true,
-                    drag_min_distance: 0
+            $("#imgFullScreenComment").click(function(){
+                localStorage.setItem('isComment', true);
+                window.location.href = 'page_feedback.html';
                 });
+            </script>
+            
 
-            function StartHammerjs(){
+            <script>
+            /*
                 if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
                 Hammer.plugins.showTouches();
                 }
@@ -117,6 +104,14 @@
                 if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
                     Hammer.plugins.fakeMultitouch();
                 }
+
+                var hammertime = Hammer(document.getElementById('groupPlan'), {
+                    transform_always_block: true,
+                    transform_min_scale: 1,
+                    drag_block_horizontal: true,
+                    drag_block_vertical: true,
+                    drag_min_distance: 0
+                });
 
 
                 var image = document.getElementById('image');
@@ -140,37 +135,36 @@
                         Transform();
                         break;
                 }
-            });
-            }
+                });
 
-            function Transform()
-            {
-                var transform =
-                    "translate3d("+posX+"px,"+posY+"px, 0) " +
-                    "scale3d("+scale+","+scale+", 1) ";
-
-                image.style.transform = transform;
-                image.style.oTransform = transform;
-                image.style.msTransform = transform;
-                image.style.mozTransform = transform;
-                image.style.webkitTransform = transform;
-            }
-
-            function ZoomIn(){
-                scale = scale + 1;
-                if(scale > 5)
+                function Transform()
                 {
-                    scale = 5;
+                    var transform =
+                        "translate3d("+posX+"px,"+posY+"px, 0) " +
+                        "scale3d("+scale+","+scale+", 1) ";
+
+                    image.style.transform = transform;
+                    image.style.oTransform = transform;
+                    image.style.msTransform = transform;
+                    image.style.mozTransform = transform;
+                    image.style.webkitTransform = transform;
                 }
-                Transform();
-            }
-            function ZoomOut(){
-                scale = scale - 1;
-                if(scale < 1)
-                {
-                    scale = 1;
+
+                function ZoomIn(){
+                    scale = scale + 1;
+                    if(scale > 5)
+                    {
+                        scale = 5;
+                    }
+                    Transform();
                 }
-                Transform();
-            }
+                function ZoomOut(){
+                    scale = scale - 1;
+                    if(scale < 1)
+                    {
+                        scale = 1;
+                    }
+                    Transform();
+                }
             */
             </script>
