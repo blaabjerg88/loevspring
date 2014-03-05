@@ -55,7 +55,7 @@
 
             </div>
             <!-- /DeletePopup -->
-            
+
             <!-- AddPopup -->
             <div data-role="popup" class="popup" data-dialog="true" id="popupAddEditChild">
 
@@ -167,7 +167,7 @@ function addNewChild(){
     localStorage.setItem('newChildGroupId', null);
     localStorage.setItem('newChildGroupName', null);
     localStorage.setItem('newOrOldChild', "new");
-    
+
     callWebservice('method=getGroups', 'fillGroupInAddEditChild');
 
     $('#popupAddEditChild').popup('open');
