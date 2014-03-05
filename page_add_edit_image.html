@@ -8,7 +8,6 @@
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
-        <script type="text/javascript" charset="utf-8" src="res/js/cordova.js"></script>
         <link rel="stylesheet" href="res/style/custom.css" />
         <script src="res/js/custom.js"></script>
     </head>
@@ -24,84 +23,89 @@
             </div>
 
             <!-- /header -->
-			<center>
+            <center>
             <!-- content    -->
 
-			<!-- preview image -->
-				<img src="" id="previewImage" style="width: 80%;">
-			<!-- /preview image -->
+            <!-- preview image -->
+                <img src="" id="previewImage" style="width: 80%;">
+            <!-- /preview image -->
 
             <!-- select date -->
             <div style="max-width: 250px;">
-					<input type="datetime-local" id="datePicker" name="date">
-			</div>
-			<!-- /select date -->
-			<!-- Make fotoDescription -->
-				<textarea id="fotoDescription" placeholder="Beskrivelse" style="max-width: 80%;" class="fotoDescription" rows="8"></textarea>
-			<!-- /Make fotoDescription -->
+                    <input type="datetime-local" id="datePicker" name="date">
+            </div>
+            <!-- /select date -->
+            <!-- Make fotoDescription -->
+                <textarea id="fotoDescription" placeholder="Beskrivelse" style="max-width: 80%;" class="fotoDescription" rows="8"></textarea>
+            <!-- /Make fotoDescription -->
 
 
-			<!-- select child *Get all childs from webservice-->
-			<a href="#popupChooseChilds" data-rel="popup" class="ui-btn ui-corner-all" id="buttonChooseChilds" style="max-width: 80%">Vælge børn</a>
-			<!-- /select child -->
+            <!-- select child *Get all childs from webservice-->
+            <a href="#popupChooseChilds" data-rel="popup" class="ui-btn ui-corner-all" id="buttonChooseChilds" style="max-width: 80%">Vælg børn</a>
+            <!-- /select child -->
 
-			<!-- select group *Get all groups from webservice-->
-			<a href="#popupChooseGroups" data-rel="popup" class="ui-btn ui-corner-all" id="buttonChooseGroups" style="max-width: 80%">Vælge Grupper</a>
+            <!-- select group *Get all groups from webservice-->
+            <a href="#popupChooseGroups" data-rel="popup" class="ui-btn ui-corner-all" id="buttonChooseGroups" style="max-width: 80%">Vælg Grupper</a>
             <!-- /select group -->
 
-			<!-- save info -->
-			<div style="max-width: 250px;">
-				<input type="button" value="Gem" id="btnSaveInfo">
-			</div>
-			<!-- /save info -->
+            <!-- save info -->
+            <div style="max-width: 250px;">
+                <input type="button" value="Gem" id="btnSaveInfo">
+            </div>
+            <!-- /save info -->
 
             <!-- /content -->
-			</center>
-	<!--############### Page End ############################-->
-	<!--############### PopUp ###############################-->
-	<div data-role="popup" data-dialog="true" id="popupChooseChilds">
-	    <!-- header -->
-	    <div data-role="header">
-	        <h1>Vælge Børn</h1>
-	    </div>
-	    <!-- /header -->
+            </center>
+    <!--############### Page End ############################-->
 
-	    <!-- content -->
-	    <div data-role="main" class="ui-content">
-	        <input type="button" value="OK" id="btnSaveChilds">
-	    </div>
-	    <div id="checkChilds"></div>
-	    <!-- /content    -->
 
-	    <!-- footer -->
-	    <div data-role="footer">
-	        <h1></h1>
-	    </div>
-	    <!-- /footer -->
+    <!--############### PopUp ###############################-->
+    <div data-role="popup" data-dialog="true" id="popupChooseChilds">
+        <!-- header -->
+        <div data-role="header">
+            <h1>Vælg Børn</h1>
+        </div>
+        <!-- /header -->
 
-	</div>
-	<div data-role="popup" data-dialog="true" id="popupChooseGroups">
+        <!-- content -->
+        <div data-role="main" class="ui-content">
+            <input type="button" value="OK" id="btnSaveChilds">
+        </div>
+        <fieldset data-role="controlgroup" id="checkChilds" class="ui-controlgroup ui-controlgroup-vertical ui-corner-all">
+        </fieldset>
+        <!-- /content    -->
 
-	    <!-- header -->
-	    <div data-role="header">
-	        <h1>Vælge Gruppe</h1>
-	    </div>
-	    <!-- /header -->
+        <!-- footer -->
+        <div data-role="footer">
+            <h1></h1>
+        </div>
+        <!-- /footer -->
 
-	    <!-- content -->
-	    <div data-role="main" class="ui-content">
-	        <input type="button" value="OK" id="btnSaveGroups">
-	    </div>
-	    <div id="checkGroups"></div>
-	    <!-- /content    -->
+    </div>
+    <div data-role="popup" data-dialog="true" id="popupChooseGroups">
 
-	    <!-- footer -->
-	    <div data-role="footer">
-	        <h1></h1>
-	    </div>
-	    <!-- /footer -->
+        <!-- header -->
+        <div data-role="header">
+            <h1>Vælg Gruppe</h1>
+        </div>
+        <!-- /header -->
 
-	</div>
+        <!-- content -->
+        <div data-role="main" class="ui-content">
+            <input type="button" value="OK" id="btnSaveGroups">
+        </div>
+
+        <fieldset data-role="controlgroup" id="checkGroups" class="ui-controlgroup ui-controlgroup-vertical ui-corner-all">
+        </fieldset>
+        <!-- /content    -->
+
+        <!-- footer -->
+        <div data-role="footer">
+            <h1></h1>
+        </div>
+        <!-- /footer -->
+
+    </div>
 </div>
 <!--############### PopUp End ###########################-->
 
@@ -109,7 +113,7 @@
 </html>
 
 <script>
-// TODO: 	Gem billede og billede sti
+// TODO:    Gem billede og billede sti
 
 var newImage;
 var image_id;
@@ -120,191 +124,239 @@ var children;
 var groups;
 var checkedChilds = new Array();
 var checkedGroups = new Array();
+var callbacksReached = 0;
 
-	// when device is ready
-	$( 'div' ).on( 'pageshow',function(event, ui){
-    	console.log( 'Page loaded!');
-	    console.log("Image id is : " + window.localStorage.getItem("image_Id"));
-	    if (window.localStorage.getItem("image_Id") == null && window.localStorage.getItem("newImage") == null)
-	    	window.location.href = 'page_images.html';
-	    image_id = window.localStorage.getItem("image_Id");
-	    console.log("New image: " + window.localStorage.getItem("newImage"));
-	    newImage = window.localStorage.getItem("newImage");
-	    if (newImage == true)
-    		newImageInfo();
-	    else
-	    	editImageInfo();
-	    callWebservice('method=getChildren', 'imageInfoGetChildrenCallBack');
-	    callWebservice('method=getGroups', 'imageInfoGetGroupsCallBack');
-	});
+    // when device is ready
+    $( 'div' ).on( 'pageshow',function(event, ui){
+        console.log( 'Page loaded!');
+        console.log("Image id is : " + window.localStorage.getItem("image_Id"));
+        if (window.localStorage.getItem("image_Id") == null && window.localStorage.getItem("newImage") == null)
+            window.location.href = 'page_images.html';
+        image_id = window.localStorage.getItem("image_Id");
+        console.log("New image: " + window.localStorage.getItem("newImage"));
+        newImage = window.localStorage.getItem("newImage");
+        if (newImage == true)
+            newImageInfo();
+        else
+            editImageInfo();
+        callWebservice('method=getChildren', 'imageInfoGetChildrenCallBack');
+        callWebservice('method=getGroups', 'imageInfoGetGroupsCallBack');
+    });
 
-	function editImageInfo () {
-		callWebservice('method=getImage&image_id=' + image_id, 'imageInfoOnCallback');
-		callWebservice('method=getTags&image_id=' + image_id, 'imageInfoGetChildrenTagCallBack');
-		callWebservice('method=getTags&image_id=' + image_id + '&is_group=true', 'imageInfoGetGroupsTagCallBack');
-	}
+    function editImageInfo () {
+        callWebservice('method=getImage&image_id=' + image_id, 'imageInfoOnCallback');
+        callWebservice('method=getTags&image_id=' + image_id, 'imageInfoGetChildrenTagCallBack');
+        callWebservice('method=getTags&image_id=' + image_id + '&is_group=true', 'imageInfoGetGroupsTagCallBack');
+    }
 
-	function newImageInfo (argument) {
-		// ****** Date time picker input
-	    var now = new Date();	// Grap date and time from OStime
+    function newImageInfo (argument) {
+        // ****** Date time picker input
+        var now = new Date();   // Grap date and time from OStime
 
-		var day = ("0" + now.getDate()).slice(-2);
-		var month = ("0" + (now.getMonth() + 1)).slice(-2);
-		var year = now.getFullYear();
+        var day = ("0" + now.getDate()).slice(-2);
+        var month = ("0" + (now.getMonth() + 1)).slice(-2);
+        var year = now.getFullYear();
 
-		var hours = ("0" + now.getHours()).slice(-2);
-		var min = ("0" + now.getMinutes()).slice(-2);
-		var sec = ("0" + now.getSeconds()).slice(-2);
+        var hours = ("0" + now.getHours()).slice(-2);
+        var min = ("0" + now.getMinutes()).slice(-2);
+        var sec = ("0" + now.getSeconds()).slice(-2);
 
-		datetimeTotal = year + '-' + month + '-' + day + 'T' + hours + ':' + min + ':' + sec;	// Make time to correct format
-		$('#datePicker').val(datetimeTotal);
-		//********************************************************
-	}
+        datetimeTotal = year + '-' + month + '-' + day + 'T' + hours + ':' + min + ':' + sec;   // Make time to correct format
+        $('#datePicker').val(datetimeTotal);
+        //********************************************************
+    }
 
-	function imageInfoOnCallback (data) {
-	    console.log("onCallback")
-	    console.log(data.data[0])
-	    var st = data.data[0];
-	    $('#datePicker').val(st.date_created.replace(" ", "T"));
-	    document.getElementById("fotoDescription").innerHTML = st.description;
-	    var imageURL = getAppSettings().server_url + getAppSettings().images_path;
-	    $('#previewImage').attr("src", imageURL + st.path_full);
-	}
+    function imageInfoOnCallback (data) {
+        console.log("onCallback")
+        console.log(data.data[0])
+        var st = data.data[0];
+        $('#datePicker').val(st.date_created.replace(" ", "T"));
+        document.getElementById("fotoDescription").innerHTML = st.description;
+        var imageURL = getAppSettings().server_url + getAppSettings().images_path;
+        $('#previewImage').attr("src", imageURL + st.path_full);
+    }
 
-	function imageInfoGetChildrenCallBack (data) {
-		console.log("Get Children");
-		console.log(data);
-		children = data.data;
-	}
+    function imageInfoGetChildrenCallBack (data) {
+        console.log("Get Children");
+        console.log(data);
+        children = data.data;
+    }
 
-	function imageInfoGetGroupsCallBack (data) {
-		console.log("Get groups");
-		console.log(data);
-		groups = data.data;
-	}
+    function imageInfoGetGroupsCallBack (data) {
+        console.log("Get groups");
+        console.log(data);
+        groups = data.data;
+    }
 
-	function imageInfoGetChildrenTagCallBack (data) {
-		console.log("Get Chrildern tag");
-		console.log(data);
+    function imageInfoGetChildrenTagCallBack (data) {
+        console.log("Get Chrildern tag");
+        console.log(data);
 
-		$.each(data.data, function(i, value){
-			checkedChilds.push(value.childs_id);
-		})
-	}
+        $.each(data.data, function(i, value){
+            checkedChilds.push(value.childs_id);
+        })
+    }
 
-	function imageInfoGetGroupsTagCallBack (data) {
-		console.log("Get groups tag2");
-		console.log(data);
-		$.each(data.data, function(i, value){
-			checkedGroups.push(value.group_id);
-		})
-	}
+    function imageInfoGetGroupsTagCallBack (data) {
+        console.log("Get groups tag2");
+        console.log(data);
+        $.each(data.data, function(i, value){
+            checkedGroups.push(value.group_id);
+        })
+    }
 
-	function imageInfoSendCallBack (data) {
-		console.log("Send Image");
-		console.log(data);
-	}
+    function imageInfoSendCallBack (data) {
+        console.log("Send Image");
+        console.log(data);
+    }
 
-	function imageInfoSendChildsTagCallBack (data) {
-		console.log("Send groups tag");
-		console.log(data);
-	}
+    function imageInfoSendChildsTagCallBack (data) {
+        updateCallbackCountAndRedirect()
+        console.log("Send groups tag");
+        console.log(data);
+    }
 
-	function imageInfoSendGroupsTagCallBack (data) {
-		console.log("Send Childs tag");
-		console.log(data);
-	}
+    function imageInfoSendGroupsTagCallBack (data) {
+        updateCallbackCountAndRedirect()
+        console.log("Send Childs tag");
+        console.log(data);
+    }
 
-	function imageInfoRemoveChildsTagCallBack (data) {
-		console.log("Remove Childs tag");
-		console.log(data);
-	}
+    function imageInfoRemoveChildsTagCallBack (data) {
+        updateCallbackCountAndRedirect()
+        console.log("Remove Childs tag");
+        console.log(data);
+    }
 
-	function imageInfoRemoveGroupsTagCallBack (data) {
-		console.log("Remove Groups tag");
-		console.log(data);
-	}
+    function imageInfoRemoveGroupsTagCallBack (data) {
+        updateCallbackCountAndRedirect()
+        console.log("Remove Groups tag");
+        console.log(data);
+    }
 
-	$("#btnSaveInfo").click(function(){
-		//Save info to webservice
-		if (newImage == true){
-			// UserId is not handelt and is hardcodet to user_id = 0
-			var fotoDescription = document.getElementById('fotoDescription').innerHTML;
-			var thestring = 'method=addImage&datetime=' + datetimeTotal + '&description=' + fotoDescription + '&user_id=0';
-			// ************* missing the path_thumb and path_full
-		}
-		else{
-			// UserId is not handelt and is hardcodet to user_id = 0
-			var fotoDescription = document.getElementById('fotoDescription').innerHTML;
-			var thestring = 'method=updateImage&image_id=' + image_id + '&datetime=' + datetimeTotal + '&description=' + fotoDescription + '&user_id=0';		// ******FVD**** missing the path_thumb and path_full
-		}
-		// send theImage/date/description
-		//callWebservice(theString, 'imageInfoSendCallBack');		//*****FVD****** uncomment me to enable upload of photo
-		// send childTag
-		callWebservice('method=removeTag&image_id=' + image_id + '&ids=all', 'imageInfoRemoveChildsTagCallBack');
-		callWebservice('method=addTag&image_id=' + image_id + '&ids=' + checkedChilds.join(","), 'imageInfoSendChildsTagCallBack');
-		// send groupTags
-		callWebservice('method=removeTag&image_id=' + image_id + '&ids=all&is_group=true', 'imageInfoRemoveGroupsTagCallBack');
-		callWebservice('method=addTag&image_id=' + image_id + '&ids=' + checkedGroups.join(",") + '&is_group=true', 'imageInfoSendGroupsTagCallBack');
-		window.location.href = 'page_images.html';
-	});
+    function updateCallbackCountAndRedirect()
+    {
+        callbacksReached = callbacksReached + 1;
+        if (callbacksReached > 3)
+            window.location.href = 'page_images.html';
+    }
 
-	$("#buttonChooseChilds").click(function(){
-		document.getElementById("checkChilds").innerHTML = "";
-		$.each(children, function(i, value){
+    $("#btnSaveInfo").click(function(){
+        //Save info to webservice
+        if (newImage == true){
+            // UserId is not handelt and is hardcodet to user_id = 0
+            var fotoDescription = document.getElementById('fotoDescription').innerHTML;
+            var thestring = 'method=addImage&datetime=' + datetimeTotal + '&description=' + fotoDescription + '&user_id=0';
+            // ************* missing the path_thumb and path_full
+        }
+        else{
+            // UserId is not handelt and is hardcodet to user_id = 0
+            var fotoDescription = document.getElementById('fotoDescription').innerHTML;
+            var thestring = 'method=updateImage&image_id=' + image_id + '&datetime=' + datetimeTotal + '&description=' + fotoDescription + '&user_id=0';        // ******FVD**** missing the path_thumb and path_full
+        }
+        // send theImage/date/description
+        //callWebservice(theString, 'imageInfoSendCallBack');       //*****FVD****** uncomment me to enable upload of photo
+        // send childTag
+        callWebservice('method=removeTag&image_id=' + image_id + '&ids=all', 'imageInfoRemoveChildsTagCallBack');
+        callWebservice('method=addTag&image_id=' + image_id + '&ids=' + checkedChilds.join(","), 'imageInfoSendChildsTagCallBack');
+        // send groupTags
+        callWebservice('method=removeTag&image_id=' + image_id + '&ids=all&is_group=true', 'imageInfoRemoveGroupsTagCallBack');
+        callWebservice('method=addTag&image_id=' + image_id + '&ids=' + checkedGroups.join(",") + '&is_group=true', 'imageInfoSendGroupsTagCallBack');
+    });
 
-			var oneChild = document.createElement('input');
-			oneChild.type = "checkbox";
-			oneChild.id = "checkChilds" + value.child_id;
-			document.getElementById("checkChilds").appendChild(oneChild);
+    $("#buttonChooseChilds").click(function(){
+        document.getElementById("checkChilds").innerHTML = "";
+        $("#checkChilds").append(
+            $("<div></div>")
+                .attr("id", "checkChildsFieldset")
+                .addClass("ui-controlgroup-controls")
+            );
+        $.each(children, function(i, value){
+            $("#checkChildsFieldset")
+                .append(
+                    $("<div></div>")
+                        .addClass("ui-checkbox")
+                        .append(
+                            $("<label></label>")
+                                .attr("for", "checkChilds"+value.child_id)
+                                .attr("id", "checkChildsLabel"+value.child_id)
+                                .attr("class", "children ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-checkbox-off")
+                                .html(value.child_name)
+                                .click(function(){
+                                    $(this).toggleClass("ui-checkbox-on ui-checkbox-off");
+                                }))
+                        .append(
+                            $("<input></input>")
+                                .attr("type", "checkbox")
+                                .attr("id", "checkChilds"+value.child_id)
+                                .attr("name", "checkChilds"+value.child_id)
+                                .attr("data-cacheval", "false"))
+                );
+            if (checkedChilds.indexOf(value.child_id) > -1)
+                $("#checkChildsLabel"+value.child_id)
+                    .removeClass("ui-checkbox-off")
+                    .addClass("ui-checkbox-on");
+        })
+        $.each(checkedChilds, function(i, value){
+            document.getElementById("checkChilds" + value).checked = true;
+        })
+    });
 
-			var oneChildLabel = document.createElement('label');
-			oneChildLabel.htmlFor = "checkChilds" + value.child_id;
-			oneChildLabel.innerHTML = value.child_name;
-			document.getElementById("checkChilds").appendChild(oneChildLabel);
-		})
-		$.each(checkedChilds, function(i, value){
-			document.getElementById("checkChilds" + value).checked = true;
-		})
-	});
+    $("#buttonChooseGroups").click(function(){
+        document.getElementById("checkGroups").innerHTML = "";
+        $("#checkGroups").append(
+            $("<div></div>")
+                .attr("id", "checkGroupsFieldset")
+                .addClass("ui-controlgroup-controls")
+            );
+        $.each(groups, function(i, value){
+            $("#checkGroupsFieldset")
+                .append(
+                    $("<div></div>")
+                        .addClass("ui-checkbox")
+                        .append(
+                            $("<label></label>")
+                                .attr("for", "checkGroup"+value.id)
+                                .attr("id", "checkGroupsLabel"+value.id)
+                                .attr("class", "ui-btn ui-corner-all ui-btn-inherit ui-btn-icon-left ui-checkbox-off")
+                                .html(value.name)
+                                .click(function(){
+                                    $(this).toggleClass("ui-checkbox-on ui-checkbox-off");
+                                }))
+                        .append(
+                            $("<input></input>")
+                                .attr("type", "checkbox")
+                                .attr("id", "checkGroup"+value.id)
+                                .attr("name", "checkGroup"+value.id)
+                                .attr("data-cacheval", "false"))
+                );
+            if (checkedGroups.indexOf(value.id) > -1)
+                $("#checkGroupsLabel"+value.id)
+                    .removeClass("ui-checkbox-off")
+                    .addClass("ui-checkbox-on");
+        })
+        $.each(checkedGroups, function(i, value){
+            document.getElementById("checkGroup" + value).checked = true;
+        })
+    });
 
-	$("#buttonChooseGroups").click(function(){
-		document.getElementById("checkGroups").innerHTML = "";
-		$.each(groups, function(i, value){
+    $("#btnSaveChilds").click(function(){
+        checkedChilds.length = 0;
+        $.each(children, function(i, value){
+                if (document.getElementById("checkChilds" + value.child_id).checked){
+                checkedChilds.push(value.child_id);
+            }
+        })
+        $('#popupChooseChilds').popup('close');
+    });
 
-			var oneGroup = document.createElement('input');
-			oneGroup.type = "checkbox";
-			oneGroup.id = "checkGroup" + value.id;
-			oneGroup.className = "custom";
-			document.getElementById("checkGroups").appendChild(oneGroup);
-
-			var oneGroupLabel = document.createElement('label');
-			oneGroupLabel.innerHTML = value.name;
-			oneGroupLabel.htmlFor = "checkGroups";
-			document.getElementById("checkGroups").appendChild(oneGroupLabel);
-		})
-		$.each(checkedGroups, function(i, value){
-			document.getElementById("checkGroup" + value).checked = true;
-		})
-	});
-
-	$("#btnSaveChilds").click(function(){
-		checkedChilds.length = 0;
-		$.each(children, function(i, value){
-			if (document.getElementById("checkChilds" + value.child_id).checked){
-				checkedChilds.push(value.child_id);
-			}
-		})
-		$('#popupChooseChilds').popup('close');
-	});
-
-	$("#btnSaveGroups").click(function(){
-		checkedGroups.length = 0;
-		$.each(groups, function(i, value){
-			if (document.getElementById('checkGroup' + value.id).checked){
-				checkedGroups.push(value.id);
-			}
-		})
-		$( "#popupChooseGroups" ).popup( "close" );
-	});
+    $("#btnSaveGroups").click(function(){
+        checkedGroups.length = 0;
+        $.each(groups, function(i, value){
+            if (document.getElementById('checkGroup' + value.id).checked){
+                checkedGroups.push(value.id);
+            }
+        })
+        $( "#popupChooseGroups" ).popup( "close" );
+    });
 </script>
