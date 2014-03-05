@@ -32,7 +32,7 @@
             <!-- content    -->
             <div data-role="content" id="imageFullscreenContainer">
                 <div id="fullscreenImage">
-                    <img id="image" class="fullscreenImage" src="" alt="">
+                    <img id="image" class="fullscreenImage" src="" alt="" style="">
                     <div id="fullscreenText"></div>
                 </div>
             </div>
@@ -40,13 +40,9 @@
 
             <footer data-role="footer" data-position="fixed">
                 <div>
+                    <img id="imgZoomOut" src="res/images/zoomout.png" onclick="ZoomOut()">
+                    <img id="imgZoomIn" src="res/images/zoomin.png" onclick="ZoomIn()">
                     <img id="imgFullScreenComment" src="res/images/chat.png">
-
-                    <!--
-                    <img src="res/images/zoomout.png" onclick="ZoomOut()">
-                    <img src="res/images/zoomin.png" onclick="ZoomIn()">
-                    -->
-
                 </div>
             </footer>
 
@@ -80,7 +76,17 @@
 
             <script>
 
-                $("#imgFullScreenComment").click(function(){
+            $( 'div' ).on( 'pageshow',function(event, ui){
+                console.log( 'Page loaded!');
+                var pictureId = localStorage.getItem('image_Id');
+                callWebservice('method=getImage&image_id=' + pictureId, 'getFullscreenImage');
+            });
+
+            $( 'div' ).on( 'pagehide',function(event, ui){
+                console.log( 'Page hidden!');
+            });
+
+            $("#imgFullScreenComment").click(function(){
                 localStorage.setItem('isComment', true);
                 window.location.href = 'page_feedback.html';
                 });
@@ -88,28 +94,6 @@
 
             <script>
 
-            $( 'div' ).on( 'pageshow',function(event, ui){
-                console.log( 'Page loaded!');
-                //StartHammerjs;
-                var pictureId = localStorage.getItem('image_Id');
-                callWebservice('method=getImage&image_id=' + pictureId, 'getFullscreenImage');
-            });
-
-            $( 'div' ).on( 'pagehide',function(event, ui){
-                //hammertime.off();
-                console.log( 'Page hidden!');
-            });
-
-            /*
-            var hammertime = Hammer(document.getElementById('groupPlan'), {
-                    transform_always_block: true,
-                    transform_min_scale: 1,
-                    drag_block_horizontal: true,
-                    drag_block_vertical: true,
-                    drag_min_distance: 0
-                });
-
-            function StartHammerjs(){
                 if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
                 Hammer.plugins.showTouches();
                 }
@@ -117,6 +101,14 @@
                 if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
                     Hammer.plugins.fakeMultitouch();
                 }
+
+                var hammertime = Hammer(document.getElementById('groupPlan'), {
+                    transform_always_block: true,
+                    transform_min_scale: 1,
+                    drag_block_horizontal: true,
+                    drag_block_vertical: true,
+                    drag_min_distance: 0
+                });
 
 
                 var image = document.getElementById('image');
@@ -140,8 +132,7 @@
                         Transform();
                         break;
                 }
-            });
-            }
+                });
 
             function Transform()
             {
@@ -172,5 +163,5 @@
                 }
                 Transform();
             }
-            */
+            
             </script>
