@@ -69,7 +69,7 @@
                 <!-- content -->
                 <div data-role="main" class="ui-content">
                     <label>Navn på barn:</label>
-                    <input type="text" value="Barnets navn" id="txtChildName">
+                    <input type="text" placeholder="Indtast barnets navn..." id="txtChildName">
                     <select id="selectGroups">
                     </select>
                     <input type="button" value="Bekræft" id="btnConfirmNewChild">
@@ -203,7 +203,7 @@ function fillGroupInAddEditChild(group){
     }
 
     if(localStorage.getItem('newOrOldChild') != "old"){
-        document.getElementById('txtChildName').value = "Barnets navn?";
+        //document.getElementById('txtChildName').value = "Barnets navn?";
         document.getElementById('addEditChildrenHeaderText').innerHTML = 'Tilføj';
     }
     else{
