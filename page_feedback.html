@@ -93,36 +93,6 @@ function getDataAndUpdate () {
     }
 }
 
-function comment_feedbackCallBack_OLD (data) {
-    console.log(data);
-    document.getElementById("feedbackDiv").innerHTML = "";
-    $.each(data.data, function(i, value){
-
-        var OneFeedback = document.createElement('article');
-        OneFeedback.className = "textWithBackground";
-        OneFeedback.id = value.id + "article";
-        document.getElementById("feedbackDiv").appendChild(OneFeedback);
-
-        var OneFeedbackCenter = document.createElement('header');
-        OneFeedbackCenter.id = value.id + "header";
-        document.getElementById(value.id + "article").appendChild(OneFeedbackCenter);
-
-        var OneFeedbackName = document.createElement('h1');
-        OneFeedbackName.innerHTML = value.author;
-        document.getElementById(value.id + "header").appendChild(OneFeedbackName);
-
-        var OneFeedbackDate = document.createElement('p');
-        OneFeedbackDate.innerHTML = value.date;
-        document.getElementById(value.id + "header").appendChild(OneFeedbackDate);
-
-        var OneFeedbackText = document.createElement('p');
-        text = document.createTextNode(value.comment_feedback);
-        OneFeedbackText.appendChild(text);
-        document.getElementById(value.id + "article").appendChild(OneFeedbackText);
-    });
-    creatHTMLElements();
-}
-
 function comment_feedbackCallBack (data) {
     console.log(data);
     $("#feedbackDiv").html("");
@@ -141,10 +111,6 @@ function comment_feedbackCallBack (data) {
     });
 }
 
-function creatHTMLElements (array) {
-    console.log("createHTMLElements");
-}
-
 function comment_feedbackAddCallBack (data) {
     console.log(data);
     getDataAndUpdate();
@@ -161,7 +127,6 @@ $("#btnSaveFeedback").click(function(){
         callWebservice('method=addFeedback&author=' + name + '&email=' + email+ '&feedback=' + comment_feedback, 'comment_feedbackAddCallBack');
     else
         callWebservice('method=addComment&author=' + name + '&email=' + email+ '&comment=' + comment_feedback + '&image_id=' + image_id, 'comment_feedbackAddCallBack');
-
     $( "#popupAddFeedback" ).popup( "close" );
 });
 

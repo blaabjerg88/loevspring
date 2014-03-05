@@ -73,8 +73,8 @@ $( 'div' ).on( 'pageshow',function(event, ui){
     getImages();
 
     // TODO: change when going live!
-    //if (is_logged_in == "logged_in"){
-    if (is_logged_in != "DEBUG!!!"){
+    if (is_logged_in == "logged_in"){
+    //if (is_logged_in != "DEBUG!!!"){
         console.log("Adding camera button");
         var btnCamera = '<a href="#popupChoosePictureMode" data-rel="popup" class="ui-btn-right ui-btn-corner-all ui-btn ui-icon-camera ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Camera </a>';
         $("#imagesHeader").append(btnCamera);
@@ -148,6 +148,8 @@ function getPhoto(source) {
 ********************/
 
 function capturePhoto() {
+    alert("Virker ikke endnu...");
+    return;
     // Take picture using device camera and retrieve image as base64-encoded string
     try
     {
@@ -165,6 +167,8 @@ function capturePhoto() {
 // A button will call this function
 // To select image from gallery
 function getPhoto(source) {
+    alert("Virker ikke endnu...");
+    return;
     // Retrieve image file location from specified source
     try
     {

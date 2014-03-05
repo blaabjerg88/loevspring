@@ -9,7 +9,6 @@
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.0/jquery.mobile.structure-1.4.0.min.css" />
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.4.0/jquery.mobile-1.4.0.min.js"></script>
-        <script type="text/javascript" charset="utf-8" src="res/js/cordova.js"></script>
         <link rel="stylesheet" href="res/style/custom.css" />
         <script src="res/js/hammer.js"></script>
         <script src="res/js/hammer.fakemultitouch.js"></script>
@@ -34,14 +33,14 @@
             </div>
             <div data-role="content" id="groupPlan">
                 <p>
-                    <img id="imageMonthplan" src="pixel.gif";
+                    <img id="imageMonthplan" src="";
                 </p>
             </div>
             <!-- /content -->
 
             <footer data-role="footer" data-position="fixed">
-                <img id="monthplanZoomOut" src="res/images/zoomout.png" class="footerIcon" onclick="ZoomOut()">
-                <img id="monthplanZoomIn" src="res/images/zoomin.png" class="footerIcon" onclick="ZoomIn()">
+                <img id="imgZoomOut" src="res/images/zoomout.png" width="40px" class="footerIcon" onclick="ZoomOut()">
+                <img id="imgZoomIn" src="res/images/zoomin.png" width="40px" class="footerIcon" onclick="ZoomIn()">
             </footer>
 
         </div><!-- /page -->
@@ -52,110 +51,108 @@
 </html>
 
 <!-- Group list scripts -->
-            <script>
-                $( 'div' ).on( 'pageshow',function(event, ui){
-                    console.log( 'Page loaded!');
-                    callWebservice('method=getGroups', 'setGroups');
-                });
+<<script>
+$( 'div' ).on( 'pageshow',function(event, ui){
+    console.log( 'Page loaded!');
+    getGroupFolder(1);
+    callWebservice('method=getGroups', 'setGroups');
+});
 
-                function setGroups(group){
-                    console.log(group);
+function setGroups(group){
+    console.log(group);
 
-                    document.getElementById('selectGroups').innerHTML = "";
+    document.getElementById('selectGroups').innerHTML = "";
 
-                    var groupArray = [], groups = group.data;
-                    for(var i = 0, len = groups.length; i < len; i++){
-                        var tmpgrp = groups[i];
-                        groupArray.push({groupId: tmpgrp.id, groupName: tmpgrp.name});
+    var groupArray = [], groups = group.data;
+    for(var i = 0, len = groups.length; i < len; i++){
+        var tmpgrp = groups[i];
+        groupArray.push({groupId: tmpgrp.id, groupName: tmpgrp.name});
+        var option = '<option value="'+tmpgrp.id+'">'+tmpgrp.name+'</option>';
+        $(option).appendTo("#selectGroups");
+    }
+}
 
-                        var option = '<option value="'+tmpgrp.id+'">'+tmpgrp.name+'</option>';
-                        $(option).appendTo("#selectGroups");
-                    }
-                }
+function getGroupFolder(value){
+    var imgURL = getAppSettings().server_url + getAppSettings().groups_path;
+    console.log(imgURL);
+    console.log(value);
+    var imgPath= value + "/monthplan.jpg";
+    console.log(imgURL + imgPath);
+    var picture = document.getElementById('imageMonthplan');
+    picture.src = imgURL + imgPath;
+}
+</script>
+<!-- /Group list scripts -->
 
-                function getGroupFolder(value){
-                    var imgURL = getAppSettings().server_url + getAppSettings().groups_path;
-                    console.log(imgURL);
-                    console.log(value);
-                    var imgPath= value + "/monthplan.jpg";
+<!-- Gesture Scripts -->
+<script>
+console.log("Hammer Started");
+if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
+    Hammer.plugins.showTouches();
+}
 
-                    console.log(imgURL + imgPath);
-                    var picture = document.getElementById('imageMonthplan');
-                    picture.src = imgURL + imgPath;
-                }
-            </script>
-            <!-- /Group list scripts -->
+if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
+    Hammer.plugins.fakeMultitouch();
+}
+var hammertime = Hammer(document.getElementById('groupPlan'), {
+    transform_always_block: true,
+    transform_min_scale: 1,
+    drag_block_horizontal: true,
+    drag_block_vertical: true,
+    drag_min_distance: 0
+});
 
-            <!-- Gesture Scripts -->
-            <script>
-            console.log("Hammer Started");
-            if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
-                Hammer.plugins.showTouches();
-            }
+var imageMonthplan = document.getElementById('imageMonthplan');
 
-            if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
-                Hammer.plugins.fakeMultitouch();
-            }
-            var hammertime = Hammer(document.getElementById('groupPlan'), {
-                transform_always_block: true,
-                transform_min_scale: 1,
-                drag_block_horizontal: true,
-                drag_block_vertical: true,
-                drag_min_distance: 0
-            });
+var posX=0, posY=0,
+last_posX=0, last_posY=0,
+scale=1;
 
-            var imageMonthplan = document.getElementById('imageMonthplan');
+hammertime.on('drag dragend', function(ev) {
+    switch(ev.type) {
+        case 'drag':
+        posX = last_posX + ev.gesture.deltaX;
+        posY = last_posY + ev.gesture.deltaY;
+        Transform();
+        break;
 
-            var posX=0, posY=0,
-            last_posX=0, last_posY=0,
-            scale=1;
+        case 'dragend':
+        last_posX = posX;
+        last_posY = posY;
+        Transform();
+        break;
+    }
+});
 
-            hammertime.on('drag dragend', function(ev) {
-                switch(ev.type) {
+function Transform()
+{
+    var transform =
+        "translate3d("+posX+"px,"+posY+"px, 0) " +
+        "scale3d("+scale+","+scale+", 1) ";
 
-                    case 'drag':
-                        posX = last_posX + ev.gesture.deltaX;
-                        posY = last_posY + ev.gesture.deltaY;
-                        Transform();
-                        break;
+    imageMonthplan.style.transform = transform;
+    imageMonthplan.style.oTransform = transform;
+    imageMonthplan.style.msTransform = transform;
+    imageMonthplan.style.mozTransform = transform;
+    imageMonthplan.style.webkitTransform = transform;
+}
 
-                    case 'dragend':
-                        last_posX = posX;
-                        last_posY = posY;
-                        Transform();
-                        break;
-                }
-            });
+function ZoomIn(){
+    scale = scale + 1;
+    if(scale > 5)
+    {
+        scale = 5;
+    }
+    Transform();
+}
 
-            function Transform()
-            {
-                var transform =
-                    "translate3d("+posX+"px,"+posY+"px, 0) " +
-                    "scale3d("+scale+","+scale+", 1) ";
-
-                imageMonthplan.style.transform = transform;
-                imageMonthplan.style.oTransform = transform;
-                imageMonthplan.style.msTransform = transform;
-                imageMonthplan.style.mozTransform = transform;
-                imageMonthplan.style.webkitTransform = transform;
-            }
-
-            function ZoomIn(){
-                scale = scale + 1;
-                if(scale > 5)
-                {
-                    scale = 5;
-                }
-                Transform();
-            }
-            function ZoomOut(){
-                scale = scale - 1;
-                if(scale < 1)
-                {
-                    scale = 1;
-                }
-                Transform();
-            }
-
-            </script>
-            <!-- /Gesture Scripts -->
+function ZoomOut(){
+    scale = scale - 1;
+    if(scale < 1)
+    {
+        scale = 1;
+    }
+    Transform();
+}
+</script>
+<!-- /Gesture Scripts -->
