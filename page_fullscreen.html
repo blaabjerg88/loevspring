@@ -32,7 +32,7 @@
             <!-- content    -->
             <div data-role="content" id="imageFullscreenContainer">
                 <div id="fullscreenImage">
-                    <img id="image" class="fullscreenImage" src="" alt="" style="">
+                    <img id="image" class="fullscreenImage" src="" alt="">
                     <div id="fullscreenText"></div>
                 </div>
             </div>
@@ -40,8 +40,10 @@
 
             <footer data-role="footer" data-position="fixed">
                 <div>
+                <!--
                     <img id="imgZoomOut" src="res/images/zoomout.png" onclick="ZoomOut()">
-                    <img id="imgZoomIn" src="res/images/zoomin.png" onclick="ZoomIn()">
+                    <img id="imgZoomIn" src="res/images/zoomin.png" onclick="ZoomIn()">7
+                -->
                     <img id="imgFullScreenComment" src="res/images/chat.png">
                 </div>
             </footer>
@@ -91,9 +93,10 @@
                 window.location.href = 'page_feedback.html';
                 });
             </script>
+            
 
             <script>
-
+            /*
                 if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
                 Hammer.plugins.showTouches();
                 }
@@ -134,34 +137,34 @@
                 }
                 });
 
-            function Transform()
-            {
-                var transform =
-                    "translate3d("+posX+"px,"+posY+"px, 0) " +
-                    "scale3d("+scale+","+scale+", 1) ";
-
-                image.style.transform = transform;
-                image.style.oTransform = transform;
-                image.style.msTransform = transform;
-                image.style.mozTransform = transform;
-                image.style.webkitTransform = transform;
-            }
-
-            function ZoomIn(){
-                scale = scale + 1;
-                if(scale > 5)
+                function Transform()
                 {
-                    scale = 5;
+                    var transform =
+                        "translate3d("+posX+"px,"+posY+"px, 0) " +
+                        "scale3d("+scale+","+scale+", 1) ";
+
+                    image.style.transform = transform;
+                    image.style.oTransform = transform;
+                    image.style.msTransform = transform;
+                    image.style.mozTransform = transform;
+                    image.style.webkitTransform = transform;
                 }
-                Transform();
-            }
-            function ZoomOut(){
-                scale = scale - 1;
-                if(scale < 1)
-                {
-                    scale = 1;
+
+                function ZoomIn(){
+                    scale = scale + 1;
+                    if(scale > 5)
+                    {
+                        scale = 5;
+                    }
+                    Transform();
                 }
-                Transform();
-            }
-            
+                function ZoomOut(){
+                    scale = scale - 1;
+                    if(scale < 1)
+                    {
+                        scale = 1;
+                    }
+                    Transform();
+                }
+            */
             </script>
