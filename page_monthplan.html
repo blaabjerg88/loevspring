@@ -22,9 +22,9 @@
         <div data-role="page" id="pageMonthplan">
 
             <!-- header -->
-            <div data-role="header">
-                <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
-                <h1>Løvspring - Månedsplan</h1>
+            <div data-role="header" data-position="fixed">
+                <a onclick="window.location.href = 'menu.html';" href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
+                <h1>Månedsplan</h1>
             </div>
             <!-- /header -->
 
@@ -40,8 +40,8 @@
             <!-- /content -->
 
             <footer data-role="footer" data-position="fixed">
-                <img src="res/images/zoomout.png" onclick="ZoomOut()">
-                <img src="res/images/zoomin.png" onclick="ZoomIn()">
+                <img id="monthplanZoomOut" src="res/images/zoomout.png" class="footerIcon" onclick="ZoomOut()">
+                <img id="monthplanZoomIn" src="res/images/zoomin.png" class="footerIcon" onclick="ZoomIn()">
             </footer>
 
         </div><!-- /page -->
@@ -85,7 +85,7 @@
                 }
             </script>
             <!-- /Group list scripts -->
-            
+
             <!-- Gesture Scripts -->
             <script>
             console.log("Hammer Started");
@@ -126,7 +126,7 @@
                         break;
                 }
             });
-            
+
             function Transform()
             {
                 var transform =
@@ -146,7 +146,7 @@
                 {
                     scale = 5;
                 }
-                Transform(); 
+                Transform();
             }
             function ZoomOut(){
                 scale = scale - 1;

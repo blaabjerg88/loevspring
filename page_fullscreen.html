@@ -23,9 +23,9 @@
         <div data-role="page" id="pageFullscreen">
 
             <!-- header -->
-            <div data-role="header">
-                <a href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
-                <h1>Løvspring - Fullscreen</h1>
+            <div data-role="header" data-position="fixed">
+                <a onclick="window.location.href = 'menu.html';" href="menu.html" class="ui-btn-left ui-btn-corner-all ui-btn ui-icon-grid ui-btn-icon-notext ui-shadow" title=" Navigation " data-form="ui-icon" data-role="button" role="button"> Navigation </a>
+                <h1>Billede</h1>
             </div>
             <!-- /header -->
 
@@ -37,16 +37,15 @@
                 </div>
             </div>
             <!-- /content -->
-            
+
             <footer data-role="footer" data-position="fixed">
                 <div>
+                    <img id="imgFullScreenComment" src="res/images/chat.png">
+
+                    <!--
                     <img src="res/images/zoomout.png" onclick="ZoomOut()">
                     <img src="res/images/zoomin.png" onclick="ZoomIn()">
-                    
-                    <img id="imgFullScreenComment" src="res/images/chat.png">
-                <!--<a href="menu.html">
-                    <img id="imgFullScreenComment" src="res/images/chat.png">
-                </a> -->
+                    -->
 
                 </div>
             </footer>
@@ -58,8 +57,8 @@
 </html>
 
 <!-- SetImage -->
-            <script>            
-            
+            <script>
+
             function getFullscreenImage(image){
                 console.log(image);
                 var data = image.data;
@@ -70,7 +69,7 @@
 
                 var description = data[0].description;
                 console.log(description);
-                
+
                 document.getElementById('image').src = imgPath;
                 document.getElementById('fullscreenText').innerHTML = "<span>" + description + "</span>";
             }
@@ -118,7 +117,7 @@
                 if(!Hammer.HAS_TOUCHEVENTS && !Hammer.HAS_POINTEREVENTS) {
                     Hammer.plugins.fakeMultitouch();
                 }
-                
+
 
                 var image = document.getElementById('image');
 
@@ -143,7 +142,7 @@
                 }
             });
             }
-            
+
             function Transform()
             {
                 var transform =
@@ -163,7 +162,7 @@
                 {
                     scale = 5;
                 }
-                Transform(); 
+                Transform();
             }
             function ZoomOut(){
                 scale = scale - 1;
@@ -173,5 +172,5 @@
                 }
                 Transform();
             }
-            */ 
+            */
             </script>
