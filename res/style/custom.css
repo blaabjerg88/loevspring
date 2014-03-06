@@ -10,9 +10,9 @@
 
 #fullscreenText {
     position            : absolute;
-    bottom              : 10px;
-    left                : 0;
-    width               : 100%;
+    bottom              : 50px;
+    left                : 10px;
+    width               : 90%;
 }
 
 #fullscreenText span {
