@@ -17,7 +17,7 @@
 
 #fullscreenText span {
     color               : white;
-    font                : 20px/29px Helvetica, Sans-Serif;
+    font:               : ;
     letter-spacing      : -1px;
     background          : rgb(0, 0, 0);
     background          : rgba(0, 0, 0, 0.7);
